@@ -31,13 +31,24 @@ getDiffParam url =
       Just x -> x
       Nothing -> Nothing
 
+getPath : Url -> String
+getPath url =
+  let pathParser = P.string
+  in
+  case P.parse pathParser url of
+      Just x -> x
+      Nothing -> "/"
+
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url _ =
-    let diff = case getDiffParam url of
-                  Just name -> Difficulty.fromString name
-                  Nothing -> Just defaultDifficulty
+    let
+      diff = case getDiffParam url of
+              Just name -> Difficulty.fromString name
+              Nothing -> Just defaultDifficulty
+      path = getPath url
+            
     in
-    ( Model diff, Cmd.none )
+    ( Model diff path, Cmd.none )
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -63,14 +74,14 @@ view model =
           [ div []
               [ p [] [ text ("Current difficulty is " ++ diff.displayName) ]
               , br [] []
-              , difficultySelector
+              , difficultySelector model
               , br [] []
               , aboutPage
               ]
           ]
         Nothing ->
           [ h1 [] [ text "Unknown Difficulty." ]
-          , difficultySelector
+          , difficultySelector model
           , br [] []
           , aboutPage
           ]

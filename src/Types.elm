@@ -11,4 +11,5 @@ type Msg
 
 type alias Model =
     { difficulty : Maybe Difficulty
+    , path : String
     }
