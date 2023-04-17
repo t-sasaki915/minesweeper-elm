@@ -9,7 +9,8 @@ import Url.Parser as P
 import Url.Parser.Query as Q
 
 import Components exposing ( .. )
-import Difficulty exposing ( Difficulty, defaultDifficulty )
+import Difficulty exposing ( defaultDifficulty )
+import Types exposing ( .. )
 
 main : Program () Model Msg
 main =
@@ -22,15 +23,6 @@ main =
         , onUrlChange = UrlChange
         }
 
-type Msg
-  = UrlRequest Browser.UrlRequest
-  | UrlChange Url
-
-type alias Model =
-    { difficulty : Maybe Difficulty
-    , key : Nav.Key
-    }
-
 getDiffParam : Url -> Maybe String
 getDiffParam url =
   let diffParamParser = P.query (Q.string "d")
@@ -40,12 +32,12 @@ getDiffParam url =
       Nothing -> Nothing
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
-init _ url key =
+init _ url _ =
     let diff = case getDiffParam url of
                   Just name -> Difficulty.fromString name
                   Nothing -> Just defaultDifficulty
     in
-    ( Model diff key, Cmd.none )
+    ( Model diff, Cmd.none )
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
