@@ -5,7 +5,11 @@ import Types exposing ( Model )
 
 difficultyLinkURL : Model -> Difficulty -> String
 difficultyLinkURL m diff =
+  let baseURL = case m.path of
+                  "/"   -> "/"
+                  other -> "/" ++ other ++ "/"
+  in
   if diff == defaultDifficulty then
-    m.path
+    baseURL
   else
-    m.path ++ "?d=" ++ diff.name
+    baseURL ++ "?d=" ++ diff.name
