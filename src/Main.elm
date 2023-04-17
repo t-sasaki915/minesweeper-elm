@@ -46,8 +46,11 @@ init _ url _ =
               Just name -> Difficulty.fromString name
               Nothing -> Just defaultDifficulty
       path = getPath url
-            
+      test = case getDiffParam url of
+               Just x -> x
+               Nothing -> "?"
     in
+    Debug.log test
     ( Model diff path, Cmd.none )
 
 update : Msg -> Model -> ( Model, Cmd Msg )
