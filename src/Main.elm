@@ -1,30 +1,57 @@
 module Main exposing ( main )
 
 import Browser
-import Html exposing ( Html, button, div, text )
-import Html.Events exposing ( onClick )
+import Browser.Navigation as Nav
+import Html exposing ( .. )
+import Html.Attributes exposing ( .. )
+import Url exposing ( Url )
+import Url.Parser as P
+import Url.Parser.Query as Q
 
-type alias Model = Int
-type Msg = Increment | Decrement
+import Difficulty exposing ( Difficulty )
 
 main : Program () Model Msg
 main =
-  Browser.sandbox
-    { init = 0
-    , update = update
-    , view = view
+    Browser.application
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = (\_ -> Sub.none)
+        , onUrlRequest = (\_ -> None)
+        , onUrlChange = (\_ -> None)
+        }
+
+type Msg = None
+
+type alias Model =
+    { difficulty : Maybe Difficulty
     }
 
-update : Msg -> Model -> Model
-update msg model =
-  case msg of
-    Increment -> model + 1
-    Decrement -> model - 1
+getDiffParam : Url -> Maybe String
+getDiffParam url =
+  let diffParamParser = P.query (Q.string "d")
+  in
+  case P.parse diffParamParser url of
+      Just x -> x
+      Nothing -> Nothing 
 
-view : Model -> Html Msg
+init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init _ url _ =
+    let diff = case getDiffParam url of
+                  Just name -> Difficulty.fromString name
+                  Nothing -> Nothing
+    in
+    ( Model diff, Cmd.none)
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model = (model, Cmd.none)
+
+view : Model -> Browser.Document Msg
 view model =
-  div []
-    [ div [] [ text (String.fromInt model) ]
-    , button [ onClick Increment ] [ text "+" ]
-    , button [ onClick Decrement] [ text "-" ]
-    ]
+    let aa = case model.difficulty of
+               Just x -> x.displayName
+               Nothing -> "?????"
+    in
+    Browser.Document "Minesweeper"
+        [ div [] [ text aa ]
+        ]
