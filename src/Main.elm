@@ -68,7 +68,7 @@ view model =
     Browser.Document "Minesweeper" (
       case model.difficulty of
         Just diff ->
-          [ div[]
+          [ div []
               [ p [] [ text ("Current difficulty is " ++ diff.displayName) ]
               , br [] []
               , difficultySelector
