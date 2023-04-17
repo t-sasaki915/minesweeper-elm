@@ -26,6 +26,8 @@ jobs:
         node-version: "16"
     - name: Setup Pages
       uses: actions/configure-pages@v2
+      with:
+          static_site_generator: webpack
     - name: Install dependencies
       run: yarn install
     - name: Build
