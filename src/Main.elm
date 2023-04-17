@@ -9,7 +9,7 @@ import Url.Parser as P
 import Url.Parser.Query as Q
 
 import Components exposing ( .. )
-import Difficulty exposing ( Difficulty )
+import Difficulty exposing ( Difficulty, defaultDifficulty )
 
 main : Program () Model Msg
 main =
@@ -37,13 +37,13 @@ getDiffParam url =
   in
   case P.parse diffParamParser url of
       Just x -> x
-      Nothing -> Nothing 
+      Nothing -> Nothing
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
     let diff = case getDiffParam url of
                   Just name -> Difficulty.fromString name
-                  Nothing -> Nothing
+                  Nothing -> Just defaultDifficulty
     in
     ( Model diff key, Cmd.none )
 

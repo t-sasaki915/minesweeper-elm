@@ -4,13 +4,14 @@ import Html exposing ( .. )
 import Html.Attributes exposing ( .. )
 
 import Difficulty exposing ( Difficulty, allDifficulties )
+import Util exposing ( difficultyLinkURL )
 
 difficultyLink : Difficulty -> Html a
-difficultyLink diff = a [href ("/?d=" ++ diff.name) ] [ text diff.displayName, br [] [] ]
+difficultyLink diff = a [ href (difficultyLinkURL diff) ] [ text diff.displayName, br [] [] ]
 
 difficultySelector : Html a
 difficultySelector =
-  div [] ([span [] [ text "Difficulties:"], br [] []] ++ (List.map difficultyLink allDifficulties))
+  div [] ([span [] [ text "Difficulties:"], br [] [] ] ++ (List.map difficultyLink allDifficulties))
 
 aboutPage : Html a
 aboutPage =
