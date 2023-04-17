@@ -1,7 +1,5 @@
 module Difficulty exposing ( .. )
 
-import List exposing ( filter, head )
-
 type alias Difficulty = { name : String
                         , displayName : String
                         , width: Int
@@ -29,4 +27,4 @@ allDifficulties = [ easy
                   ]
 
 fromString : String -> Maybe Difficulty
-fromString str = head (filter (\x -> (x.name) == str) allDifficulties)
+fromString str = List.head (List.filter (\x -> (x.name) == str) allDifficulties)
