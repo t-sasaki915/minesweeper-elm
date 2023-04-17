@@ -72,10 +72,14 @@ view model =
               [ p [] [ text ("Current difficulty is " ++ diff.displayName) ]
               , br [] []
               , difficultySelector
+              , br [] []
+              , aboutPage
               ]
           ]
         Nothing ->
           [ h1 [] [ text "Unknown Difficulty." ]
           , difficultySelector
+          , br [] []
+          , aboutPage
           ]
     )

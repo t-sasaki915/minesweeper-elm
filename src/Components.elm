@@ -11,3 +11,18 @@ difficultyLink diff = a [href ("/?d=" ++ diff.name) ] [ text diff.displayName, b
 difficultySelector : Html a
 difficultySelector =
   div [] ([span [] [ text "Difficulties:"], br [] []] ++ (List.map difficultyLink allDifficulties))
+
+aboutPage : Html a
+aboutPage =
+  div []
+    [ span [] [ text "This site is licensed under the " ]
+    , a [ href "https://github.com/t-sasaki915/minesweeper-elm/blob/main/LICENSE" ] [ text "MIT License" ]
+    , span [] [ text "." ]
+    , br [] []
+    , span [] [ text "This site is open source. " ]
+    , a [ href "https://github.com/t-sasaki915/minesweeper-elm" ] [ text "Improve this site" ]
+    , br [] []
+    , span [] [ text "Powered by " ]
+    , a [ href "https://pages.github.com" ] [ text "GitHub Pages" ]
+    , span [] [ text "." ]
+    ]
