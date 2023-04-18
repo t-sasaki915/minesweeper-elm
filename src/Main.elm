@@ -7,8 +7,9 @@ import Html.Attributes exposing ( .. )
 import Url exposing ( Url )
 
 import Components exposing ( .. )
-import Difficulty exposing ( defaultDifficulty )
+import JSCommunication exposing ( .. )
 import Types exposing ( .. )
+import URLUpdate exposing ( .. )
 
 main : Program () Model Msg
 main =
@@ -25,39 +26,16 @@ port receiveData : (String -> msg) -> Sub msg
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ _ _ =
-  ( Model Nothing "/" False False, Cmd.none )
+  ( Model Nothing "/" False False
+  , Cmd.none
+  )
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    UrlChange _ -> ( model, Cmd.none )
-    UrlRequest request ->
-      case request of
-        Browser.Internal url ->
-          ( model
-          , Nav.load (Url.toString url)
-          )
-        Browser.External url ->
-          ( model
-          , Nav.load url
-          )
-    ReceiveDataFromJS data ->
-      if String.startsWith "diff=" data then
-        case String.dropLeft 5 data of
-          "" ->
-            ( { model | difficulty = Just defaultDifficulty, difficultyReceived = True }
-            , Cmd.none
-            )
-          other ->
-            ( { model | difficulty = Difficulty.fromString other, difficultyReceived = True }
-            , Cmd.none
-            )
-      else if String.startsWith "path=" data then
-        ( { model | path = String.dropLeft 5 data, pathReceived = True }
-        , Cmd.none
-        )
-      else
-        ( model, Cmd.none )
+    UrlChange url -> handleURLChange url model
+    UrlRequest req -> handleURLRequest req model
+    ReceiveDataFromJS data -> handleReceiveDataFromJS data model
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
