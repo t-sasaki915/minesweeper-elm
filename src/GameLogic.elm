@@ -18,4 +18,6 @@ handleToggleFlagPlaceMode model =
 
 handleRestartGame : Model -> ( Model, Cmd Msg )
 handleRestartGame model =
-    ( model, Cmd.none )
+    ( { model | inFlagPlaceMode = False }
+    , Cmd.none
+    )
