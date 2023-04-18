@@ -3,7 +3,8 @@ module Components exposing (..)
 import Difficulty exposing (Difficulty, allDifficulties)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Types exposing (Model)
+import Html.Events exposing (..)
+import Types exposing (Model, Msg(..))
 import Util exposing (difficultyLinkURL)
 
 
@@ -32,9 +33,29 @@ cellArray m diff =
     div [] (List.map (\y -> cellLine m y diff) (List.range 0 (diff.height - 1)))
 
 
-gameScreen : Model -> Difficulty -> Html a
+toggleFlagPlaceModeButton : Model -> Html Msg
+toggleFlagPlaceModeButton m =
+    div [ class "btn" ]
+        [ span [ class "btnText", onClick ToggleFlagPlaceMode ] [ text "Enter Flag Place Mode" ]
+        ]
+
+
+restartButton : Html Msg
+restartButton =
+    div [ class "btn" ]
+        [ span [ class "btnText", onClick RestartGame ] [ text "Restart" ]
+        ]
+
+
+gameScreen : Model -> Difficulty -> Html Msg
 gameScreen m diff =
-    div [] [ cellArray m diff ]
+    div []
+        [ cellArray m diff
+        , br [] []
+        , toggleFlagPlaceModeButton m
+        , br [] []
+        , restartButton
+        ]
 
 
 aboutPage : Html a

@@ -3,4 +3,20 @@ body {
     font-size: 16px;
     line-height: 1.25;
     color: #24292f;
-  }
+}
+
+div.btn {
+  user-select: none;
+  width: fit-content;
+  height: 1.5em;
+  box-sizing: border-box;
+  border: 1px solid #000000;
+}
+
+span.btnText {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0 0.5em;
+  height: 1.5em;
+}
