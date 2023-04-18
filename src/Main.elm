@@ -3,6 +3,7 @@ port module Main exposing (main)
 import Browser
 import Browser.Navigation as Nav
 import Components exposing (..)
+import GameLogic exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import JSCommunication exposing (..)
@@ -34,16 +35,22 @@ init _ _ _ =
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update msg =
     case msg of
         UrlChange url ->
-            handleURLChange url model
+            handleURLChange url
 
         UrlRequest req ->
-            handleURLRequest req model
+            handleURLRequest req
 
         ReceiveDataFromJS data ->
-            handleReceiveDataFromJS data model
+            handleReceiveDataFromJS data
+
+        ToggleFlagPlaceMode ->
+            handleToggleFlagPlaceMode
+
+        RestartGame ->
+            handleRestartGame
 
 
 subscriptions : Model -> Sub Msg

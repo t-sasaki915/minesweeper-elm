@@ -9,6 +9,8 @@ type Msg
     = UrlRequest Browser.UrlRequest
     | UrlChange Url
     | ReceiveDataFromJS String
+    | ToggleFlagPlaceMode
+    | RestartGame
 
 
 type alias Model =
