@@ -17,6 +17,26 @@ difficultySelector m =
     div [] ([ span [] [ text "Difficulties:" ], br [] [] ] ++ List.map (difficultyLink m) allDifficulties)
 
 
+cell : Model -> Int -> Int -> Html a
+cell m x y =
+    div [ id ("cell_" ++ String.fromInt x ++ "_" ++ String.fromInt y) ] []
+
+
+cellLine : Model -> Int -> Difficulty -> Html a
+cellLine m y diff =
+    div [] (List.map (\x -> cell m x y) (List.range 0 (diff.width - 1)))
+
+
+cellArray : Model -> Difficulty -> Html a
+cellArray m diff =
+    div [] (List.map (\y -> cellLine m y diff) (List.range 0 (diff.height - 1)))
+
+
+gameScreen : Model -> Difficulty -> Html a
+gameScreen m diff =
+    div [] [ cellArray m diff ]
+
+
 aboutPage : Html a
 aboutPage =
     div []

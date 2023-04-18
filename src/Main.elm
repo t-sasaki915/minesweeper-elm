@@ -61,7 +61,7 @@ view model =
         (if model.difficultyReceived && model.pathReceived then
             case model.difficulty of
                 Just diff ->
-                    [ p [] [ text ("Current difficulty is " ++ diff.displayName) ]
+                    [ gameScreen model diff
                     , br [] []
                     , difficultySelector model
                     , br [] []
