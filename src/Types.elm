@@ -9,9 +9,13 @@ type Msg
     = UrlRequest Browser.UrlRequest
     | UrlChange Url
     | ReceiveDataFromJS String
-    | CellClick Int Int
+    | CellClick Coordinate
     | ToggleFlagPlaceMode
     | RestartGame
+
+
+type alias Coordinate =
+    { x : Int, y : Int }
 
 
 type alias Model =
@@ -20,4 +24,5 @@ type alias Model =
     , difficultyReceived : Bool
     , pathReceived : Bool
     , inFlagPlaceMode : Bool
+    , openedCellCoords : List Coordinate
     }

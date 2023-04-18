@@ -1,11 +1,18 @@
 module GameLogic exposing (..)
 
 import Types exposing (..)
+import Util
 
 
-handleCellClick : Int -> Int -> Model -> ( Model, Cmd Msg )
-handleCellClick x y model =
-    ( model, Cmd.none )
+handleCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
+handleCellClick coord model =
+    if not (Util.isCellOpened coord model) then
+        ( { model | openedCellCoords = coord :: model.openedCellCoords }
+        , Cmd.none
+        )
+
+    else
+        ( model, Cmd.none )
 
 
 handleToggleFlagPlaceMode : Model -> ( Model, Cmd Msg )
@@ -23,6 +30,6 @@ handleToggleFlagPlaceMode model =
 
 handleRestartGame : Model -> ( Model, Cmd Msg )
 handleRestartGame model =
-    ( { model | inFlagPlaceMode = False }
+    ( { model | inFlagPlaceMode = False, openedCellCoords = [] }
     , Cmd.none
     )

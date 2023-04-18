@@ -4,7 +4,7 @@ import Difficulty exposing (Difficulty, allDifficulties)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Types exposing (Model, Msg(..))
+import Types exposing (..)
 import Util exposing (difficultyLinkURL)
 
 
@@ -20,10 +20,18 @@ difficultySelector m =
 
 cell : Model -> Int -> Int -> Html Msg
 cell m x y =
+    let
+        className =
+            if Util.isCellOpened (Coordinate x y) m then
+                "cell cellOpened"
+
+            else
+                "cell cellNotOpened"
+    in
     div
-        [ class "cell cellNotOpened"
+        [ class className
         , id ("cell_" ++ String.fromInt x ++ "_" ++ String.fromInt y)
-        , onClick (CellClick x y)
+        , onClick (CellClick (Coordinate x y))
         ]
         []
 

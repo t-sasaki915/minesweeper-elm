@@ -34,6 +34,7 @@ init _ _ _ =
       , difficultyReceived = False
       , pathReceived = False
       , inFlagPlaceMode = False
+      , openedCellCoords = []
       }
     , Cmd.none
     )
@@ -51,8 +52,8 @@ update msg =
         ReceiveDataFromJS data ->
             handleReceiveDataFromJS data
 
-        CellClick x y ->
-            handleCellClick x y
+        CellClick coord ->
+            handleCellClick coord
 
         ToggleFlagPlaceMode ->
             handleToggleFlagPlaceMode
