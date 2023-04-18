@@ -44,13 +44,13 @@ div.cell {
 }
 
 div.cellNotOpened {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   background-color: #bbbbbb;
-  border-top: 4px solid #ffffff;
-  border-left: 4px solid #ffffff;
-  border-right: 4px solid #a0a0a0;
-  border-bottom: 4px solid #a0a0a0;
+  border-top: 5px solid #ffffff;
+  border-left: 5px solid #ffffff;
+  border-right: 5px solid #a0a0a0;
+  border-bottom: 5px solid #a0a0a0;
 }
 
 div.cellOpened {
