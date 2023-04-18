@@ -29,7 +29,12 @@ main =
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ _ _ =
-    ( Model Nothing "/" False False
+    ( { difficulty = Nothing
+      , path = ""
+      , difficultyReceived = False
+      , pathReceived = False
+      , inFlagPlaceMode = False
+      }
     , Cmd.none
     )
 

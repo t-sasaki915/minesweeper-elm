@@ -18,4 +18,5 @@ type alias Model =
     , path : String
     , difficultyReceived : Bool
     , pathReceived : Bool
+    , inFlagPlaceMode : Bool
     }

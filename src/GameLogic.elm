@@ -5,7 +5,15 @@ import Types exposing (..)
 
 handleToggleFlagPlaceMode : Model -> ( Model, Cmd Msg )
 handleToggleFlagPlaceMode model =
-    ( model, Cmd.none )
+    if model.inFlagPlaceMode then
+        ( { model | inFlagPlaceMode = False }
+        , Cmd.none
+        )
+
+    else
+        ( { model | inFlagPlaceMode = True }
+        , Cmd.none
+        )
 
 
 handleRestartGame : Model -> ( Model, Cmd Msg )

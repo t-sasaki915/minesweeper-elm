@@ -35,8 +35,16 @@ cellArray m diff =
 
 toggleFlagPlaceModeButton : Model -> Html Msg
 toggleFlagPlaceModeButton m =
+    let
+        buttonText =
+            if m.inFlagPlaceMode then
+                "Exit Flag Place Mode"
+
+            else
+                "Enter Flag Place Mode"
+    in
     div [ class "btn" ]
-        [ span [ class "btnText", onClick ToggleFlagPlaceMode ] [ text "Enter Flag Place Mode" ]
+        [ span [ class "btnText", onClick ToggleFlagPlaceMode ] [ text buttonText ]
         ]
 
 
