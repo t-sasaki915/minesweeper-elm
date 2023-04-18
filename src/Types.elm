@@ -1,14 +1,15 @@
-module Types exposing ( .. )
+module Types exposing (..)
 
 import Browser
-import Url exposing ( Url )
+import Difficulty exposing (Difficulty)
+import Url exposing (Url)
 
-import Difficulty exposing ( Difficulty )
 
 type Msg
-  = UrlRequest Browser.UrlRequest
-  | UrlChange Url
-  | ReceiveDataFromJS String
+    = UrlRequest Browser.UrlRequest
+    | UrlChange Url
+    | ReceiveDataFromJS String
+
 
 type alias Model =
     { difficulty : Maybe Difficulty

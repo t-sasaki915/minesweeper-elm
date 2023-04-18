@@ -13,6 +13,7 @@
   "devDependencies": {
     "css-loader": "^6.7.3",
     "elm": "^0.19.1-5",
+    "elm-format": "^0.8.7",
     "elm-webpack-loader": "^8.0.0",
     "html-webpack-plugin": "^5.5.1",
     "style-loader": "^3.3.2",
