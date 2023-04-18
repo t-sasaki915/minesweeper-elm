@@ -18,17 +18,22 @@ difficultySelector m =
     div [] ([ span [] [ text "Difficulties:" ], br [] [] ] ++ List.map (difficultyLink m) allDifficulties)
 
 
-cell : Model -> Int -> Int -> Html a
+cell : Model -> Int -> Int -> Html Msg
 cell m x y =
-    div [ class "cell cellNotOpened", id ("cell_" ++ String.fromInt x ++ "_" ++ String.fromInt y) ] []
+    div
+        [ class "cell cellNotOpened"
+        , id ("cell_" ++ String.fromInt x ++ "_" ++ String.fromInt y)
+        , onClick (CellClick x y)
+        ]
+        []
 
 
-cellLine : Model -> Int -> Difficulty -> Html a
+cellLine : Model -> Int -> Difficulty -> Html Msg
 cellLine m y diff =
     div [ class "cellLine" ] (List.map (\x -> cell m x y) (List.range 0 (diff.width - 1)))
 
 
-cellArray : Model -> Difficulty -> Html a
+cellArray : Model -> Difficulty -> Html Msg
 cellArray m diff =
     div [ class "cellArray" ] (List.map (\y -> cellLine m y diff) (List.range 0 (diff.height - 1)))
 

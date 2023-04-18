@@ -3,6 +3,11 @@ module GameLogic exposing (..)
 import Types exposing (..)
 
 
+handleCellClick : Int -> Int -> Model -> ( Model, Cmd Msg )
+handleCellClick x y model =
+    ( model, Cmd.none )
+
+
 handleToggleFlagPlaceMode : Model -> ( Model, Cmd Msg )
 handleToggleFlagPlaceMode model =
     if model.inFlagPlaceMode then

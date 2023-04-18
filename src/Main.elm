@@ -51,6 +51,9 @@ update msg =
         ReceiveDataFromJS data ->
             handleReceiveDataFromJS data
 
+        CellClick x y ->
+            handleCellClick x y
+
         ToggleFlagPlaceMode ->
             handleToggleFlagPlaceMode
 

@@ -9,6 +9,7 @@ type Msg
     = UrlRequest Browser.UrlRequest
     | UrlChange Url
     | ReceiveDataFromJS String
+    | CellClick Int Int
     | ToggleFlagPlaceMode
     | RestartGame
 
