@@ -9,7 +9,7 @@ div.btn {
   user-select: none;
   width: fit-content;
   height: 1.5em;
-  box-sizing: border-box;
+  box-sizing: content-box;
   border: 1px solid #000000;
 }
 
@@ -40,10 +40,12 @@ div.cell {
   content: "";
   width: 32px;
   height: 32px;
-  box-sizing: border-box;
+  box-sizing: content-box;
 }
 
 div.cellNotOpened {
+  width: 24px;
+  height: 24px;
   background-color: #bbbbbb;
   border-top: 4px solid #ffffff;
   border-left: 4px solid #ffffff;
@@ -52,6 +54,8 @@ div.cellNotOpened {
 }
 
 div.cellOpened {
+  width: 30px;
+  height: 30px;
   background-color: #c0c0c0;
   border: 1px solid #858585;
 }
