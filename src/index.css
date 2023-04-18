@@ -20,3 +20,38 @@ span.btnText {
   padding: 0 0.5em;
   height: 1.5em;
 }
+
+div.cellArray {
+  user-select: none;
+  overflow: hidden;
+  width: fit-content;
+  height: fit-content;
+  border: 1px solid #000000;
+  box-sizing: content-box;
+}
+
+div.cellLine {
+  width: fit-content;
+  height: 32px;
+}
+
+div.cell {
+  display: inline-block;
+  content: "";
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+div.cellNotOpened {
+  background-color: #bbbbbb;
+  border-top: 4px solid #ffffff;
+  border-left: 4px solid #ffffff;
+  border-right: 4px solid #a0a0a0;
+  border-bottom: 4px solid #a0a0a0;
+}
+
+div.cellOpened {
+  background-color: #c0c0c0;
+  border: 1px solid #858585;
+}
