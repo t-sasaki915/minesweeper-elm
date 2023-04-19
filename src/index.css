@@ -40,7 +40,6 @@ div.cell {
   content: "";
   width: 32px;
   height: 32px;
-  box-sizing: content-box;
 }
 
 div.cellNotOpened {
@@ -58,4 +57,8 @@ div.cellOpened {
   height: 30px;
   background-color: #c0c0c0;
   border: 1px solid #858585;
+}
+
+svg {
+  display: block;
 }
