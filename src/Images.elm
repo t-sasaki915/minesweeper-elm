@@ -63,7 +63,7 @@ flagIcon =
             , height "5"
             ]
             []
-        , polygon [ points "5 15, 0 22, 18 22" ] []
+        , polygon [ points "5 15, 0 22, 20 22" ] []
         , polygon [ points "16 15, 22 22, 15 22" ] []
         , rect
             [ x "10"
