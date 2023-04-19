@@ -15,8 +15,6 @@ mineIcon =
             [ cx "15"
             , cy "15"
             , r "11"
-            , stroke "black"
-            , fill "black"
             ]
             []
         , rect
@@ -49,4 +47,30 @@ mineIcon =
             , transform "rotate(45)"
             ]
             []
+        ]
+
+
+flagIcon : Html a
+flagIcon =
+    svg
+        [ width "22"
+        , height "22"
+        ]
+        [ rect
+            [ x "5"
+            , y "15"
+            , width "11"
+            , height "5"
+            ]
+            []
+        , polygon [ points "5 15, 0 22, 18 22" ] []
+        , polygon [ points "16 15, 22 22, 15 22" ] []
+        , rect
+            [ x "10"
+            , y "1"
+            , width "1.5"
+            , height "16"
+            ]
+            []
+        , polygon [ points "10 1, 10 10, 1 5", fill "red" ] []
         ]

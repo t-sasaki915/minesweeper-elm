@@ -4,7 +4,7 @@ import Difficulty exposing (Difficulty, allDifficulties)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Images exposing (mineIcon)
+import Images exposing (..)
 import Types exposing (..)
 import Util exposing (difficultyLinkURL)
 
@@ -37,7 +37,7 @@ cell m x y =
                 [ mineIcon ]
 
             else
-                []
+                [ flagIcon ]
     in
     div
         [ class className
