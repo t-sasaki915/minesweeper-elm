@@ -1,7 +1,6 @@
 module Util exposing (..)
 
 import Difficulty exposing (Difficulty, defaultDifficulty)
-import Html exposing (a)
 import Types exposing (..)
 
 
