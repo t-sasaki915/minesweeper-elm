@@ -31,8 +31,6 @@ init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ _ _ =
     ( { difficulty = Nothing
       , path = ""
-      , difficultyReceived = False
-      , pathReceived = False
       , inFlagPlaceMode = False
       , openedCellCoords = []
       , flaggedCellCoords = []
@@ -64,35 +62,26 @@ update msg =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-    if model.difficultyReceived && model.pathReceived then
-        Sub.none
-
-    else
-        receiveData ReceiveDataFromJS
+subscriptions _ =
+    receiveData ReceiveDataFromJS
 
 
 view : Model -> Browser.Document Msg
 view model =
     Browser.Document "Minesweeper"
-        (if model.difficultyReceived && model.pathReceived then
-            case model.difficulty of
-                Just diff ->
-                    [ gameScreen model diff
-                    , br [] []
-                    , difficultySelector model
-                    , br [] []
-                    , aboutPage
-                    ]
+        (case model.difficulty of
+            Just diff ->
+                [ gameScreen model diff
+                , br [] []
+                , difficultySelector model
+                , br [] []
+                , aboutPage
+                ]
 
-                Nothing ->
-                    [ h1 [] [ text "Unknown Difficulty." ]
-                    , difficultySelector model
-                    , br [] []
-                    , aboutPage
-                    ]
-
-         else
-            [ p [] [ text "Waiting for JavaScript..." ]
-            ]
+            Nothing ->
+                [ h1 [] [ text "Unknown Difficulty." ]
+                , difficultySelector model
+                , br [] []
+                , aboutPage
+                ]
         )

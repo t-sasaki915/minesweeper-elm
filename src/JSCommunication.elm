@@ -9,17 +9,17 @@ handleReceiveDataFromJS data model =
     if String.startsWith "diff=" data then
         case String.dropLeft 5 data of
             "" ->
-                ( { model | difficulty = Just defaultDifficulty, difficultyReceived = True }
+                ( { model | difficulty = Just defaultDifficulty }
                 , Cmd.none
                 )
 
             other ->
-                ( { model | difficulty = Difficulty.fromString other, difficultyReceived = True }
+                ( { model | difficulty = Difficulty.fromString other }
                 , Cmd.none
                 )
 
     else if String.startsWith "path=" data then
-        ( { model | path = String.dropLeft 5 data, pathReceived = True }
+        ( { model | path = String.dropLeft 5 data }
         , Cmd.none
         )
 

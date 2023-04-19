@@ -21,8 +21,6 @@ type alias Coordinate =
 type alias Model =
     { difficulty : Maybe Difficulty
     , path : String
-    , difficultyReceived : Bool
-    , pathReceived : Bool
     , inFlagPlaceMode : Bool
     , openedCellCoords : List Coordinate
     , flaggedCellCoords : List Coordinate
