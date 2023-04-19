@@ -25,4 +25,5 @@ type alias Model =
     , pathReceived : Bool
     , inFlagPlaceMode : Bool
     , openedCellCoords : List Coordinate
+    , flaggedCellCoords : List Coordinate
     }

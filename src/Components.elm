@@ -25,6 +25,9 @@ cell m x y =
         isOpened =
             Util.isCellOpened (Coordinate x y) m
 
+        isFlagged =
+            Util.isCellFlagged (Coordinate x y) m
+
         className =
             if isOpened then
                 "cell cellOpened"
@@ -34,10 +37,13 @@ cell m x y =
 
         children =
             if isOpened then
-                [ mineIcon ]
+                []
+
+            else if isFlagged then
+                [ flagIcon ]
 
             else
-                [ flagIcon ]
+                []
     in
     div
         [ class className

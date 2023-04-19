@@ -35,6 +35,7 @@ init _ _ _ =
       , pathReceived = False
       , inFlagPlaceMode = False
       , openedCellCoords = []
+      , flaggedCellCoords = []
       }
     , Cmd.none
     )
