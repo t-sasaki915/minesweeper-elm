@@ -7,9 +7,13 @@ import GameLogic exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import JSCommunication exposing (..)
+import Task
 import Types exposing (..)
 import URLUpdate exposing (..)
 import Url exposing (Url)
+
+
+port sendData : String -> Cmd msg
 
 
 port receiveData : (String -> msg) -> Sub msg
@@ -28,14 +32,9 @@ main =
 
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
-init _ _ _ =
-    ( { difficulty = Nothing
-      , path = ""
-      , inFlagPlaceMode = False
-      , openedCellCoords = []
-      , flaggedCellCoords = []
-      }
-    , Cmd.none
+init _ _ navKey =
+    ( createEmptyModel navKey
+    , Task.perform (always RequestDataToJS) (Task.succeed ())
     )
 
 
@@ -47,6 +46,9 @@ update msg =
 
         UrlRequest req ->
             handleURLRequest req
+
+        RequestDataToJS ->
+            handleRequestDataToJS sendData
 
         ReceiveDataFromJS data ->
             handleReceiveDataFromJS data
@@ -69,19 +71,24 @@ subscriptions _ =
 view : Model -> Browser.Document Msg
 view model =
     Browser.Document "Minesweeper"
-        (case model.difficulty of
-            Just diff ->
-                [ gameScreen model diff
-                , br [] []
-                , difficultySelector model
-                , br [] []
-                , aboutPage
-                ]
+        (if model.difficultyReceived && model.pathReceived then
+            case model.difficulty of
+                Just diff ->
+                    [ gameScreen model diff
+                    , br [] []
+                    , difficultySelector model
+                    , br [] []
+                    , aboutPage
+                    ]
 
-            Nothing ->
-                [ h1 [] [ text "Unknown Difficulty." ]
-                , difficultySelector model
-                , br [] []
-                , aboutPage
-                ]
+                Nothing ->
+                    [ h1 [] [ text "Unknown Difficulty." ]
+                    , difficultySelector model
+                    , br [] []
+                    , aboutPage
+                    ]
+
+         else
+            [ p [] [ text "Waiting for JavaScript..." ]
+            ]
         )
