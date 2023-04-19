@@ -47,7 +47,7 @@ cell m x y =
 
             else if inFlagPlaceMode then
                 [ fakeFlagIcon ]
-                
+
             else
                 []
     in
