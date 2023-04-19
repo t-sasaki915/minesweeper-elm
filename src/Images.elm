@@ -12,29 +12,29 @@ mineIcon =
         , height "30"
         ]
         [ circle
-            [ cx "14"
-            , cy "14"
+            [ cx "15"
+            , cy "15"
             , r "11"
             , stroke "black"
             , fill "black"
             ]
             []
         , rect
-            [ x "13"
+            [ x "14"
             , y "0"
             , width "2"
-            , height "29"
+            , height "30"
             ]
             []
         , rect
             [ x "0"
-            , y "13"
-            , width "29"
+            , y "14"
+            , width "30"
             , height "2"
             ]
             []
         , rect
-            [ x "19"
+            [ x "20"
             , y "-14"
             , width "1.5"
             , height "28"
@@ -42,7 +42,7 @@ mineIcon =
             ]
             []
         , rect
-            [ x "6"
+            [ x "7"
             , y "0"
             , width "28"
             , height "1.5"
