@@ -22,6 +22,9 @@ difficultySelector m =
 cell : Model -> Int -> Int -> Html Msg
 cell m x y =
     let
+        inFlagPlaceMode =
+            m.inFlagPlaceMode
+
         isOpened =
             Util.isCellOpened (Coordinate x y) m
 
@@ -42,6 +45,9 @@ cell m x y =
             else if isFlagged then
                 [ flagIcon ]
 
+            else if inFlagPlaceMode then
+                [ fakeFlagIcon ]
+                
             else
                 []
     in

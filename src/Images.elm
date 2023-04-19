@@ -74,3 +74,31 @@ flagIcon =
             []
         , polygon [ points "10 1, 10 10, 1 5", fill "red" ] []
         ]
+
+
+fakeFlagIcon : Html a
+fakeFlagIcon =
+    svg
+        [ width "22"
+        , height "22"
+        ]
+        [ rect
+            [ x "5"
+            , y "15"
+            , width "11"
+            , height "5"
+            , fill "gray"
+            ]
+            []
+        , polygon [ points "5 15, 0 22, 20 22", fill "gray" ] []
+        , polygon [ points "16 15, 22 22, 15 22", fill "gray" ] []
+        , rect
+            [ x "10"
+            , y "1"
+            , width "1.5"
+            , height "16"
+            , fill "gray"
+            ]
+            []
+        , polygon [ points "10 1, 10 10, 1 5", fill "gray" ] []
+        ]
