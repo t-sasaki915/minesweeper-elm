@@ -4,6 +4,7 @@ import Difficulty exposing (Difficulty, allDifficulties)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Images exposing (mineIcon)
 import Types exposing (..)
 import Util exposing (difficultyLinkURL)
 
@@ -21,19 +22,29 @@ difficultySelector m =
 cell : Model -> Int -> Int -> Html Msg
 cell m x y =
     let
+        isOpened =
+            Util.isCellOpened (Coordinate x y) m
+
         className =
-            if Util.isCellOpened (Coordinate x y) m then
+            if isOpened then
                 "cell cellOpened"
 
             else
                 "cell cellNotOpened"
+
+        children =
+            if isOpened then
+                [ mineIcon ]
+
+            else
+                []
     in
     div
         [ class className
         , id ("cell_" ++ String.fromInt x ++ "_" ++ String.fromInt y)
         , onClick (CellClick (Coordinate x y))
         ]
-        []
+        children
 
 
 cellLine : Model -> Int -> Difficulty -> Html Msg
