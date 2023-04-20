@@ -20,7 +20,7 @@ handleMineCoordGenerate coord model =
     if List.length model.mineCoords >= diff.mineCount then
         ( { model | isGameStarted = True }, Cmd.none )
 
-    else if Util.contains coord model.mineCoords then
+    else if Util.contains coord model.mineCoords || Util.contains coord model.noMineCoords then
         ( model, generateCoord model )
 
     else

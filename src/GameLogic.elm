@@ -41,13 +41,17 @@ handleCellClick coord model =
 
         else if not isOpened then
             if not isFlagged then
-                ( openCell coord model
-                , if isGameStarted then
-                    Cmd.none
+                if isGameStarted then
+                    ( openCell coord model, Cmd.none )
 
-                  else
-                    generateCoord model
-                )
+                else
+                    let
+                        newModel =
+                            { model | noMineCoords = listWith coord (Util.getAround3x3 coord) }
+                    in
+                    ( openCell coord newModel
+                    , generateCoord newModel
+                    )
 
             else
                 ( model, Cmd.none )
