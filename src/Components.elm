@@ -96,8 +96,7 @@ cell m x y =
                 [ mineIcon ]
 
             else if isFlagged && not isMine then
-                [ flagIcon ]
-                -- TODO
+                [ wrongFlagIcon ]
 
             else
                 []

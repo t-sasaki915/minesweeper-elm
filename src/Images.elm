@@ -102,3 +102,31 @@ fakeFlagIcon =
             []
         , polygon [ points "10 1, 10 10, 1 5", fill "gray" ] []
         ]
+
+
+wrongFlagIcon : Html a
+wrongFlagIcon =
+    svg
+        [ width "22"
+        , height "22"
+        ]
+        [ rect
+            [ x "5"
+            , y "15"
+            , width "11"
+            , height "5"
+            ]
+            []
+        , polygon [ points "5 15, 0 22, 20 22" ] []
+        , polygon [ points "16 15, 22 22, 15 22" ] []
+        , rect
+            [ x "10"
+            , y "1"
+            , width "1.5"
+            , height "16"
+            ]
+            []
+        , polygon [ points "10 1, 10 10, 1 5", fill "red" ] []
+        , polygon [ points "2 0, 0 0, 20 22, 22 22", fill "red" ] []
+        , polygon [ points "22 0, 20 0, 0 22, 2 22", fill "red" ] []
+        ]
