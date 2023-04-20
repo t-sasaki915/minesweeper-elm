@@ -74,11 +74,7 @@ cell m x y =
         children =
             if not isGameOver then
                 if isOpened then
-                    if isMine then
-                        [ mineIcon ]
-
-                    else
-                        []
+                    []
 
                 else if isFlagged then
                     [ flagIcon ]
