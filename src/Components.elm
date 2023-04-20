@@ -48,6 +48,9 @@ cell m x y =
         isGameOver =
             m.isGameOver
 
+        mineCount =
+            Util.getMineCount coord m
+
         className =
             if not isGameOver then
                 if isOpened then
@@ -74,7 +77,7 @@ cell m x y =
         children =
             if not isGameOver then
                 if isOpened then
-                    []
+                    [ numberIcon mineCount ]
 
                 else if isFlagged then
                     [ flagIcon ]
@@ -93,6 +96,9 @@ cell m x y =
 
             else if isFlagged && not isMine then
                 [ wrongFlagIcon ]
+
+            else if isOpened then
+                [ numberIcon mineCount ]
 
             else
                 []

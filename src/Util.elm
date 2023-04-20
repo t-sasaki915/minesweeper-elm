@@ -38,6 +38,11 @@ listWithout a list =
     List.filter (\x -> not (x == a)) list
 
 
+count : (a -> Bool) -> List a -> Int
+count test list =
+    List.length (List.filter test list)
+
+
 isCellOpened : Coordinate -> Model -> Bool
 isCellOpened coord model =
     contains coord model.openedCellCoords
@@ -51,3 +56,28 @@ isCellFlagged coord model =
 isMine : Coordinate -> Model -> Bool
 isMine coord model =
     contains coord model.mineCoords
+
+
+getAround3x3 : Coordinate -> List Coordinate
+getAround3x3 coord =
+    let
+        x =
+            coord.x
+
+        y =
+            coord.y
+    in
+    [ Coordinate (x - 1) (y - 1)
+    , Coordinate x (y - 1)
+    , Coordinate (x + 1) (y - 1)
+    , Coordinate (x - 1) y
+    , Coordinate (x + 1) y
+    , Coordinate (x - 1) (y + 1)
+    , Coordinate x (y + 1)
+    , Coordinate (x + 1) (y + 1)
+    ]
+
+
+getMineCount : Coordinate -> Model -> Int
+getMineCount coord model =
+    count (\x -> x) (List.map (\c -> contains c model.mineCoords) (getAround3x3 coord))
