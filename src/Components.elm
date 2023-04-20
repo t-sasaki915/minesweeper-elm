@@ -37,8 +37,19 @@ cell m x y =
         isMine =
             Util.isMine coord m
 
+        isCause =
+            case m.causeCoord of
+                Just c ->
+                    coord == c
+
+                Nothing ->
+                    False
+
         className =
-            if isOpened then
+            if isCause then
+                "cell cellCause"
+
+            else if isOpened then
                 "cell cellOpened"
 
             else

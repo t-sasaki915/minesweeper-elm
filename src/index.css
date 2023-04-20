@@ -59,6 +59,13 @@ div.cellOpened {
   border: 1px solid #858585;
 }
 
+div.cellCause {
+  width: 30px;
+  height: 30px;
+  background-color: #ff0000;
+  border: 1px solid #858585;
+}
+
 svg {
   display: block;
 }

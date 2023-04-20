@@ -109,7 +109,11 @@ initGameState model =
 
 openCell : Coordinate -> Model -> Model
 openCell coord model =
-    { model | openedCellCoords = listWith coord model.openedCellCoords }
+    if Util.isMine coord model then
+        gameOver coord model
+
+    else
+        { model | openedCellCoords = listWith coord model.openedCellCoords }
 
 
 placeFlag : Coordinate -> Model -> Model
@@ -120,3 +124,12 @@ placeFlag coord model =
 removeFlag : Coordinate -> Model -> Model
 removeFlag coord model =
     { model | flaggedCellCoords = listWithout coord model.flaggedCellCoords }
+
+
+gameOver : Coordinate -> Model -> Model
+gameOver coord model =
+    { model
+        | isGameOver = True
+        , causeCoord = Just coord
+        , openedCellCoords = listWith coord model.openedCellCoords
+    }

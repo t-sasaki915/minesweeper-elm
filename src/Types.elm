@@ -30,6 +30,7 @@ type alias Model =
     , openedCellCoords : List Coordinate
     , flaggedCellCoords : List Coordinate
     , mineCoords : List Coordinate
+    , causeCoord : Maybe Coordinate
     , navKey : Nav.Key
     , difficultyReceived : Bool
     , pathReceived : Bool
@@ -46,6 +47,7 @@ createEmptyModel navKey =
     , openedCellCoords = []
     , flaggedCellCoords = []
     , mineCoords = []
+    , causeCoord = Nothing
     , navKey = navKey
     , difficultyReceived = False
     , pathReceived = False
