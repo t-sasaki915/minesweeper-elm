@@ -61,15 +61,19 @@ handleCellClick coord model =
 
 handleToggleFlagPlaceMode : Model -> ( Model, Cmd Msg )
 handleToggleFlagPlaceMode model =
-    if model.inFlagPlaceMode then
-        ( exitFlagPlaceMode model
-        , Cmd.none
-        )
+    if not model.isGameOver then
+        if model.inFlagPlaceMode then
+            ( exitFlagPlaceMode model
+            , Cmd.none
+            )
+
+        else
+            ( enterFlagPlaceMode model
+            , Cmd.none
+            )
 
     else
-        ( enterFlagPlaceMode model
-        , Cmd.none
-        )
+        ( model, Cmd.none )
 
 
 handleRestartGame : Model -> ( Model, Cmd Msg )
