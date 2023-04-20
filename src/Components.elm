@@ -45,9 +45,25 @@ cell m x y =
                 Nothing ->
                     False
 
+        isGameOver =
+            m.isGameOver
+
         className =
-            if isCause then
+            if not isGameOver then
+                if isOpened then
+                    "cell cellOpened"
+
+                else
+                    "cell cellNotOpened"
+
+            else if isCause then
                 "cell cellCause"
+
+            else if isFlagged && isMine then
+                "cell cellNotOpened"
+
+            else if not isFlagged && isMine then
+                "cell cellOpened"
 
             else if isOpened then
                 "cell cellOpened"
@@ -56,18 +72,32 @@ cell m x y =
                 "cell cellNotOpened"
 
         children =
-            if isOpened then
-                if isMine then
-                    [ mineIcon ]
+            if not isGameOver then
+                if isOpened then
+                    if isMine then
+                        [ mineIcon ]
+
+                    else
+                        []
+
+                else if isFlagged then
+                    [ flagIcon ]
+
+                else if inFlagPlaceMode then
+                    [ fakeFlagIcon ]
 
                 else
                     []
 
-            else if isFlagged then
+            else if isFlagged && isMine then
                 [ flagIcon ]
 
-            else if inFlagPlaceMode then
-                [ fakeFlagIcon ]
+            else if not isFlagged && isMine then
+                [ mineIcon ]
+
+            else if isFlagged && not isMine then
+                [ flagIcon ]
+                -- TODO
 
             else
                 []
