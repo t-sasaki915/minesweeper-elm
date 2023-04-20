@@ -18,7 +18,7 @@ handleMineCoordGenerate coord model =
                     defaultDifficulty
     in
     if List.length model.mineCoords >= diff.mineCount then
-        ( model, Cmd.none )
+        ( { model | isGameStarted = True }, Cmd.none )
 
     else if Util.contains coord model.mineCoords then
         ( model, generateCoord model )

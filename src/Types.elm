@@ -24,6 +24,8 @@ type alias Coordinate =
 type alias Model =
     { difficulty : Maybe Difficulty
     , path : String
+    , isGameStarted : Bool
+    , isGameOver : Bool
     , inFlagPlaceMode : Bool
     , openedCellCoords : List Coordinate
     , flaggedCellCoords : List Coordinate
@@ -38,6 +40,8 @@ createEmptyModel : Nav.Key -> Model
 createEmptyModel navKey =
     { difficulty = Nothing
     , path = ""
+    , isGameStarted = False
+    , isGameOver = False
     , inFlagPlaceMode = False
     , openedCellCoords = []
     , flaggedCellCoords = []
