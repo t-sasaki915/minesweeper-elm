@@ -14,6 +14,7 @@ type Msg
     | CellClick Coordinate
     | ToggleFlagPlaceMode
     | RestartGame
+    | MineCoordGenerate Coordinate
 
 
 type alias Coordinate =
@@ -26,6 +27,7 @@ type alias Model =
     , inFlagPlaceMode : Bool
     , openedCellCoords : List Coordinate
     , flaggedCellCoords : List Coordinate
+    , mineCoords : List Coordinate
     , navKey : Nav.Key
     , difficultyReceived : Bool
     , pathReceived : Bool
@@ -39,6 +41,7 @@ createEmptyModel navKey =
     , inFlagPlaceMode = False
     , openedCellCoords = []
     , flaggedCellCoords = []
+    , mineCoords = []
     , navKey = navKey
     , difficultyReceived = False
     , pathReceived = False

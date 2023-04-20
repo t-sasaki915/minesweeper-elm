@@ -22,14 +22,20 @@ difficultySelector m =
 cell : Model -> Int -> Int -> Html Msg
 cell m x y =
     let
+        coord =
+            Coordinate x y
+
         inFlagPlaceMode =
             m.inFlagPlaceMode
 
         isOpened =
-            Util.isCellOpened (Coordinate x y) m
+            Util.isCellOpened coord m
 
         isFlagged =
-            Util.isCellFlagged (Coordinate x y) m
+            Util.isCellFlagged coord m
+
+        isMine =
+            Util.isMine coord m
 
         className =
             if isOpened then
@@ -40,7 +46,11 @@ cell m x y =
 
         children =
             if isOpened then
-                []
+                if isMine then
+                    [ mineIcon ]
+
+                else
+                    []
 
             else if isFlagged then
                 [ flagIcon ]
@@ -54,7 +64,7 @@ cell m x y =
     div
         [ class className
         , id ("cell_" ++ String.fromInt x ++ "_" ++ String.fromInt y)
-        , onClick (CellClick (Coordinate x y))
+        , onClick (CellClick coord)
         ]
         children
 

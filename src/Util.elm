@@ -13,6 +13,11 @@ difficultyLinkURL model diff =
         model.path ++ "?d=" ++ diff.name
 
 
+contains : a -> List a -> Bool
+contains a list =
+    isExist (\x -> x == a) list
+
+
 isExist : (a -> Bool) -> List a -> Bool
 isExist test list =
     case List.head (List.filter test list) of
@@ -35,9 +40,14 @@ listWithout a list =
 
 isCellOpened : Coordinate -> Model -> Bool
 isCellOpened coord model =
-    isExist (\c -> c == coord) model.openedCellCoords
+    contains coord model.openedCellCoords
 
 
 isCellFlagged : Coordinate -> Model -> Bool
 isCellFlagged coord model =
-    isExist (\c -> c == coord) model.flaggedCellCoords
+    contains coord model.flaggedCellCoords
+
+
+isMine : Coordinate -> Model -> Bool
+isMine coord model =
+    contains coord model.mineCoords

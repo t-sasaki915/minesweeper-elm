@@ -1,5 +1,6 @@
 module GameLogic exposing (..)
 
+import MineGenerate exposing (..)
 import Types exposing (..)
 import Util exposing (listWith, listWithout)
 
@@ -34,7 +35,7 @@ handleCellClick coord model =
     else if not isOpened then
         if not isFlagged then
             ( { model | openedCellCoords = listWith coord model.openedCellCoords }
-            , Cmd.none
+            , generateCoord model
             )
 
         else
@@ -59,6 +60,10 @@ handleToggleFlagPlaceMode model =
 
 handleRestartGame : Model -> ( Model, Cmd Msg )
 handleRestartGame model =
-    ( { model | inFlagPlaceMode = False, openedCellCoords = [], flaggedCellCoords = [] }
+    let
+        newModel =
+            createEmptyModel model.navKey
+    in
+    ( { newModel | difficulty = model.difficulty, path = model.path, difficultyReceived = True, pathReceived = True }
     , Cmd.none
     )

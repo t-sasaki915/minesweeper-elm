@@ -7,6 +7,7 @@ import GameLogic exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import JSCommunication exposing (..)
+import MineGenerate exposing (..)
 import Task
 import Types exposing (..)
 import URLUpdate exposing (..)
@@ -61,6 +62,9 @@ update msg =
 
         RestartGame ->
             handleRestartGame
+
+        MineCoordGenerate coord ->
+            handleMineCoordGenerate coord
 
 
 subscriptions : Model -> Sub Msg
