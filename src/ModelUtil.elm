@@ -1,6 +1,13 @@
-module ModelUtil exposing (..)
+module ModelUtil exposing
+    ( emptyModel
+    , isCellFlagged
+    , isCellOpened
+    , isMine
+    , mineCountAt
+    )
 
 import Browser.Navigation as Nav
+import CoordinateUtil
 import ListUtil
 import Types exposing (Coordinate, Model)
 
@@ -36,3 +43,12 @@ isCellFlagged coord model =
 isMine : Coordinate -> Model -> Bool
 isMine coord model =
     ListUtil.contains coord model.mineCoords
+
+
+mineCountAt : Coordinate -> Model -> Int
+mineCountAt coord model =
+    ListUtil.numberOf True
+        (List.map
+            (\c -> isMine c model)
+            (CoordinateUtil.around3x3 coord)
+        )
