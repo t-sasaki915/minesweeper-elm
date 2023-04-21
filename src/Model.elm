@@ -1,15 +1,26 @@
-module ModelUtil exposing
-    ( emptyModel
-    , isCellFlagged
-    , isCellOpened
-    , isMine
-    , mineCountAt
-    )
+module Model exposing (..)
 
 import Browser.Navigation as Nav
-import CoordinateUtil
+import Coordinate exposing (Coordinate, around3x3)
+import Difficulty exposing (Difficulty)
 import ListUtil
-import Types exposing (Coordinate, Model)
+
+
+type alias Model =
+    { difficulty : Maybe Difficulty
+    , path : String
+    , isGameStarted : Bool
+    , isGameOver : Bool
+    , inFlagPlaceMode : Bool
+    , openedCellCoords : List Coordinate
+    , flaggedCellCoords : List Coordinate
+    , mineCoords : List Coordinate
+    , noMineCoords : List Coordinate
+    , causeCoord : Maybe Coordinate
+    , navKey : Nav.Key
+    , difficultyReceived : Bool
+    , pathReceived : Bool
+    }
 
 
 emptyModel : Nav.Key -> Model
@@ -50,5 +61,5 @@ mineCountAt coord model =
     ListUtil.numberOf True
         (List.map
             (\c -> isMine c model)
-            (CoordinateUtil.around3x3 coord)
+            (around3x3 coord)
         )

@@ -1,6 +1,8 @@
-module CoordinateUtil exposing (around3x3)
+module Coordinate exposing (Coordinate, around3x3)
 
-import Types exposing (Coordinate)
+
+type alias Coordinate =
+    { x : Int, y : Int }
 
 
 around3x3 : Coordinate -> List Coordinate
