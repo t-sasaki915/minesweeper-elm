@@ -1,4 +1,11 @@
-module Model exposing (..)
+module Model exposing
+    ( Model
+    , emptyModel
+    , isCellOpened
+    , isCellFlagged
+    , isMine
+    , mineCountAt
+    )
 
 import Browser.Navigation as Nav
 import Coordinate exposing (Coordinate, around3x3)
