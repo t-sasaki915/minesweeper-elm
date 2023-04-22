@@ -35,9 +35,6 @@ cell m x y =
         coord =
             Coordinate x y
 
-        inFlagPlaceMode =
-            m.inFlagPlaceMode
-
         isOpened =
             Model.isCellOpened coord m
 
