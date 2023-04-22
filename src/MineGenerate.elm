@@ -10,16 +10,7 @@ import Random
 
 handleMineCoordGenerate : Coordinate -> Model -> ( Model, Cmd Msg )
 handleMineCoordGenerate coord model =
-    let
-        diff =
-            case model.difficulty of
-                Just d ->
-                    d
-
-                Nothing ->
-                    defaultDifficulty
-    in
-    if List.length model.mineCoords >= diff.mineCount then
+    if List.length model.mineCoords >= model.difficulty.mineCount then
         ( { model | isGameStarted = True }, Cmd.none )
 
     else if ListUtil.contains coord model.mineCoords || ListUtil.contains coord model.noMineCoords then
@@ -34,18 +25,10 @@ handleMineCoordGenerate coord model =
 generateCoord : Model -> Cmd Msg
 generateCoord model =
     let
-        diff =
-            case model.difficulty of
-                Just d ->
-                    d
-
-                Nothing ->
-                    defaultDifficulty
-
         width =
-            diff.width
+            model.difficulty.width
 
         height =
-            diff.height
+            model.difficulty.height
     in
     Random.generate MineCoordGenerate (Random.map2 (\x -> \y -> Coordinate x y) (Random.int 0 (width - 1)) (Random.int 0 (height - 1)))

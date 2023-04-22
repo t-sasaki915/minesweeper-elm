@@ -15,14 +15,21 @@ handleReceiveDataFromJS data model =
     if String.startsWith "diff=" data then
         case String.dropLeft 5 data of
             "" ->
-                ( { model | difficulty = Just defaultDifficulty, difficultyReceived = True }
+                ( { model | difficulty = defaultDifficulty, difficultyReceived = True, unknownDifficulty = False }
                 , Cmd.none
                 )
 
             other ->
-                ( { model | difficulty = Difficulty.fromString other, difficultyReceived = True }
-                , Cmd.none
-                )
+                case Difficulty.fromString other of
+                    Just d ->
+                        ( { model | difficulty = d, difficultyReceived = True, unknownDifficulty = False }
+                        , Cmd.none
+                        )
+
+                    Nothing ->
+                        ( { model | difficultyReceived = True, unknownDifficulty = True }
+                        , Cmd.none
+                        )
 
     else if String.startsWith "path=" data then
         ( { model | path = String.dropLeft 5 data, pathReceived = True }

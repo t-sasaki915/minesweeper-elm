@@ -12,12 +12,12 @@ module Model exposing
 
 import Browser.Navigation as Nav
 import Coordinate exposing (Coordinate, around3x3)
-import Difficulty exposing (Difficulty)
+import Difficulty exposing (Difficulty, defaultDifficulty)
 import ListUtil
 
 
 type alias Model =
-    { difficulty : Maybe Difficulty
+    { difficulty : Difficulty
     , path : String
     , isGameStarted : Bool
     , isGameOver : Bool
@@ -30,12 +30,13 @@ type alias Model =
     , navKey : Nav.Key
     , difficultyReceived : Bool
     , pathReceived : Bool
+    , unknownDifficulty : Bool
     }
 
 
 emptyModel : Nav.Key -> Model
 emptyModel navKey =
-    { difficulty = Nothing
+    { difficulty = defaultDifficulty
     , path = ""
     , isGameStarted = False
     , isGameOver = False
@@ -48,6 +49,7 @@ emptyModel navKey =
     , navKey = navKey
     , difficultyReceived = False
     , pathReceived = False
+    , unknownDifficulty = False
     }
 
 

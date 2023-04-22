@@ -77,21 +77,20 @@ view : Model -> Browser.Document Msg
 view model =
     Browser.Document "Minesweeper"
         (if model.difficultyReceived && model.pathReceived then
-            case model.difficulty of
-                Just diff ->
-                    [ gameScreen model diff
-                    , br [] []
-                    , difficultySelector model
-                    , br [] []
-                    , aboutPage
-                    ]
+            if model.unknownDifficulty then
+                [ h1 [] [ text "Unknown Difficulty." ]
+                , difficultySelector model
+                , br [] []
+                , aboutPage
+                ]
 
-                Nothing ->
-                    [ h1 [] [ text "Unknown Difficulty." ]
-                    , difficultySelector model
-                    , br [] []
-                    , aboutPage
-                    ]
+            else
+                [ gameScreen model
+                , br [] []
+                , difficultySelector model
+                , br [] []
+                , aboutPage
+                ]
 
          else
             [ p [] [ text "Waiting for JavaScript..." ]

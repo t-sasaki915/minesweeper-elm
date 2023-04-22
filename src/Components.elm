@@ -108,14 +108,22 @@ cell m x y =
         children
 
 
-cellLine : Model -> Int -> Difficulty -> Html Msg
-cellLine m y diff =
+cellLine : Model -> Int -> Html Msg
+cellLine m y =
+    let
+        diff =
+            m.difficulty
+    in
     div [ class "cellLine" ] (List.map (\x -> cell m x y) (List.range 0 (diff.width - 1)))
 
 
-cellArray : Model -> Difficulty -> Html Msg
-cellArray m diff =
-    div [ class "cellArray" ] (List.map (\y -> cellLine m y diff) (List.range 0 (diff.height - 1)))
+cellArray : Model -> Html Msg
+cellArray m =
+    let
+        diff =
+            m.difficulty
+    in
+    div [ class "cellArray" ] (List.map (\y -> cellLine m y) (List.range 0 (diff.height - 1)))
 
 
 toggleFlagPlaceModeButton : Model -> Html Msg
@@ -140,12 +148,12 @@ restartButton =
         ]
 
 
-gameScreen : Model -> Difficulty -> Html Msg
-gameScreen m diff =
+gameScreen : Model -> Html Msg
+gameScreen model =
     div []
-        [ cellArray m diff
+        [ cellArray model
         , br [] []
-        , toggleFlagPlaceModeButton m
+        , toggleFlagPlaceModeButton model
         , br [] []
         , restartButton
         ]
