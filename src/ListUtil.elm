@@ -2,11 +2,11 @@ module ListUtil exposing
     ( contains
     , count
     , exists
+    , find
     , listWith
     , listWithout
     , nonEmpty
     , numberOf
-    , find
     )
 
 
