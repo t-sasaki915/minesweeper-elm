@@ -1,5 +1,6 @@
 module Components exposing (..)
 
+import Conditions exposing (..)
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, allDifficulties, defaultDifficulty)
 import Html exposing (..)
@@ -84,30 +85,20 @@ cell m x y =
                 "cell cellNotOpened"
 
         children =
-            if not isGameOver then
-                if isOpened then
-                    [ numberIcon mineCount ]
-
-                else if isFlagged then
-                    [ flagIcon ]
-
-                else if inFlagPlaceMode then
-                    [ fakeFlagIcon ]
-
-                else
-                    []
-
-            else if isFlagged && isMine then
+            if shouldRenderFlagIcon coord m then
                 [ flagIcon ]
 
-            else if not isFlagged && isMine then
-                [ mineIcon ]
+            else if shouldRenderFakeFlagIcon coord m then
+                [ fakeFlagIcon ]
 
-            else if isFlagged && not isMine then
+            else if shouldRenderWrongFlagIcon coord m then
                 [ wrongFlagIcon ]
 
-            else if isOpened then
+            else if shouldRenderNumberIcon coord m then
                 [ numberIcon mineCount ]
+
+            else if shouldRenderMineIcon coord m then
+                [ mineIcon ]
 
             else
                 []
