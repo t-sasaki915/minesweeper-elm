@@ -3,6 +3,7 @@ module ListUtil exposing
     , count
     , exists
     , find
+    , forAll
     , listWith
     , listWithout
     , nonEmpty
@@ -48,3 +49,11 @@ numberOf a list =
 find : (a -> Bool) -> List a -> Maybe a
 find func list =
     List.head (List.filter func list)
+
+
+forAll : (a -> Bool) -> List a -> Bool
+forAll func list =
+    numberOf False (List.map func list) == 0
+forAll : List Bool -> Bool
+forAll boolList =
+    forAll (\x -> x) boolList
