@@ -5,6 +5,9 @@ module Model exposing
     , isCellOpened
     , isMine
     , mineCountAt
+    , notCellFlagged
+    , notCellOpened
+    , notMine
     )
 
 import Browser.Navigation as Nav
@@ -53,14 +56,29 @@ isCellOpened coord model =
     ListUtil.contains coord model.openedCellCoords
 
 
+notCellOpened : Coordinate -> Model -> Bool
+notCellOpened coord =
+    isCellOpened coord >> not
+
+
 isCellFlagged : Coordinate -> Model -> Bool
 isCellFlagged coord model =
     ListUtil.contains coord model.flaggedCellCoords
 
 
+notCellFlagged : Coordinate -> Model -> Bool
+notCellFlagged coord =
+    isCellFlagged coord >> not
+
+
 isMine : Coordinate -> Model -> Bool
 isMine coord model =
     ListUtil.contains coord model.mineCoords
+
+
+notMine : Coordinate -> Model -> Bool
+notMine coord =
+    isMine coord >> not
 
 
 mineCountAt : Coordinate -> Model -> Int
