@@ -54,6 +54,3 @@ find func list =
 forAll : (a -> Bool) -> List a -> Bool
 forAll func list =
     numberOf False (List.map func list) == 0
-forAll : List Bool -> Bool
-forAll boolList =
-    forAll (\x -> x) boolList
