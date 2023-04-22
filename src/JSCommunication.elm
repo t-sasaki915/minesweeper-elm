@@ -1,7 +1,8 @@
 module JSCommunication exposing (..)
 
 import Difficulty exposing (defaultDifficulty)
-import Types exposing (..)
+import Message exposing (Msg)
+import Model exposing (Model)
 
 
 handleRequestDataToJS : (String -> Cmd msg) -> Model -> ( Model, Cmd msg )

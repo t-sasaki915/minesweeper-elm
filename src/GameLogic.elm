@@ -1,7 +1,9 @@
 module GameLogic exposing (..)
 
+import Coordinate exposing (Coordinate)
+import Message exposing (Msg)
 import MineGenerate exposing (..)
-import Types exposing (..)
+import Model exposing (Model, emptyModel)
 import Util exposing (listWith, listWithout)
 
 
@@ -101,7 +103,7 @@ initGameState : Model -> Model
 initGameState model =
     let
         newState =
-            createEmptyModel model.navKey
+            emptyModel model.navKey
     in
     { newState
         | difficulty = model.difficulty

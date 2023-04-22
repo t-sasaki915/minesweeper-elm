@@ -1,8 +1,8 @@
 module Model exposing
     ( Model
     , emptyModel
-    , isCellOpened
     , isCellFlagged
+    , isCellOpened
     , isMine
     , mineCountAt
     )

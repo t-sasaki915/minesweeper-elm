@@ -1,7 +1,8 @@
 module Util exposing (..)
 
+import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, defaultDifficulty)
-import Types exposing (..)
+import Model exposing (Model)
 
 
 difficultyLinkURL : Model -> Difficulty -> String

@@ -1,8 +1,10 @@
 module MineGenerate exposing (..)
 
+import Coordinate exposing (Coordinate)
 import Difficulty exposing (defaultDifficulty)
+import Message exposing (Msg(..))
+import Model exposing (Model)
 import Random
-import Types exposing (..)
 import Util
 
 

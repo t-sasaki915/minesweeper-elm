@@ -1,11 +1,13 @@
 module Components exposing (..)
 
+import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, allDifficulties)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Images exposing (..)
-import Types exposing (..)
+import Message exposing (Msg(..))
+import Model exposing (Model)
 import Util exposing (difficultyLinkURL)
 
 
