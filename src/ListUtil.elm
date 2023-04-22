@@ -6,6 +6,7 @@ module ListUtil exposing
     , listWithout
     , nonEmpty
     , numberOf
+    , find
     )
 
 
@@ -42,3 +43,8 @@ count func list =
 numberOf : a -> List a -> Int
 numberOf a list =
     count (\x -> x == a) list
+
+
+find : (a -> Bool) -> List a -> Maybe a
+find func list =
+    List.head (List.filter func list)

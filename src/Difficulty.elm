@@ -9,6 +9,8 @@ module Difficulty exposing
     , normal
     )
 
+import ListUtil
+
 
 type alias Difficulty =
     { name : String
@@ -55,4 +57,4 @@ allDifficulties =
 
 fromString : String -> Maybe Difficulty
 fromString str =
-    List.head (List.filter (\x -> x.name == str) allDifficulties)
+    ListUtil.find (\x -> x.name == str) allDifficulties
