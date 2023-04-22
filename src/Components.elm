@@ -1,19 +1,26 @@
 module Components exposing (..)
 
 import Coordinate exposing (Coordinate)
-import Difficulty exposing (Difficulty, allDifficulties)
+import Difficulty exposing (Difficulty, allDifficulties, defaultDifficulty)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Images exposing (..)
 import Message exposing (Msg(..))
-import Model exposing (Model)
-import Util exposing (difficultyLinkURL)
+import Model exposing (..)
 
 
 difficultyLink : Model -> Difficulty -> Html a
 difficultyLink m diff =
-    a [ href (difficultyLinkURL m diff) ] [ text diff.displayName, br [] [] ]
+    let
+        linkURL =
+            if diff == defaultDifficulty then
+                m.path
+
+            else
+                m.path ++ "?d=" ++ diff.name
+    in
+    a [ href linkURL ] [ text diff.displayName, br [] [] ]
 
 
 difficultySelector : Model -> Html a
@@ -31,13 +38,13 @@ cell m x y =
             m.inFlagPlaceMode
 
         isOpened =
-            Util.isCellOpened coord m
+            Model.isCellOpened coord m
 
         isFlagged =
-            Util.isCellFlagged coord m
+            Model.isCellFlagged coord m
 
         isMine =
-            Util.isMine coord m
+            Model.isMine coord m
 
         isCause =
             case m.causeCoord of
@@ -51,7 +58,7 @@ cell m x y =
             m.isGameOver
 
         mineCount =
-            Util.getMineCount coord m
+            Model.mineCountAt coord m
 
         className =
             if not isGameOver then

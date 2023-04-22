@@ -1,10 +1,10 @@
 module GameLogic exposing (..)
 
-import Coordinate exposing (Coordinate)
+import Coordinate exposing (Coordinate, around3x3)
+import ListUtil exposing (listWith, listWithout)
 import Message exposing (Msg)
 import MineGenerate exposing (..)
-import Model exposing (Model, emptyModel)
-import Util exposing (listWith, listWithout)
+import Model exposing (..)
 
 
 handleCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
@@ -20,10 +20,10 @@ handleCellClick coord model =
             model.isGameOver
 
         isOpened =
-            Util.isCellOpened coord model
+            Model.isCellOpened coord model
 
         isFlagged =
-            Util.isCellFlagged coord model
+            Model.isCellFlagged coord model
     in
     if not isGameOver then
         if inFlagPlaceMode then
@@ -49,7 +49,7 @@ handleCellClick coord model =
                 else
                     let
                         newModel =
-                            { model | noMineCoords = listWith coord (Util.getAround3x3 coord) }
+                            { model | noMineCoords = listWith coord (around3x3 coord) }
                     in
                     ( openCell coord newModel
                     , generateCoord newModel
@@ -115,7 +115,7 @@ initGameState model =
 
 openCell : Coordinate -> Model -> Model
 openCell coord model =
-    if Util.isMine coord model then
+    if Model.isMine coord model then
         gameOver coord model
 
     else

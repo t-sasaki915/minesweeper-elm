@@ -2,10 +2,10 @@ module MineGenerate exposing (..)
 
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (defaultDifficulty)
+import ListUtil
 import Message exposing (Msg(..))
 import Model exposing (Model)
 import Random
-import Util
 
 
 handleMineCoordGenerate : Coordinate -> Model -> ( Model, Cmd Msg )
@@ -22,11 +22,11 @@ handleMineCoordGenerate coord model =
     if List.length model.mineCoords >= diff.mineCount then
         ( { model | isGameStarted = True }, Cmd.none )
 
-    else if Util.contains coord model.mineCoords || Util.contains coord model.noMineCoords then
+    else if ListUtil.contains coord model.mineCoords || ListUtil.contains coord model.noMineCoords then
         ( model, generateCoord model )
 
     else
-        ( { model | mineCoords = Util.listWith coord model.mineCoords }
+        ( { model | mineCoords = ListUtil.listWith coord model.mineCoords }
         , generateCoord model
         )
 
