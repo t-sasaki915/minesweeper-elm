@@ -1,4 +1,13 @@
-module Difficulty exposing (..)
+module Difficulty exposing
+    ( Difficulty
+    , allDifficulties
+    , defaultDifficulty
+    , easy
+    , fromString
+    , hard
+    , impossible
+    , normal
+    )
 
 
 type alias Difficulty =
