@@ -1,7 +1,13 @@
-module Images exposing (..)
+module Images exposing
+    ( fakeFlagIcon
+    , flagIcon
+    , mineIcon
+    , numberIcon
+    , wrongFlagIcon
+    )
 
 import Html exposing (Html)
-import Svg exposing (..)
+import Svg exposing (circle, polygon, rect, svg)
 import Svg.Attributes exposing (..)
 
 
