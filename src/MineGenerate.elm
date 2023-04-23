@@ -1,7 +1,6 @@
 module MineGenerate exposing (..)
 
 import Coordinate exposing (Coordinate)
-import Difficulty exposing (defaultDifficulty)
 import ListUtil
 import Message exposing (Msg(..))
 import Model exposing (Model)
