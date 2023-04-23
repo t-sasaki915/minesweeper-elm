@@ -3,6 +3,7 @@ port module Main exposing (main)
 import Browser
 import Browser.Navigation as Nav
 import Components exposing (..)
+import Conditions exposing (..)
 import GameLogic exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -75,16 +76,9 @@ subscriptions _ =
 
 view : Model -> Browser.Document Msg
 view model =
-    Browser.Document "Minesweeper"
-        (if model.difficultyReceived && model.pathReceived then
-            if model.unknownDifficulty then
-                [ h1 [] [ text "Unknown Difficulty." ]
-                , difficultySelector model
-                , br [] []
-                , aboutPage
-                ]
-
-            else
+    let
+        content =
+            if shouldRenderGameScreen model then
                 [ gameScreen model
                 , br [] []
                 , difficultySelector model
@@ -92,7 +86,18 @@ view model =
                 , aboutPage
                 ]
 
-         else
-            [ p [] [ text "Waiting for JavaScript..." ]
-            ]
-        )
+            else if shouldRenderUnknownDifficultyScreen model then
+                [ h1 [] [ text "Unknown Difficulty." ]
+                , difficultySelector model
+                , br [] []
+                , aboutPage
+                ]
+
+            else if shouldRenderWaitingForJSScreen model then
+                [ p [] [ text "Waiting for JavaScript..." ]
+                ]
+
+            else
+                []
+    in
+    Browser.Document "Minesweeper" content

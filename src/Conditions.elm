@@ -1,8 +1,11 @@
 module Conditions exposing
     ( shouldRenderFakeFlagIcon
     , shouldRenderFlagIcon
+    , shouldRenderGameScreen
     , shouldRenderMineIcon
     , shouldRenderNumberIcon
+    , shouldRenderUnknownDifficultyScreen
+    , shouldRenderWaitingForJSScreen
     , shouldRenderWrongFlagIcon
     )
 
@@ -14,6 +17,29 @@ import Model exposing (..)
 fAll : List Bool -> Bool
 fAll boolList =
     ListUtil.forAll (\x -> x) boolList
+
+
+shouldRenderGameScreen : Model -> Bool
+shouldRenderGameScreen model =
+    fAll
+        [ model.difficultyReceived
+        , model.pathReceived
+        , not model.unknownDifficulty
+        ]
+
+
+shouldRenderUnknownDifficultyScreen : Model -> Bool
+shouldRenderUnknownDifficultyScreen model =
+    fAll
+        [ model.difficultyReceived
+        , model.pathReceived
+        , model.unknownDifficulty
+        ]
+
+
+shouldRenderWaitingForJSScreen : Model -> Bool
+shouldRenderWaitingForJSScreen model =
+    not model.difficultyReceived || not model.pathReceived
 
 
 shouldRenderFlagIcon : Coordinate -> Model -> Bool
