@@ -1,10 +1,12 @@
 module Model exposing
     ( Model
     , emptyModel
+    , isCause
     , isCellFlagged
     , isCellOpened
     , isMine
     , mineCountAt
+    , notCause
     , notCellFlagged
     , notCellOpened
     , notMine
@@ -81,6 +83,21 @@ isMine coord model =
 notMine : Coordinate -> Model -> Bool
 notMine coord =
     isMine coord >> not
+
+
+isCause : Coordinate -> Model -> Bool
+isCause coord model =
+    case model.causeCoord of
+        Just c ->
+            c == coord
+
+        Nothing ->
+            False
+
+
+notCause : Coordinate -> Model -> Bool
+notCause coord =
+    isCause coord >> not
 
 
 mineCountAt : Coordinate -> Model -> Int

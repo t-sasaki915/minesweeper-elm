@@ -1,5 +1,8 @@
 module UIConditions exposing
-    ( shouldRenderFakeFlagIcon
+    ( shouldClassNameBeCellCause
+    , shouldClassNameBeCellNotOpened
+    , shouldClassNameBeCellOpened
+    , shouldRenderFakeFlagIcon
     , shouldRenderFlagIcon
     , shouldRenderGameScreen
     , shouldRenderMineIcon
@@ -102,6 +105,55 @@ shouldRenderMineIcon coord model =
             [ notCellFlagged coord model
             , isMine coord model
             ]
+
+    else
+        False
+
+
+shouldClassNameBeCellOpened : Coordinate -> Model -> Bool
+shouldClassNameBeCellOpened coord model =
+    if model.isGameOver then
+        ListUtil.contains True
+            [ fAll
+                [ isCellOpened coord model
+                , notCause coord model
+                ]
+            , fAll
+                [ notCellOpened coord model
+                , notCause coord model
+                , notCellFlagged coord model
+                , isMine coord model
+                ]
+            ]
+
+    else
+        isCellOpened coord model
+
+
+shouldClassNameBeCellNotOpened : Coordinate -> Model -> Bool
+shouldClassNameBeCellNotOpened coord model =
+    if model.isGameOver then
+        ListUtil.contains True
+            [ fAll
+                [ notCellOpened coord model
+                , notCause coord model
+                , notMine coord model
+                ]
+            , fAll
+                [ notCellOpened coord model
+                , notCause coord model
+                , isCellFlagged coord model
+                ]
+            ]
+
+    else
+        notCellOpened coord model
+
+
+shouldClassNameBeCellCause : Coordinate -> Model -> Bool
+shouldClassNameBeCellCause coord model =
+    if model.isGameOver then
+        isCause coord model
 
     else
         False

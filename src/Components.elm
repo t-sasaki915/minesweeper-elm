@@ -39,51 +39,18 @@ difficultySelector model =
 cell : Model -> Coordinate -> Html Msg
 cell model coord =
     let
-        isOpened =
-            Model.isCellOpened coord model
-
-        isFlagged =
-            Model.isCellFlagged coord model
-
-        isMine =
-            Model.isMine coord model
-
-        isCause =
-            case model.causeCoord of
-                Just c ->
-                    coord == c
-
-                Nothing ->
-                    False
-
-        isGameOver =
-            model.isGameOver
-
-        mineCount =
-            Model.mineCountAt coord model
-
         className =
-            if not isGameOver then
-                if isOpened then
-                    "cell cellOpened"
+            if shouldClassNameBeCellOpened coord model then
+                "cell cellOpened"
 
-                else
-                    "cell cellNotOpened"
+            else if shouldClassNameBeCellNotOpened coord model then
+                "cell cellNotOpened"
 
-            else if isCause then
+            else if shouldClassNameBeCellCause coord model then
                 "cell cellCause"
 
-            else if isFlagged && isMine then
-                "cell cellNotOpened"
-
-            else if not isFlagged && isMine then
-                "cell cellOpened"
-
-            else if isOpened then
-                "cell cellOpened"
-
             else
-                "cell cellNotOpened"
+                "cell"
 
         children =
             if shouldRenderFlagIcon coord model then
@@ -96,7 +63,7 @@ cell model coord =
                 [ wrongFlagIcon ]
 
             else if shouldRenderNumberIcon coord model then
-                [ numberIcon mineCount ]
+                [ numberIcon (Model.mineCountAt coord model) ]
 
             else if shouldRenderMineIcon coord model then
                 [ mineIcon ]
