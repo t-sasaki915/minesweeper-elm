@@ -1,6 +1,9 @@
-module JSCommunication exposing (..)
+module JSCommunication exposing
+    ( handleReceiveDataFromJS
+    , handleRequestDataToJS
+    )
 
-import Difficulty exposing (defaultDifficulty)
+import Difficulty
 import Message exposing (Msg)
 import Model exposing (Model)
 import StringUtil
