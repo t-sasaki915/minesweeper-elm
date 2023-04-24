@@ -1,4 +1,7 @@
-module URLUpdate exposing (..)
+module URLUpdate exposing
+    ( handleURLChange
+    , handleURLRequest
+    )
 
 import Browser
 import Browser.Navigation as Nav
@@ -10,14 +13,20 @@ import Util exposing (intoCmd)
 
 handleURLChange : Url -> Model -> ( Model, Cmd Msg )
 handleURLChange _ model =
-    ( emptyModel model.navKey, intoCmd RequestDataToJS )
+    ( emptyModel model.navKey
+    , intoCmd RequestDataToJS
+    )
 
 
 handleURLRequest : Browser.UrlRequest -> Model -> ( Model, Cmd Msg )
 handleURLRequest req model =
     case req of
         Browser.Internal url ->
-            ( model, Nav.pushUrl model.navKey <| Url.toString url )
+            ( model
+            , Nav.pushUrl model.navKey <| Url.toString url
+            )
 
         Browser.External url ->
-            ( model, Nav.load url )
+            ( model
+            , Nav.load url
+            )
