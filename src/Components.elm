@@ -12,40 +12,43 @@ import UIConditions exposing (..)
 
 
 difficultyLink : Model -> Difficulty -> Html a
-difficultyLink m diff =
+difficultyLink model diff =
     let
         linkURL =
             if diff == defaultDifficulty then
-                m.path
+                model.path
 
             else
-                m.path ++ "?d=" ++ diff.name
+                model.path ++ "?d=" ++ diff.name
     in
     a [ href linkURL ] [ text diff.displayName, br [] [] ]
 
 
 difficultySelector : Model -> Html a
-difficultySelector m =
-    div [] ([ span [] [ text "Difficulties:" ], br [] [] ] ++ List.map (difficultyLink m) allDifficulties)
+difficultySelector model =
+    div []
+        ([ span [] [ text "Difficulties:" ], br [] [] ]
+            ++ List.map (difficultyLink model) allDifficulties
+        )
 
 
 cell : Model -> Int -> Int -> Html Msg
-cell m x y =
+cell model x y =
     let
         coord =
             Coordinate x y
 
         isOpened =
-            Model.isCellOpened coord m
+            Model.isCellOpened coord model
 
         isFlagged =
-            Model.isCellFlagged coord m
+            Model.isCellFlagged coord model
 
         isMine =
-            Model.isMine coord m
+            Model.isMine coord model
 
         isCause =
-            case m.causeCoord of
+            case model.causeCoord of
                 Just c ->
                     coord == c
 
@@ -53,10 +56,10 @@ cell m x y =
                     False
 
         isGameOver =
-            m.isGameOver
+            model.isGameOver
 
         mineCount =
-            Model.mineCountAt coord m
+            Model.mineCountAt coord model
 
         className =
             if not isGameOver then
@@ -82,55 +85,44 @@ cell m x y =
                 "cell cellNotOpened"
 
         children =
-            if shouldRenderFlagIcon coord m then
+            if shouldRenderFlagIcon coord model then
                 [ flagIcon ]
 
-            else if shouldRenderFakeFlagIcon coord m then
+            else if shouldRenderFakeFlagIcon coord model then
                 [ fakeFlagIcon ]
 
-            else if shouldRenderWrongFlagIcon coord m then
+            else if shouldRenderWrongFlagIcon coord model then
                 [ wrongFlagIcon ]
 
-            else if shouldRenderNumberIcon coord m then
+            else if shouldRenderNumberIcon coord model then
                 [ numberIcon mineCount ]
 
-            else if shouldRenderMineIcon coord m then
+            else if shouldRenderMineIcon coord model then
                 [ mineIcon ]
 
             else
                 []
     in
-    div
-        [ class className
-        , id ("cell_" ++ String.fromInt x ++ "_" ++ String.fromInt y)
-        , onClick (CellClick coord)
-        ]
-        children
+    div [ class className, onClick (CellClick coord) ] children
 
 
 cellLine : Model -> Int -> Html Msg
-cellLine m y =
-    let
-        diff =
-            m.difficulty
-    in
-    div [ class "cellLine" ] (List.map (\x -> cell m x y) (List.range 0 (diff.width - 1)))
+cellLine model y =
+    div [ class "cellLine" ]
+        (List.map (\x -> cell model x y) (List.range 0 (model.difficulty.width - 1)))
 
 
 cellArray : Model -> Html Msg
-cellArray m =
-    let
-        diff =
-            m.difficulty
-    in
-    div [ class "cellArray" ] (List.map (\y -> cellLine m y) (List.range 0 (diff.height - 1)))
+cellArray model =
+    div [ class "cellArray" ]
+        (List.map (\y -> cellLine model y) (List.range 0 (model.difficulty.height - 1)))
 
 
 toggleFlagPlaceModeButton : Model -> Html Msg
-toggleFlagPlaceModeButton m =
+toggleFlagPlaceModeButton model =
     let
         buttonText =
-            if m.inFlagPlaceMode then
+            if model.inFlagPlaceMode then
                 "Exit Flag Place Mode"
 
             else
