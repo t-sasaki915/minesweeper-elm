@@ -36,12 +36,9 @@ difficultySelector model =
         )
 
 
-cell : Model -> Int -> Int -> Html Msg
-cell model x y =
+cell : Model -> Coordinate -> Html Msg
+cell model coord =
     let
-        coord =
-            Coordinate x y
-
         isOpened =
             Model.isCellOpened coord model
 
@@ -113,7 +110,7 @@ cell model x y =
 cellLine : Model -> Int -> Html Msg
 cellLine model y =
     div [ class "cellLine" ]
-        (List.map (\x -> cell model x y) (List.range 0 (model.difficulty.width - 1)))
+        (List.map (\x -> cell model (Coordinate x y)) (List.range 0 (model.difficulty.width - 1)))
 
 
 cellArray : Model -> Html Msg
