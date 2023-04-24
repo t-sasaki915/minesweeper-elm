@@ -1,13 +1,17 @@
-module Components exposing (..)
+module Components exposing
+    ( aboutPage
+    , difficultySelector
+    , gameScreen
+    )
 
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, allDifficulties, defaultDifficulty)
-import Html exposing (..)
+import Html exposing (Html, a, br, div, span, text)
 import Html.Attributes exposing (..)
-import Html.Events exposing (..)
+import Html.Events exposing (onClick)
 import Images exposing (..)
 import Message exposing (Msg(..))
-import Model exposing (..)
+import Model exposing (Model)
 import UIConditions exposing (..)
 
 

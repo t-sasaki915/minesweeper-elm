@@ -4,7 +4,7 @@ import Browser
 import Browser.Navigation as Nav
 import Components exposing (..)
 import GameLogic exposing (..)
-import Html exposing (br, h1, text, p)
+import Html exposing (br, h1, p, text)
 import Html.Attributes exposing (..)
 import JSCommunication exposing (..)
 import Message exposing (Msg(..))
