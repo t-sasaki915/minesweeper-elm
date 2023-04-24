@@ -57,4 +57,9 @@ allDifficulties =
 
 fromString : String -> Maybe Difficulty
 fromString str =
-    ListUtil.find (\x -> x.name == str) allDifficulties
+    case str of
+        "" ->
+            Just defaultDifficulty
+
+        other ->
+            ListUtil.find (\x -> x.name == other) allDifficulties

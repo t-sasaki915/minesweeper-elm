@@ -3,6 +3,7 @@ module JSCommunication exposing (..)
 import Difficulty exposing (defaultDifficulty)
 import Message exposing (Msg)
 import Model exposing (Model)
+import StringUtil
 
 
 handleRequestDataToJS : (String -> Cmd msg) -> Model -> ( Model, Cmd msg )
@@ -12,29 +13,40 @@ handleRequestDataToJS sender model =
 
 handleReceiveDataFromJS : String -> Model -> ( Model, Cmd Msg )
 handleReceiveDataFromJS data model =
-    if String.startsWith "diff=" data then
-        case String.dropLeft 5 data of
-            "" ->
-                ( { model | difficulty = defaultDifficulty, difficultyReceived = True, unknownDifficulty = False }
-                , Cmd.none
-                )
+    let
+        key =
+            StringUtil.takeBefore "=" data
 
-            other ->
-                case Difficulty.fromString other of
-                    Just d ->
-                        ( { model | difficulty = d, difficultyReceived = True, unknownDifficulty = False }
-                        , Cmd.none
-                        )
+        value =
+            StringUtil.takeAfter "=" data
+    in
+    case key of
+        "diff" ->
+            case Difficulty.fromString value of
+                Just d ->
+                    ( { model
+                        | difficulty = d
+                        , difficultyReceived = True
+                        , unknownDifficulty = False
+                      }
+                    , Cmd.none
+                    )
 
-                    Nothing ->
-                        ( { model | difficultyReceived = True, unknownDifficulty = True }
-                        , Cmd.none
-                        )
+                Nothing ->
+                    ( { model
+                        | difficultyReceived = True
+                        , unknownDifficulty = True
+                      }
+                    , Cmd.none
+                    )
 
-    else if String.startsWith "path=" data then
-        ( { model | path = String.dropLeft 5 data, pathReceived = True }
-        , Cmd.none
-        )
+        "path" ->
+            ( { model
+                | path = value
+                , pathReceived = True
+              }
+            , Cmd.none
+            )
 
-    else
-        ( model, Cmd.none )
+        _ ->
+            ( model, Cmd.none )
