@@ -52,7 +52,7 @@ handleCellClick coord model =
                             { model | noMineCoords = listWith coord (around3x3 coord) }
                     in
                     ( openCell coord newModel
-                    , generateCoord newModel
+                    , generateMineCoord newModel
                     )
 
             else

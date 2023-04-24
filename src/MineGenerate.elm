@@ -1,4 +1,7 @@
-module MineGenerate exposing (..)
+module MineGenerate exposing
+    ( generateMineCoord
+    , handleMineCoordGenerate
+    )
 
 import Coordinate exposing (Coordinate)
 import ListUtil
@@ -7,22 +10,39 @@ import Model exposing (Model)
 import Random
 
 
+isMineGeneratedEnough : Model -> Bool
+isMineGeneratedEnough model =
+    List.length model.mineCoords >= model.difficulty.mineCount
+
+
+canPlaceMine : Coordinate -> Model -> Bool
+canPlaceMine coord model =
+    ListUtil.forAll (\x -> x)
+        [ not (ListUtil.contains coord model.mineCoords)
+        , not (ListUtil.contains coord model.noMineCoords)
+        ]
+
+
 handleMineCoordGenerate : Coordinate -> Model -> ( Model, Cmd Msg )
 handleMineCoordGenerate coord model =
-    if List.length model.mineCoords >= model.difficulty.mineCount then
-        ( { model | isGameStarted = True }, Cmd.none )
+    if isMineGeneratedEnough model then
+        ( { model | isGameStarted = True }
+        , Cmd.none
+        )
 
-    else if ListUtil.contains coord model.mineCoords || ListUtil.contains coord model.noMineCoords then
-        ( model, generateCoord model )
+    else if canPlaceMine coord model then
+        ( { model | mineCoords = ListUtil.listWith coord model.mineCoords }
+        , generateMineCoord model
+        )
 
     else
-        ( { model | mineCoords = ListUtil.listWith coord model.mineCoords }
-        , generateCoord model
+        ( model
+        , generateMineCoord model
         )
 
 
-generateCoord : Model -> Cmd Msg
-generateCoord model =
+generateMineCoord : Model -> Cmd Msg
+generateMineCoord model =
     let
         width =
             model.difficulty.width
@@ -30,4 +50,9 @@ generateCoord model =
         height =
             model.difficulty.height
     in
-    Random.generate MineCoordGenerate (Random.map2 (\x -> \y -> Coordinate x y) (Random.int 0 (width - 1)) (Random.int 0 (height - 1)))
+    Random.generate
+        MineCoordGenerate
+        (Random.map2 (\x -> \y -> Coordinate x y)
+            (Random.int 0 (width - 1))
+            (Random.int 0 (height - 1))
+        )
