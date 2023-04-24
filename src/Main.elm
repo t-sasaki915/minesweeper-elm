@@ -4,11 +4,11 @@ import Browser
 import Browser.Navigation as Nav
 import Components exposing (..)
 import GameLogic exposing (..)
-import Html exposing (..)
+import Html exposing (br, h1, text, p)
 import Html.Attributes exposing (..)
 import JSCommunication exposing (..)
 import Message exposing (Msg(..))
-import MineGenerate exposing (..)
+import MineGenerate exposing (handleMineCoordGenerate)
 import Model exposing (Model, emptyModel)
 import UIConditions exposing (..)
 import URLUpdate exposing (..)
