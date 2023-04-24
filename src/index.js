@@ -2,9 +2,7 @@ require("./index.css");
 
 const { Elm } = require("./Main.elm");
 
-const app = Elm.Main.init({
-    node: document.getElementById("elmContainer")
-});
+const app = Elm.Main.init();
 
 const DIFFICULTY_PARAM_NAME = "d";
 
