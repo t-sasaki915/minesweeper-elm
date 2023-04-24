@@ -1,4 +1,4 @@
-module Conditions exposing
+module UIConditions exposing
     ( shouldRenderFakeFlagIcon
     , shouldRenderFlagIcon
     , shouldRenderGameScreen

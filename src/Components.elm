@@ -1,6 +1,5 @@
 module Components exposing (..)
 
-import Conditions exposing (..)
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, allDifficulties, defaultDifficulty)
 import Html exposing (..)
@@ -9,6 +8,7 @@ import Html.Events exposing (..)
 import Images exposing (..)
 import Message exposing (Msg(..))
 import Model exposing (..)
+import UIConditions exposing (..)
 
 
 difficultyLink : Model -> Difficulty -> Html a
