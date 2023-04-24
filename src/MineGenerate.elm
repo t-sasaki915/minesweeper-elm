@@ -10,8 +10,8 @@ import Model exposing (Model)
 import Random
 
 
-isMineGeneratedEnough : Model -> Bool
-isMineGeneratedEnough model =
+areMinesGeneratedEnough : Model -> Bool
+areMinesGeneratedEnough model =
     List.length model.mineCoords >= model.difficulty.mineCount
 
 
@@ -25,7 +25,7 @@ canPlaceMine coord model =
 
 handleMineCoordGenerate : Coordinate -> Model -> ( Model, Cmd Msg )
 handleMineCoordGenerate coord model =
-    if isMineGeneratedEnough model then
+    if areMinesGeneratedEnough model then
         ( { model | isGameStarted = True }
         , Cmd.none
         )
