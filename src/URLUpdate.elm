@@ -4,13 +4,13 @@ import Browser
 import Browser.Navigation as Nav
 import Message exposing (Msg(..))
 import Model exposing (Model, emptyModel)
-import Task
 import Url exposing (Url)
+import Util exposing (intoCmd)
 
 
 handleURLChange : Url -> Model -> ( Model, Cmd Msg )
 handleURLChange _ model =
-    ( emptyModel model.navKey, Task.perform (always RequestDataToJS) (Task.succeed ()) )
+    ( emptyModel model.navKey, intoCmd RequestDataToJS )
 
 
 handleURLRequest : Browser.UrlRequest -> Model -> ( Model, Cmd Msg )

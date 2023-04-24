@@ -11,9 +11,9 @@ import JSCommunication exposing (..)
 import Message exposing (Msg(..))
 import MineGenerate exposing (..)
 import Model exposing (Model, emptyModel)
-import Task
 import URLUpdate exposing (..)
 import Url exposing (Url)
+import Util exposing (intoCmd)
 
 
 port sendData : String -> Cmd msg
@@ -37,7 +37,7 @@ main =
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ _ navKey =
     ( emptyModel navKey
-    , Task.perform (always RequestDataToJS) (Task.succeed ())
+    , intoCmd RequestDataToJS
     )
 
 
