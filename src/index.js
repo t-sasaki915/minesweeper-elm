@@ -21,6 +21,6 @@ app.ports.sendData.subscribe((data) => {
 
             break;
         default:
-            console.warn(`Unexpected message: ${data}`)
+            console.warn(`Unexpected message: ${data}`);
     }
 });
