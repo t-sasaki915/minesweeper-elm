@@ -21,6 +21,7 @@ canPlaceMine coord model =
     ListUtil.forAll (\x -> x)
         [ not (ListUtil.contains coord model.mineCoords)
         , not (ListUtil.contains coord model.noMineCoords)
+        , not (coord == model.startCoord)
         ]
 
 
