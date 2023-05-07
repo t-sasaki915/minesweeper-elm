@@ -83,6 +83,6 @@ handleCellOpen coord model =
         )
 
     else
-        ( { model | openedCellCoords = ListUtil.listWith coord model.openedCellCoords }
+        ( { model | openedCoords = ListUtil.listWith coord model.openedCoords }
         , Cmd.none
         )

@@ -24,7 +24,7 @@ type alias Model =
     , isGameStarted : Bool
     , isGameOver : Bool
     , inFlagPlaceMode : Bool
-    , openedCellCoords : List Coordinate
+    , openedCoords : List Coordinate
     , flaggedCellCoords : List Coordinate
     , mineCoords : List Coordinate
     , noMineCoords : List Coordinate
@@ -44,7 +44,7 @@ emptyModel navKey =
     , isGameStarted = False
     , isGameOver = False
     , inFlagPlaceMode = False
-    , openedCellCoords = []
+    , openedCoords = []
     , flaggedCellCoords = []
     , mineCoords = []
     , noMineCoords = []
@@ -59,7 +59,7 @@ emptyModel navKey =
 
 isCellOpened : Coordinate -> Model -> Bool
 isCellOpened coord model =
-    ListUtil.contains coord model.openedCellCoords
+    ListUtil.contains coord model.openedCoords
 
 
 notCellOpened : Coordinate -> Model -> Bool
