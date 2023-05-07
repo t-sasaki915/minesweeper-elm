@@ -1,141 +1,88 @@
-module GameLogic exposing (..)
+module GameLogic exposing
+    ( handleCellClick
+    , handleCellOpen
+    , handleRestartGame
+    , handleToggleFlag
+    , handleToggleFlagPlaceMode
+    )
 
 import Coordinate exposing (Coordinate, around3x3)
-import ListUtil exposing (listWith, listWithout)
-import Message exposing (Msg)
-import MineGenerate exposing (..)
-import Model exposing (..)
-
-
-handleCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
-handleCellClick coord model =
-    let
-        inFlagPlaceMode =
-            model.inFlagPlaceMode
-
-        isGameStarted =
-            model.isGameStarted
-
-        isGameOver =
-            model.isGameOver
-
-        isOpened =
-            Model.isCellOpened coord model
-
-        isFlagged =
-            Model.isCellFlagged coord model
-    in
-    if not isGameOver then
-        if inFlagPlaceMode then
-            if not isOpened then
-                if isFlagged then
-                    ( removeFlag coord model
-                    , Cmd.none
-                    )
-
-                else
-                    ( placeFlag coord model
-                    , Cmd.none
-                    )
-
-            else
-                ( model, Cmd.none )
-
-        else if not isOpened then
-            if not isFlagged then
-                if isGameStarted then
-                    ( openCell coord model, Cmd.none )
-
-                else
-                    let
-                        newModel =
-                            { model | noMineCoords = listWith coord (around3x3 coord) }
-                    in
-                    ( openCell coord newModel
-                    , generateMineCoord newModel
-                    )
-
-            else
-                ( model, Cmd.none )
-
-        else
-            ( model, Cmd.none )
-
-    else
-        ( model, Cmd.none )
+import ListUtil
+import Message exposing (Msg(..))
+import MineGenerate exposing (generateMineCoord)
+import Model exposing (Model, emptyModel)
+import Util exposing (intoCmd)
 
 
 handleToggleFlagPlaceMode : Model -> ( Model, Cmd Msg )
 handleToggleFlagPlaceMode model =
-    if not model.isGameOver then
-        if model.inFlagPlaceMode then
-            ( exitFlagPlaceMode model
-            , Cmd.none
-            )
-
-        else
-            ( enterFlagPlaceMode model
-            , Cmd.none
-            )
+    if model.isGameOver then
+        ( model, Cmd.none )
 
     else
-        ( model, Cmd.none )
+        ( { model | inFlagPlaceMode = not model.inFlagPlaceMode }
+        , Cmd.none
+        )
 
 
 handleRestartGame : Model -> ( Model, Cmd Msg )
 handleRestartGame model =
-    ( initGameState model
+    let
+        newModel =
+            emptyModel model.navKey
+    in
+    ( { newModel
+        | difficulty = model.difficulty
+        , path = model.path
+        , difficultyReceived = model.difficultyReceived
+        , pathReceived = model.pathReceived
+        , unknownDifficulty = model.unknownDifficulty
+      }
     , Cmd.none
     )
 
 
-enterFlagPlaceMode : Model -> Model
-enterFlagPlaceMode model =
-    { model | inFlagPlaceMode = True }
+handleCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
+handleCellClick coord model =
+    if model.isGameOver then
+        ( model, Cmd.none )
 
+    else if model.inFlagPlaceMode then
+        ( model, intoCmd (ToggleFlag coord) )
 
-exitFlagPlaceMode : Model -> Model
-exitFlagPlaceMode model =
-    { model | inFlagPlaceMode = False }
-
-
-initGameState : Model -> Model
-initGameState model =
-    let
-        newState =
-            emptyModel model.navKey
-    in
-    { newState
-        | difficulty = model.difficulty
-        , path = model.path
-        , difficultyReceived = True
-        , pathReceived = True
-    }
-
-
-openCell : Coordinate -> Model -> Model
-openCell coord model =
-    if Model.isMine coord model then
-        gameOver coord model
+    else if model.isGameStarted then
+        ( model, intoCmd (CellOpen coord) )
 
     else
-        { model | openedCellCoords = listWith coord model.openedCellCoords }
+        ( { model
+            | startCoord = coord
+            , noMineCoords = around3x3 coord
+          }
+        , generateMineCoord model
+        )
 
 
-placeFlag : Coordinate -> Model -> Model
-placeFlag coord model =
-    { model | flaggedCellCoords = listWith coord model.flaggedCellCoords }
+handleToggleFlag : Coordinate -> Model -> ( Model, Cmd Msg )
+handleToggleFlag coord model =
+    if ListUtil.contains coord model.flaggedCellCoords then
+        ( { model | flaggedCellCoords = ListUtil.listWithout coord model.flaggedCellCoords }
+        , Cmd.none
+        )
+
+    else
+        ( { model | flaggedCellCoords = ListUtil.listWith coord model.flaggedCellCoords }
+        , Cmd.none
+        )
 
 
-removeFlag : Coordinate -> Model -> Model
-removeFlag coord model =
-    { model | flaggedCellCoords = listWithout coord model.flaggedCellCoords }
+handleCellOpen : Coordinate -> Model -> ( Model, Cmd Msg )
+handleCellOpen coord model =
+    if ListUtil.contains coord model.mineCoords then
+        ( { model | isGameOver = True, causeCoord = Just coord }
+        , Cmd.none
+        )
 
-
-gameOver : Coordinate -> Model -> Model
-gameOver coord model =
-    { model
-        | isGameOver = True
-        , causeCoord = Just coord
-        , openedCellCoords = listWith coord model.openedCellCoords
-    }
+    else
+        ( { model | openedCellCoords = ListUtil.listWith coord model.openedCellCoords }
+        , Cmd.none
+        )

@@ -8,6 +8,7 @@ import ListUtil
 import Message exposing (Msg(..))
 import Model exposing (Model)
 import Random
+import Util exposing (intoCmd)
 
 
 areMinesGeneratedEnough : Model -> Bool
@@ -27,7 +28,7 @@ handleMineCoordGenerate : Coordinate -> Model -> ( Model, Cmd Msg )
 handleMineCoordGenerate coord model =
     if areMinesGeneratedEnough model then
         ( { model | isGameStarted = True }
-        , Cmd.none
+        , intoCmd (CellOpen model.startCoord)
         )
 
     else if canPlaceMine coord model then

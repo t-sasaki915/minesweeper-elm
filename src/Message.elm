@@ -14,3 +14,5 @@ type Msg
     | ToggleFlagPlaceMode
     | RestartGame
     | MineCoordGenerate Coordinate
+    | CellOpen Coordinate
+    | ToggleFlag Coordinate
