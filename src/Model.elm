@@ -25,7 +25,7 @@ type alias Model =
     , isGameOver : Bool
     , inFlagPlaceMode : Bool
     , openedCoords : List Coordinate
-    , flaggedCellCoords : List Coordinate
+    , flaggedCoords : List Coordinate
     , mineCoords : List Coordinate
     , noMineCoords : List Coordinate
     , startCoord : Coordinate
@@ -45,7 +45,7 @@ emptyModel navKey =
     , isGameOver = False
     , inFlagPlaceMode = False
     , openedCoords = []
-    , flaggedCellCoords = []
+    , flaggedCoords = []
     , mineCoords = []
     , noMineCoords = []
     , startCoord = Coordinate -1 -1
@@ -69,7 +69,7 @@ notCellOpened coord =
 
 isCellFlagged : Coordinate -> Model -> Bool
 isCellFlagged coord model =
-    ListUtil.contains coord model.flaggedCellCoords
+    ListUtil.contains coord model.flaggedCoords
 
 
 notCellFlagged : Coordinate -> Model -> Bool

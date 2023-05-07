@@ -64,13 +64,13 @@ handleCellClick coord model =
 
 handleToggleFlag : Coordinate -> Model -> ( Model, Cmd Msg )
 handleToggleFlag coord model =
-    if ListUtil.contains coord model.flaggedCellCoords then
-        ( { model | flaggedCellCoords = ListUtil.listWithout coord model.flaggedCellCoords }
+    if ListUtil.contains coord model.flaggedCoords then
+        ( { model | flaggedCoords = ListUtil.listWithout coord model.flaggedCoords }
         , Cmd.none
         )
 
     else
-        ( { model | flaggedCellCoords = ListUtil.listWith coord model.flaggedCellCoords }
+        ( { model | flaggedCoords = ListUtil.listWith coord model.flaggedCoords }
         , Cmd.none
         )
 
