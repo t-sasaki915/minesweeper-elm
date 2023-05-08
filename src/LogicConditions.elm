@@ -1,5 +1,7 @@
 module LogicConditions exposing
-    ( isCause
+    ( GameStatus(..)
+    , currentGameStatus
+    , isCause
     , isFlagged
     , isMine
     , isOpened
@@ -12,6 +14,29 @@ module LogicConditions exposing
 import Coordinate exposing (Coordinate)
 import ListUtil
 import Model exposing (Model)
+
+
+type GameStatus
+    = Started
+    | GameOver
+    | NotStarted
+    | InFlagPlaceMode
+
+
+currentGameStatus : Model -> GameStatus
+currentGameStatus model =
+    if model.isGameOver then
+        GameOver
+
+    else if model.isGameStarted then
+        if model.inFlagPlaceMode then
+            InFlagPlaceMode
+
+        else
+            Started
+
+    else
+        NotStarted
 
 
 merge : (a -> b -> c) -> (c -> d) -> a -> b -> d

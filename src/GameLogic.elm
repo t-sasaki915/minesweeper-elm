@@ -27,13 +27,19 @@ calcMineCountAt coord model =
 
 handleToggleFlagPlaceMode : Model -> ( Model, Cmd Msg )
 handleToggleFlagPlaceMode model =
-    if model.isGameOver then
-        ( model, Cmd.none )
+    case currentGameStatus model of
+        Started ->
+            ( { model | inFlagPlaceMode = True }
+            , Cmd.none
+            )
 
-    else
-        ( { model | inFlagPlaceMode = not model.inFlagPlaceMode }
-        , Cmd.none
-        )
+        InFlagPlaceMode ->
+            ( { model | inFlagPlaceMode = False }
+            , Cmd.none
+            )
+
+        _ ->
+            ( model, Cmd.none )
 
 
 handleRestartGame : Model -> ( Model, Cmd Msg )
@@ -55,27 +61,28 @@ handleRestartGame model =
 
 handleCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
 handleCellClick coord model =
-    if model.isGameOver then
-        ( model, Cmd.none )
+    case currentGameStatus model of
+        Started ->
+            ( model, intoCmd (CellOpen coord) )
 
-    else if model.inFlagPlaceMode then
-        ( model, intoCmd (ToggleFlag coord) )
+        InFlagPlaceMode ->
+            ( model, intoCmd (ToggleFlag coord) )
 
-    else if model.isGameStarted then
-        ( model, intoCmd (CellOpen coord) )
+        NotStarted ->
+            ( { model
+                | startCoord = coord
+                , noMineCoords = around3x3 coord
+              }
+            , generateMineCoord model
+            )
 
-    else
-        ( { model
-            | startCoord = coord
-            , noMineCoords = around3x3 coord
-          }
-        , generateMineCoord model
-        )
+        _ ->
+            ( model, Cmd.none )
 
 
 handleToggleFlag : Coordinate -> Model -> ( Model, Cmd Msg )
 handleToggleFlag coord model =
-    if ListUtil.contains coord model.flaggedCoords then
+    if isFlagged coord model then
         ( { model | flaggedCoords = ListUtil.listWithout coord model.flaggedCoords }
         , Cmd.none
         )
@@ -88,7 +95,7 @@ handleToggleFlag coord model =
 
 handleCellOpen : Coordinate -> Model -> ( Model, Cmd Msg )
 handleCellOpen coord model =
-    if ListUtil.contains coord model.mineCoords then
+    if isMine coord model then
         ( { model | isGameOver = True, causeCoord = coord }
         , Cmd.none
         )
