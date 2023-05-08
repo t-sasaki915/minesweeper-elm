@@ -6,6 +6,7 @@ module Components exposing
 
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, allDifficulties, defaultDifficulty)
+import GameLogic exposing (calcMineCountAt)
 import Html exposing (Html, a, br, div, span, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
@@ -63,7 +64,7 @@ cell model coord =
                 [ wrongFlagIcon ]
 
             else if shouldRenderNumberIcon coord model then
-                [ numberIcon (Model.mineCountAt coord model) ]
+                [ numberIcon (calcMineCountAt coord model) ]
 
             else if shouldRenderMineIcon coord model then
                 [ mineIcon ]

@@ -1,5 +1,6 @@
 module GameLogic exposing
-    ( handleCellClick
+    ( calcMineCountAt
+    , handleCellClick
     , handleCellOpen
     , handleRestartGame
     , handleToggleFlag
@@ -8,10 +9,20 @@ module GameLogic exposing
 
 import Coordinate exposing (Coordinate, around3x3)
 import ListUtil
+import LogicConditions exposing (..)
 import Message exposing (Msg(..))
 import MineGenerate exposing (generateMineCoord)
 import Model exposing (Model, emptyModel)
 import Util exposing (intoCmd)
+
+
+calcMineCountAt : Coordinate -> Model -> Int
+calcMineCountAt coord model =
+    ListUtil.numberOf True
+        (List.map
+            (\c -> isMine c model)
+            (around3x3 coord)
+        )
 
 
 handleToggleFlagPlaceMode : Model -> ( Model, Cmd Msg )
@@ -78,7 +89,7 @@ handleToggleFlag coord model =
 handleCellOpen : Coordinate -> Model -> ( Model, Cmd Msg )
 handleCellOpen coord model =
     if ListUtil.contains coord model.mineCoords then
-        ( { model | isGameOver = True, causeCoord = Just coord }
+        ( { model | isGameOver = True, causeCoord = coord }
         , Cmd.none
         )
 

@@ -14,6 +14,7 @@ module UIConditions exposing
 
 import Coordinate exposing (Coordinate)
 import ListUtil
+import LogicConditions exposing (..)
 import Model exposing (..)
 
 
@@ -49,14 +50,14 @@ shouldRenderFlagIcon : Coordinate -> Model -> Bool
 shouldRenderFlagIcon coord model =
     if model.isGameOver then
         fAll
-            [ isCellFlagged coord model
+            [ isFlagged coord model
             , isMine coord model
             ]
 
     else
         fAll
-            [ notCellOpened coord model
-            , isCellFlagged coord model
+            [ notOpened coord model
+            , isFlagged coord model
             ]
 
 
@@ -68,8 +69,8 @@ shouldRenderFakeFlagIcon coord model =
     else
         fAll
             [ model.inFlagPlaceMode
-            , notCellOpened coord model
-            , notCellFlagged coord model
+            , notOpened coord model
+            , notFlagged coord model
             ]
 
 
@@ -77,7 +78,7 @@ shouldRenderWrongFlagIcon : Coordinate -> Model -> Bool
 shouldRenderWrongFlagIcon coord model =
     if model.isGameOver then
         fAll
-            [ isCellFlagged coord model
+            [ isFlagged coord model
             , notMine coord model
             ]
 
@@ -89,20 +90,20 @@ shouldRenderNumberIcon : Coordinate -> Model -> Bool
 shouldRenderNumberIcon coord model =
     if model.isGameOver then
         fAll
-            [ notCellFlagged coord model
+            [ notFlagged coord model
             , notMine coord model
-            , isCellOpened coord model
+            , isOpened coord model
             ]
 
     else
-        isCellOpened coord model
+        isOpened coord model
 
 
 shouldRenderMineIcon : Coordinate -> Model -> Bool
 shouldRenderMineIcon coord model =
     if model.isGameOver then
         fAll
-            [ notCellFlagged coord model
+            [ notFlagged coord model
             , isMine coord model
             ]
 
@@ -115,19 +116,19 @@ shouldClassNameBeCellOpened coord model =
     if model.isGameOver then
         ListUtil.contains True
             [ fAll
-                [ isCellOpened coord model
+                [ isOpened coord model
                 , notCause coord model
                 ]
             , fAll
-                [ notCellOpened coord model
+                [ notOpened coord model
                 , notCause coord model
-                , notCellFlagged coord model
+                , notFlagged coord model
                 , isMine coord model
                 ]
             ]
 
     else
-        isCellOpened coord model
+        isOpened coord model
 
 
 shouldClassNameBeCellNotOpened : Coordinate -> Model -> Bool
@@ -135,19 +136,19 @@ shouldClassNameBeCellNotOpened coord model =
     if model.isGameOver then
         ListUtil.contains True
             [ fAll
-                [ notCellOpened coord model
+                [ notOpened coord model
                 , notCause coord model
                 , notMine coord model
                 ]
             , fAll
-                [ notCellOpened coord model
+                [ notOpened coord model
                 , notCause coord model
-                , isCellFlagged coord model
+                , isFlagged coord model
                 ]
             ]
 
     else
-        notCellOpened coord model
+        notOpened coord model
 
 
 shouldClassNameBeCellCause : Coordinate -> Model -> Bool
