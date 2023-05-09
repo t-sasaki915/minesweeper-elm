@@ -3,9 +3,11 @@ module ListUtil exposing
     , count
     , exists
     , find
+    , flatten
     , forAll
     , listWith
     , listWithout
+    , mapN
     , nonEmpty
     , numberOf
     )
@@ -54,3 +56,23 @@ find func list =
 forAll : (a -> Bool) -> List a -> Bool
 forAll func list =
     numberOf False (List.map func list) == 0
+
+
+flatten : List (List a) -> List a
+flatten list =
+    List.foldl List.append [] list
+
+
+mapN : (a -> b -> c) -> List a -> List b -> List c
+mapN f l1 l2 =
+    flatten
+        (List.map
+            (\a ->
+                List.map
+                    (\b ->
+                        f a b
+                    )
+                    l2
+            )
+            l1
+        )

@@ -21,7 +21,7 @@ calcMineCountAt coord model =
     ListUtil.numberOf True
         (List.map
             (\c -> isMine c model)
-            (around3x3 coord)
+            (around3x3 coord model.difficulty)
         )
 
 
@@ -79,7 +79,7 @@ handleCellClick coord model =
         NotStarted ->
             ( { model
                 | startCoord = coord
-                , noMineCoords = around3x3 coord
+                , noMineCoords = around3x3 coord model.difficulty
               }
             , generateMineCoord model
             )
