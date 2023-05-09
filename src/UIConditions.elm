@@ -10,7 +10,7 @@ module UIConditions exposing
 import Coordinate exposing (Coordinate)
 import ListUtil
 import LogicConditions exposing (..)
-import Model exposing (..)
+import Model exposing (Model)
 
 
 type Screen

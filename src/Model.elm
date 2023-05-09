@@ -4,9 +4,8 @@ module Model exposing
     )
 
 import Browser.Navigation as Nav
-import Coordinate exposing (Coordinate, around3x3)
+import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, defaultDifficulty)
-import ListUtil
 
 
 type alias Model =
