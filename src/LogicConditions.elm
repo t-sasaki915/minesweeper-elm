@@ -17,7 +17,7 @@ import Model exposing (Model)
 
 
 type GameStatus
-    = Started
+    = NotInFlagPlaceMode
     | GameOver
     | NotStarted
     | InFlagPlaceMode
@@ -33,7 +33,7 @@ currentGameStatus model =
             InFlagPlaceMode
 
         else
-            Started
+            NotInFlagPlaceMode
 
     else
         NotStarted

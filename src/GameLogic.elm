@@ -28,7 +28,7 @@ calcMineCountAt coord model =
 handleToggleFlagPlaceMode : Model -> ( Model, Cmd Msg )
 handleToggleFlagPlaceMode model =
     case currentGameStatus model of
-        Started ->
+        NotInFlagPlaceMode ->
             ( { model | inFlagPlaceMode = True }
             , Cmd.none
             )
@@ -62,11 +62,19 @@ handleRestartGame model =
 handleCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
 handleCellClick coord model =
     case currentGameStatus model of
-        Started ->
-            ( model, intoCmd (CellOpen coord) )
+        NotInFlagPlaceMode ->
+            if notOpened coord model && notFlagged coord model then
+                ( model, intoCmd (CellOpen coord) )
+
+            else
+                ( model, Cmd.none )
 
         InFlagPlaceMode ->
-            ( model, intoCmd (ToggleFlag coord) )
+            if notOpened coord model then
+                ( model, intoCmd (ToggleFlag coord) )
+
+            else
+                ( model, Cmd.none )
 
         NotStarted ->
             ( { model
