@@ -41,36 +41,38 @@ cell : Model -> Coordinate -> Html Msg
 cell model coord =
     let
         className =
-            if shouldClassNameBeCellOpened coord model then
-                "cell cellOpened"
+            case cellClassAt coord model of
+                CellOpened ->
+                    "cell cellOpened"
 
-            else if shouldClassNameBeCellNotOpened coord model then
-                "cell cellNotOpened"
+                CellNotOpened ->
+                    "cell cellNotOpened"
 
-            else if shouldClassNameBeCellCause coord model then
-                "cell cellCause"
+                CellCause ->
+                    "cell cellCause"
 
-            else
-                "cell"
+                NoClass ->
+                    "cell"
 
         children =
-            if shouldRenderFlagIcon coord model then
-                [ flagIcon ]
+            case innerIconAt coord model of
+                FlagIcon ->
+                    [ flagIcon ]
 
-            else if shouldRenderFakeFlagIcon coord model then
-                [ fakeFlagIcon ]
+                FakeFlagIcon ->
+                    [ fakeFlagIcon ]
 
-            else if shouldRenderWrongFlagIcon coord model then
-                [ wrongFlagIcon ]
+                WrongFlagIcon ->
+                    [ wrongFlagIcon ]
 
-            else if shouldRenderNumberIcon coord model then
-                [ numberIcon (calcMineCountAt coord model) ]
+                NumberIcon ->
+                    [ numberIcon (calcMineCountAt coord model) ]
 
-            else if shouldRenderMineIcon coord model then
-                [ mineIcon ]
+                MineIcon ->
+                    [ mineIcon ]
 
-            else
-                []
+                NoIcon ->
+                    []
     in
     div [ class className, onClick (CellClick coord) ] children
 

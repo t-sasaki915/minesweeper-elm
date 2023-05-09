@@ -1,21 +1,90 @@
 module UIConditions exposing
-    ( shouldClassNameBeCellCause
-    , shouldClassNameBeCellNotOpened
-    , shouldClassNameBeCellOpened
-    , shouldRenderFakeFlagIcon
-    , shouldRenderFlagIcon
-    , shouldRenderGameScreen
-    , shouldRenderMineIcon
-    , shouldRenderNumberIcon
-    , shouldRenderUnknownDifficultyScreen
-    , shouldRenderWaitingForJSScreen
-    , shouldRenderWrongFlagIcon
+    ( CellClass(..)
+    , InnerIcon(..)
+    , Screen(..)
+    , cellClassAt
+    , currentScreen
+    , innerIconAt
     )
 
 import Coordinate exposing (Coordinate)
 import ListUtil
 import LogicConditions exposing (..)
 import Model exposing (..)
+
+
+type Screen
+    = GameScreen
+    | UnknownDifficultyScreen
+    | WaitingForJSScreen
+    | NoScreen
+
+
+type CellClass
+    = CellOpened
+    | CellNotOpened
+    | CellCause
+    | NoClass
+
+
+type InnerIcon
+    = NoIcon
+    | FlagIcon
+    | FakeFlagIcon
+    | WrongFlagIcon
+    | MineIcon
+    | NumberIcon
+
+
+currentScreen : Model -> Screen
+currentScreen model =
+    if shouldRenderGameScreen model then
+        GameScreen
+
+    else if shouldRenderUnknownDifficultyScreen model then
+        UnknownDifficultyScreen
+
+    else if shouldRenderWaitingForJSScreen model then
+        WaitingForJSScreen
+
+    else
+        NoScreen
+
+
+cellClassAt : Coordinate -> Model -> CellClass
+cellClassAt coord model =
+    if shouldClassNameBeCellOpened coord model then
+        CellOpened
+
+    else if shouldClassNameBeCellNotOpened coord model then
+        CellNotOpened
+
+    else if shouldClassNameBeCellCause coord model then
+        CellCause
+
+    else
+        NoClass
+
+
+innerIconAt : Coordinate -> Model -> InnerIcon
+innerIconAt coord model =
+    if shouldRenderFlagIcon coord model then
+        FlagIcon
+
+    else if shouldRenderFakeFlagIcon coord model then
+        FakeFlagIcon
+
+    else if shouldRenderWrongFlagIcon coord model then
+        WrongFlagIcon
+
+    else if shouldRenderMineIcon coord model then
+        MineIcon
+
+    else if shouldRenderNumberIcon coord model then
+        NumberIcon
+
+    else
+        NoIcon
 
 
 fAll : List Bool -> Bool

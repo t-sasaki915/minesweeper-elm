@@ -10,7 +10,7 @@ import JSCommunication exposing (..)
 import Message exposing (Msg(..))
 import MineGenerate exposing (handleMineCoordGenerate)
 import Model exposing (Model, emptyModel)
-import UIConditions exposing (..)
+import UIConditions exposing (Screen(..), currentScreen)
 import URLUpdate exposing (..)
 import Url exposing (Url)
 import Util exposing (intoCmd)
@@ -84,26 +84,27 @@ view : Model -> Browser.Document Msg
 view model =
     let
         content =
-            if shouldRenderGameScreen model then
-                [ gameScreen model
-                , br [] []
-                , difficultySelector model
-                , br [] []
-                , aboutPage
-                ]
+            case currentScreen model of
+                GameScreen ->
+                    [ gameScreen model
+                    , br [] []
+                    , difficultySelector model
+                    , br [] []
+                    , aboutPage
+                    ]
 
-            else if shouldRenderUnknownDifficultyScreen model then
-                [ h1 [] [ text "Unknown Difficulty." ]
-                , difficultySelector model
-                , br [] []
-                , aboutPage
-                ]
+                UnknownDifficultyScreen ->
+                    [ h1 [] [ text "Unknown Difficulty." ]
+                    , difficultySelector model
+                    , br [] []
+                    , aboutPage
+                    ]
 
-            else if shouldRenderWaitingForJSScreen model then
-                [ p [] [ text "Waiting for JavaScript..." ]
-                ]
+                WaitingForJSScreen ->
+                    [ p [] [ text "Waiting for JavaScript..." ]
+                    ]
 
-            else
-                []
+                NoScreen ->
+                    []
     in
     Browser.Document "Minesweeper" content
