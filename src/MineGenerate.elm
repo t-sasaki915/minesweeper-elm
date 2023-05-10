@@ -29,7 +29,7 @@ handleMineCoordGenerate : Coordinate -> Model -> ( Model, Cmd Msg )
 handleMineCoordGenerate coord model =
     if areMinesGeneratedEnough model then
         ( { model | isGameStarted = True }
-        , intoCmd (CellOpen model.startCoord)
+        , intoCmd (CellClick model.startCoord)
         )
 
     else if canPlaceMine coord model then

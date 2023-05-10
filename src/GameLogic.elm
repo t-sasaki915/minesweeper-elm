@@ -1,7 +1,6 @@
 module GameLogic exposing
     ( calcMineCountAt
     , handleCellClick
-    , handleCellOpen
     , handleRestartGame
     , handleToggleFlag
     , handleToggleFlagPlaceMode
@@ -13,7 +12,7 @@ import LogicConditions exposing (..)
 import Message exposing (Msg(..))
 import MineGenerate exposing (generateMineCoord)
 import Model exposing (Model, emptyModel)
-import Util exposing (intoCmd)
+import Util exposing (intoBatchCmd, intoCmd)
 
 
 calcMineCountAt : Coordinate -> Model -> Int
@@ -63,8 +62,27 @@ handleCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
 handleCellClick coord model =
     case currentGameStatus model of
         NotInFlagPlaceMode ->
-            if notOpened coord model && notFlagged coord model then
-                ( model, intoCmd (CellOpen coord) )
+            if isMine coord model then
+                ( { model | isGameOver = True, causeCoord = coord }
+                , Cmd.none
+                )
+
+            else if notOpened coord model && notFlagged coord model then
+                let
+                    newModel =
+                        { model | openedCoords = ListUtil.listWith coord model.openedCoords }
+
+                    aroundOpenable =
+                        List.filter (\c -> notOpened c newModel && notFlagged c newModel) (around3x3 coord newModel.difficulty)
+
+                    command =
+                        if calcMineCountAt coord newModel == 0 then
+                            intoBatchCmd (List.map CellClick aroundOpenable)
+
+                        else
+                            Cmd.none
+                in
+                ( newModel, command )
 
             else
                 ( model, Cmd.none )
@@ -97,18 +115,5 @@ handleToggleFlag coord model =
 
     else
         ( { model | flaggedCoords = ListUtil.listWith coord model.flaggedCoords }
-        , Cmd.none
-        )
-
-
-handleCellOpen : Coordinate -> Model -> ( Model, Cmd Msg )
-handleCellOpen coord model =
-    if isMine coord model then
-        ( { model | isGameOver = True, causeCoord = coord }
-        , Cmd.none
-        )
-
-    else
-        ( { model | openedCoords = ListUtil.listWith coord model.openedCoords }
         , Cmd.none
         )

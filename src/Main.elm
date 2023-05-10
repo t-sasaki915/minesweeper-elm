@@ -68,9 +68,6 @@ update msg =
         MineCoordGenerate coord ->
             handleMineCoordGenerate coord
 
-        CellOpen coord ->
-            handleCellOpen coord
-
         ToggleFlag coord ->
             handleToggleFlag coord
 
