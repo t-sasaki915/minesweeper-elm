@@ -42,6 +42,7 @@ app.ports.sendData.subscribe((data) => {
             alert(value);
 
             break;
+
         default:
             console.warn(`Unexpected key: ${data}`);
     }
