@@ -71,6 +71,9 @@ update msg =
         ToggleFlag coord ->
             handleToggleFlag coord
 
+        ShowAlert message ->
+            handleShowAlert sendData message
+
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =

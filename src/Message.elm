@@ -15,3 +15,4 @@ type Msg
     | RestartGame
     | MineCoordGenerate Coordinate
     | ToggleFlag Coordinate
+    | ShowAlert String

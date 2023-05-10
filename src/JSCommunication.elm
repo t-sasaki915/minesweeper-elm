@@ -1,6 +1,7 @@
 module JSCommunication exposing
     ( handleReceiveDataFromJS
     , handleRequestDataToJS
+    , handleShowAlert
     )
 
 import Difficulty
@@ -11,7 +12,17 @@ import StringUtil
 
 handleRequestDataToJS : (String -> Cmd msg) -> Model -> ( Model, Cmd msg )
 handleRequestDataToJS sender model =
-    ( model, sender "REQ" )
+    ( model
+    , Cmd.batch
+        [ sender "RequestData=Difficulty"
+        , sender "RequestData=Path"
+        ]
+    )
+
+
+handleShowAlert : (String -> Cmd msg) -> String -> Model -> ( Model, Cmd msg )
+handleShowAlert sender message model =
+    ( model, sender ("ShowAlert=" ++ message) )
 
 
 handleReceiveDataFromJS : String -> Model -> ( Model, Cmd Msg )
@@ -24,7 +35,7 @@ handleReceiveDataFromJS data model =
             StringUtil.takeAfter "=" data
     in
     case key of
-        "diff" ->
+        "Difficulty" ->
             case Difficulty.fromString value of
                 Just d ->
                     ( { model
@@ -43,7 +54,7 @@ handleReceiveDataFromJS data model =
                     , Cmd.none
                     )
 
-        "path" ->
+        "Path" ->
             ( { model
                 | path = value
                 , pathReceived = True
