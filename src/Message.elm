@@ -2,6 +2,7 @@ module Message exposing (Msg(..))
 
 import Browser
 import Coordinate exposing (Coordinate)
+import Time
 import Url exposing (Url)
 
 
@@ -16,3 +17,4 @@ type Msg
     | MineCoordGenerate Coordinate
     | ToggleFlag Coordinate
     | ShowAlert String
+    | Tick Time.Posix

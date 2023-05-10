@@ -2,6 +2,7 @@ port module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
+import Clock exposing (handleTick)
 import Components exposing (..)
 import GameLogic exposing (..)
 import Html exposing (br, h1, p, text)
@@ -10,6 +11,8 @@ import JSCommunication exposing (..)
 import Message exposing (Msg(..))
 import MineGenerate exposing (handleMineCoordGenerate)
 import Model exposing (Model, emptyModel)
+import Task
+import Time
 import UIConditions exposing (Screen(..), currentScreen)
 import URLUpdate exposing (..)
 import Url exposing (Url)
@@ -37,7 +40,10 @@ main =
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ _ navKey =
     ( emptyModel navKey
-    , intoCmd RequestDataToJS
+    , Cmd.batch
+        [ intoCmd RequestDataToJS
+        , Task.perform Tick Time.now
+        ]
     )
 
 
@@ -74,10 +80,16 @@ update msg =
         ShowAlert message ->
             handleShowAlert sendData message
 
+        Tick newTime ->
+            handleTick newTime
+
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    receiveData ReceiveDataFromJS
+    Sub.batch
+        [ receiveData ReceiveDataFromJS
+        , Time.every 1000 Tick
+        ]
 
 
 view : Model -> Browser.Document Msg

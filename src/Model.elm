@@ -6,6 +6,7 @@ module Model exposing
 import Browser.Navigation as Nav
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, defaultDifficulty)
+import Time
 
 
 type alias Model =
@@ -24,6 +25,7 @@ type alias Model =
     , difficultyReceived : Bool
     , pathReceived : Bool
     , unknownDifficulty : Bool
+    , currentTime : Time.Posix
     }
 
 
@@ -44,4 +46,5 @@ emptyModel navKey =
     , difficultyReceived = False
     , pathReceived = False
     , unknownDifficulty = False
+    , currentTime = Time.millisToPosix 0
     }
