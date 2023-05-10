@@ -2,6 +2,7 @@ module LogicConditions exposing
     ( GameStatus(..)
     , currentGameStatus
     , isCause
+    , isCleared
     , isFlagged
     , isMine
     , isOpened
@@ -62,6 +63,18 @@ isMine coord model =
 isCause : Coordinate -> Model -> Bool
 isCause coord model =
     coord == model.causeCoord
+
+
+isCleared : Model -> Bool
+isCleared model =
+    let
+        diff =
+            model.difficulty
+
+        cellArraySize =
+            diff.width * diff.height
+    in
+    List.length model.openedCoords >= (cellArraySize - diff.mineCount)
 
 
 notOpened : Coordinate -> Model -> Bool

@@ -76,13 +76,22 @@ handleCellClick coord model =
                         List.filter (\c -> notOpened c newModel && notFlagged c newModel) (around3x3 coord newModel.difficulty)
 
                     command =
-                        if calcMineCountAt coord newModel == 0 then
+                        if isCleared newModel then
+                            intoCmd (ShowAlert "Cleared.")
+
+                        else if calcMineCountAt coord newModel == 0 then
                             intoBatchCmd (List.map CellClick aroundOpenable)
 
                         else
                             Cmd.none
                 in
-                ( newModel, command )
+                ( if isCleared newModel then
+                    { newModel | isGameOver = True }
+
+                  else
+                    newModel
+                , command
+                )
 
             else
                 ( model, Cmd.none )
