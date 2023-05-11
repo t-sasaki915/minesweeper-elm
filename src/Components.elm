@@ -114,8 +114,7 @@ statusIndicator model =
     p []
         [ text "Elapsed Time: "
         , text (String.fromInt elapsedTime)
-        , text "s "
-        , text ", Mine Remains: "
+        , text "s, Mine Remains: "
         , text (String.fromInt mineRemains)
         ]
 
