@@ -14,7 +14,7 @@ import Html.Events exposing (onClick)
 import Images exposing (..)
 import Message exposing (Msg(..))
 import Model exposing (Model)
-import Time exposing (millisToPosix, posixToMillis)
+import Time exposing (millisToPosix)
 import UIConditions exposing (..)
 
 
