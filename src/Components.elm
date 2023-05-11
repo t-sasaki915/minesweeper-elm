@@ -108,22 +108,15 @@ statusIndicator model =
         elapsedTime =
             millisToSeconds elapsedMillis
 
-        timerGameStatusText =
-            if model.isGameOver then
-                if model.isGameCleared then
-                    "(Cleared)"
-
-                else
-                    "(Failed)"
-
-            else
-                ""
+        mineRemains =
+            model.difficulty.mineCount - List.length model.flaggedCoords
     in
     p []
         [ text "Elapsed Time: "
         , text (String.fromInt elapsedTime)
         , text "s "
-        , text timerGameStatusText
+        , text ", Mine Remains: "
+        , text (String.fromInt mineRemains)
         ]
 
 
