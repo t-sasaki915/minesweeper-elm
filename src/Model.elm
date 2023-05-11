@@ -14,6 +14,7 @@ type alias Model =
     , path : String
     , isGameStarted : Bool
     , isGameOver : Bool
+    , isGameCleared : Bool
     , inFlagPlaceMode : Bool
     , openedCoords : List Coordinate
     , flaggedCoords : List Coordinate
@@ -26,6 +27,8 @@ type alias Model =
     , pathReceived : Bool
     , unknownDifficulty : Bool
     , currentTime : Posix
+    , startTime : Posix
+    , gameOverTime : Posix
     }
 
 
@@ -35,6 +38,7 @@ emptyModel navKey =
     , path = ""
     , isGameStarted = False
     , isGameOver = False
+    , isGameCleared = False
     , inFlagPlaceMode = False
     , openedCoords = []
     , flaggedCoords = []
@@ -47,4 +51,6 @@ emptyModel navKey =
     , pathReceived = False
     , unknownDifficulty = False
     , currentTime = millisToPosix 0
+    , startTime = millisToPosix 0
+    , gameOverTime = millisToPosix 0
     }

@@ -63,7 +63,12 @@ handleCellClick coord model =
     case currentGameStatus model of
         NotInFlagPlaceMode ->
             if isMine coord model then
-                ( { model | isGameOver = True, causeCoord = coord }
+                ( { model
+                    | isGameOver = True
+                    , isGameCleared = False
+                    , causeCoord = coord
+                    , gameOverTime = model.currentTime
+                  }
                 , Cmd.none
                 )
 
@@ -86,7 +91,11 @@ handleCellClick coord model =
                             Cmd.none
                 in
                 ( if isCleared newModel then
-                    { newModel | isGameOver = True }
+                    { newModel
+                        | isGameOver = True
+                        , isGameCleared = True
+                        , gameOverTime = newModel.currentTime
+                    }
 
                   else
                     newModel
@@ -107,6 +116,7 @@ handleCellClick coord model =
             ( { model
                 | startCoord = coord
                 , noMineCoords = around3x3 coord model.difficulty
+                , startTime = model.currentTime
               }
             , generateMineCoord model
             )

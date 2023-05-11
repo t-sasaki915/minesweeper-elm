@@ -4,15 +4,17 @@ module Components exposing
     , gameScreen
     )
 
+import Clock exposing (millisToSeconds)
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, allDifficulties, defaultDifficulty)
 import GameLogic exposing (calcMineCountAt)
-import Html exposing (Html, a, br, div, span, text)
+import Html exposing (Html, a, br, div, p, span, text)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Images exposing (..)
 import Message exposing (Msg(..))
 import Model exposing (Model)
+import Time exposing (posixToMillis)
 import UIConditions exposing (..)
 
 
@@ -89,6 +91,42 @@ cellArray model =
         (List.map (\y -> cellLine model y) (List.range 0 (model.difficulty.height - 1)))
 
 
+statusIndicator : Model -> Html Msg
+statusIndicator model =
+    let
+        elapsedMillis =
+            if model.isGameStarted then
+                if model.isGameOver then
+                    posixToMillis model.gameOverTime - posixToMillis model.startTime
+
+                else
+                    posixToMillis model.currentTime - posixToMillis model.startTime
+
+            else
+                0
+
+        elapsedTime =
+            millisToSeconds elapsedMillis
+
+        timerText =
+            if model.isGameOver then
+                if model.isGameCleared then
+                    "(Cleared)"
+
+                else
+                    "(Failed)"
+
+            else
+                ""
+    in
+    p []
+        [ text "Elapsed Time: "
+        , text (String.fromInt elapsedTime)
+        , text " s "
+        , text timerText
+        ]
+
+
 toggleFlagPlaceModeButton : Model -> Html Msg
 toggleFlagPlaceModeButton model =
     let
@@ -115,7 +153,7 @@ gameScreen : Model -> Html Msg
 gameScreen model =
     div []
         [ cellArray model
-        , br [] []
+        , statusIndicator model
         , toggleFlagPlaceModeButton model
         , br [] []
         , restartButton
