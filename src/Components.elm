@@ -4,7 +4,7 @@ module Components exposing
     , gameScreen
     )
 
-import Clock exposing (millisToSeconds)
+import Clock exposing (posixDelta, posixToSeconds)
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, allDifficulties, defaultDifficulty)
 import GameLogic exposing (calcMineCountAt)
@@ -14,7 +14,7 @@ import Html.Events exposing (onClick)
 import Images exposing (..)
 import Message exposing (Msg(..))
 import Model exposing (Model)
-import Time exposing (posixToMillis)
+import Time exposing (millisToPosix, posixToMillis)
 import UIConditions exposing (..)
 
 
@@ -94,19 +94,18 @@ cellArray model =
 statusIndicator : Model -> Html Msg
 statusIndicator model =
     let
-        elapsedMillis =
-            if model.isGameStarted then
-                if model.isGameOver then
-                    posixToMillis model.gameOverTime - posixToMillis model.startTime
-
-                else
-                    posixToMillis model.currentTime - posixToMillis model.startTime
-
-            else
-                0
-
         elapsedTime =
-            millisToSeconds elapsedMillis
+            posixToSeconds
+                (if model.isGameStarted then
+                    if model.isGameOver then
+                        posixDelta model.startTime model.gameOverTime
+
+                    else
+                        posixDelta model.startTime model.currentTime
+
+                 else
+                    millisToPosix 0
+                )
 
         mineRemains =
             model.difficulty.mineCount - List.length model.flaggedCoords

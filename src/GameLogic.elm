@@ -66,7 +66,6 @@ handleCellClick coord model =
             if isMine coord model then
                 ( { model
                     | isGameOver = True
-                    , isGameCleared = False
                     , causeCoord = coord
                     , gameOverTime = model.currentTime
                   }
@@ -94,7 +93,6 @@ handleCellClick coord model =
                 ( if isCleared newModel then
                     { newModel
                         | isGameOver = True
-                        , isGameCleared = True
                         , gameOverTime = newModel.currentTime
                     }
 
