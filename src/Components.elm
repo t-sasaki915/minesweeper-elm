@@ -108,7 +108,7 @@ statusIndicator model =
         elapsedTime =
             millisToSeconds elapsedMillis
 
-        timerText =
+        timerGameStatusText =
             if model.isGameOver then
                 if model.isGameCleared then
                     "(Cleared)"
@@ -122,8 +122,8 @@ statusIndicator model =
     p []
         [ text "Elapsed Time: "
         , text (String.fromInt elapsedTime)
-        , text " s "
-        , text timerText
+        , text "s "
+        , text timerGameStatusText
         ]
 
 
