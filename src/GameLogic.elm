@@ -63,43 +63,44 @@ handleCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
 handleCellClick coord model =
     case currentGameStatus model of
         NotInFlagPlaceMode ->
-            if isMine coord model then
-                ( { model
-                    | isGameOver = True
-                    , causeCoord = coord
-                    , gameOverTime = model.currentTime
-                  }
-                , Cmd.none
-                )
-
-            else if notOpened coord model && notFlagged coord model then
-                let
-                    newModel =
-                        { model | openedCoords = ListUtil.listWith coord model.openedCoords }
-
-                    aroundOpenable =
-                        List.filter (\c -> notOpened c newModel && notFlagged c newModel) (around3x3 coord newModel.difficulty)
-
-                    command =
-                        if isCleared newModel then
-                            intoCmd (ShowAlert "Cleared.")
-
-                        else if calcMineCountAt coord newModel == 0 then
-                            intoBatchCmd (List.map CellClick aroundOpenable)
-
-                        else
-                            Cmd.none
-                in
-                ( if isCleared newModel then
-                    { newModel
+            if isOpenable coord model then
+                if isMine coord model then
+                    ( { model
                         | isGameOver = True
-                        , gameOverTime = newModel.currentTime
-                    }
+                        , causeCoord = coord
+                        , gameOverTime = model.currentTime
+                      }
+                    , Cmd.none
+                    )
 
-                  else
-                    newModel
-                , command
-                )
+                else
+                    let
+                        newModel =
+                            { model | openedCoords = ListUtil.listWith coord model.openedCoords }
+
+                        aroundOpenable =
+                            List.filter (\c -> isOpenable c newModel) (around3x3 coord newModel.difficulty)
+
+                        command =
+                            if isCleared newModel then
+                                intoCmd (ShowAlert "Cleared.")
+
+                            else if calcMineCountAt coord newModel == 0 then
+                                intoBatchCmd (List.map CellClick aroundOpenable)
+
+                            else
+                                Cmd.none
+                    in
+                    ( if isCleared newModel then
+                        { newModel
+                            | isGameOver = True
+                            , gameOverTime = newModel.currentTime
+                        }
+
+                      else
+                        newModel
+                    , command
+                    )
 
             else
                 ( model, Cmd.none )

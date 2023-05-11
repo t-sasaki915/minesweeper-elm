@@ -5,10 +5,12 @@ module LogicConditions exposing
     , isCleared
     , isFlagged
     , isMine
+    , isOpenable
     , isOpened
     , notCause
     , notFlagged
     , notMine
+    , notOpenable
     , notOpened
     )
 
@@ -45,6 +47,11 @@ merge f1 f2 a b =
     f2 (f1 a b)
 
 
+merge2 : (a -> b -> c) -> (a -> b -> d) -> (c -> d -> e) -> a -> b -> e
+merge2 f1 f2 f3 a b =
+    f3 (f1 a b) (f2 a b)
+
+
 isOpened : Coordinate -> Model -> Bool
 isOpened coord model =
     ListUtil.contains coord model.openedCoords
@@ -77,6 +84,11 @@ isCleared model =
     List.length model.openedCoords >= (cellArraySize - diff.mineCount)
 
 
+isOpenable : Coordinate -> Model -> Bool
+isOpenable =
+    merge2 notOpened notFlagged (&&)
+
+
 notOpened : Coordinate -> Model -> Bool
 notOpened =
     merge isOpened not
@@ -95,3 +107,8 @@ notMine =
 notCause : Coordinate -> Model -> Bool
 notCause =
     merge isCause not
+
+
+notOpenable : Coordinate -> Model -> Bool
+notOpenable =
+    merge isOpenable not
