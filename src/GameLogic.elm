@@ -53,6 +53,7 @@ handleRestartGame model =
         , difficultyReceived = model.difficultyReceived
         , pathReceived = model.pathReceived
         , unknownDifficulty = model.unknownDifficulty
+        , currentTime = model.currentTime
       }
     , Cmd.none
     )
