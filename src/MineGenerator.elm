@@ -5,7 +5,7 @@ module MineGenerator exposing
 
 import Coordinate exposing (Coordinate)
 import List exposing (length)
-import ListUtil exposing (forAll, notContains)
+import ListUtil exposing (identityForAll, notContains)
 import LogicConditions exposing (notStartCoord)
 import Message exposing (Msg(..))
 import Model exposing (Model)
@@ -38,7 +38,7 @@ generatedEnough model =
 
 canPlace : Coordinate -> Model -> Bool
 canPlace coord model =
-    forAll identity
+    identityForAll
         [ notContains coord model.mineCoords
         , notContains coord model.noMineCoords
         , notStartCoord coord model

@@ -3,7 +3,6 @@ port module Main exposing (main)
 import ActualScreen
 import Browser
 import Browser.Navigation as Nav
-import Components exposing (..)
 import FunctionUtil exposing (merge3)
 import GameLogic exposing (..)
 import JSCommunicator exposing (..)

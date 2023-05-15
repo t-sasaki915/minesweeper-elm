@@ -3,7 +3,7 @@ module Screen exposing
     , currentScreen
     )
 
-import ListUtil exposing (contains, forAll)
+import ListUtil exposing (contains, identityForAll)
 import Model exposing (Model)
 
 
@@ -29,16 +29,6 @@ currentScreen model =
         ErrorScreen
 
 
-identityForAll : List Bool -> Bool
-identityForAll =
-    forAll identity
-
-
-containsTrue : List Bool -> Bool
-containsTrue =
-    contains True
-
-
 shouldRenderGameScreen : Model -> Bool
 shouldRenderGameScreen model =
     identityForAll
@@ -59,7 +49,7 @@ shouldRenderUnknownDifficultyScreen model =
 
 shouldRenderWaitingForJSScreen : Model -> Bool
 shouldRenderWaitingForJSScreen model =
-    containsTrue
+    contains True
         [ not model.difficultyReceived
         , not model.pathReceived
         ]

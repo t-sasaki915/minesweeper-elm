@@ -10,6 +10,7 @@ module ListUtil exposing
     , notContains
     , numberOf
     , without
+    , identityForAll
     )
 
 import FunctionUtil exposing (merge1)
@@ -58,6 +59,11 @@ find func list =
 forAll : (a -> Bool) -> List a -> Bool
 forAll func list =
     numberOf False (List.map func list) == 0
+
+
+identityForAll : List Bool -> Bool
+identityForAll =
+    forAll identity
 
 
 flatten : List (List a) -> List a
