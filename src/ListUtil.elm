@@ -12,10 +12,7 @@ module ListUtil exposing
     , without
     )
 
-
-merge : (a -> b -> c) -> (c -> d) -> a -> b -> d
-merge f1 f2 a b =
-    f2 (f1 a b)
+import FunctionUtil exposing (merge1)
 
 
 nonEmpty : List a -> Bool
@@ -35,7 +32,7 @@ contains a list =
 
 notContains : a -> List a -> Bool
 notContains =
-    merge contains not
+    merge1 contains not
 
 
 without : a -> List a -> List a

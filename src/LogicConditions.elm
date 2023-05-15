@@ -17,6 +17,7 @@ module LogicConditions exposing
     )
 
 import Coordinate exposing (Coordinate)
+import FunctionUtil exposing (merge1, merge2)
 import ListUtil
 import Model exposing (Model)
 
@@ -42,16 +43,6 @@ currentGameStatus model =
 
     else
         NotStarted
-
-
-merge : (a -> b -> c) -> (c -> d) -> a -> b -> d
-merge f1 f2 a b =
-    f2 (f1 a b)
-
-
-merge2 : (a -> b -> c) -> (a -> b -> d) -> (c -> d -> e) -> a -> b -> e
-merge2 f1 f2 f3 a b =
-    f3 (f1 a b) (f2 a b)
 
 
 isOpened : Coordinate -> Model -> Bool
@@ -98,29 +89,29 @@ isOpenable =
 
 notOpened : Coordinate -> Model -> Bool
 notOpened =
-    merge isOpened not
+    merge1 isOpened not
 
 
 notFlagged : Coordinate -> Model -> Bool
 notFlagged =
-    merge isFlagged not
+    merge1 isFlagged not
 
 
 notMine : Coordinate -> Model -> Bool
 notMine =
-    merge isMine not
+    merge1 isMine not
 
 
 notCause : Coordinate -> Model -> Bool
 notCause =
-    merge isCause not
+    merge1 isCause not
 
 
 notStartCoord : Coordinate -> Model -> Bool
 notStartCoord =
-    merge isStartCoord not
+    merge1 isStartCoord not
 
 
 notOpenable : Coordinate -> Model -> Bool
 notOpenable =
-    merge isOpenable not
+    merge1 isOpenable not

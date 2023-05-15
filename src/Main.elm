@@ -1,22 +1,20 @@
 port module Main exposing (main)
 
+import ActualScreen
 import Browser
 import Browser.Navigation as Nav
-import Clock exposing (handleTick)
 import Components exposing (..)
+import FunctionUtil exposing (merge3)
 import GameLogic exposing (..)
-import Html exposing (br, h1, p, text)
-import Html.Attributes exposing (..)
 import JSCommunicator exposing (..)
 import Message exposing (Msg(..))
-import MineGenerate exposing (handleMineCoordGenerate)
+import MineGenerator exposing (processNewMine)
 import Model exposing (Model, emptyModel)
+import Screen exposing (currentScreen)
 import Task
 import TaskUtil exposing (performMsg)
 import Time
-import UIConditions exposing (Screen(..), currentScreen)
 import Url exposing (Url)
-import Util exposing (intoCmd)
 
 
 port sendData : String -> Cmd msg
@@ -41,7 +39,7 @@ init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ _ navKey =
     ( emptyModel navKey
     , Cmd.batch
-        [ intoCmd RequestDataToJS
+        [ performMsg RequestDataToJS
         , Task.perform Tick Time.now
         ]
     )
@@ -91,7 +89,7 @@ update msg model =
             handleRestartGame
 
         MineCoordGenerate coord ->
-            handleMineCoordGenerate coord
+            processNewMine coord
 
         ToggleFlag coord ->
             handleToggleFlag coord
@@ -108,28 +106,7 @@ subscriptions _ =
 view : Model -> Browser.Document Msg
 view model =
     let
-        content =
-            case currentScreen model of
-                GameScreen ->
-                    [ gameScreen model
-                    , br [] []
-                    , difficultySelector model
-                    , br [] []
-                    , aboutPage
-                    ]
-
-                UnknownDifficultyScreen ->
-                    [ h1 [] [ text "Unknown Difficulty." ]
-                    , difficultySelector model
-                    , br [] []
-                    , aboutPage
-                    ]
-
-                WaitingForJSScreen ->
-                    [ p [] [ text "Waiting for JavaScript..." ]
-                    ]
-
-                NoScreen ->
-                    []
+        screen =
+            merge3 currentScreen ActualScreen.asActual model
     in
-    Browser.Document "Minesweeper" content
+    Browser.Document "Minesweeper" screen
