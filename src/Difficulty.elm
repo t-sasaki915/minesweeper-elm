@@ -2,14 +2,10 @@ module Difficulty exposing
     ( Difficulty
     , allDifficulties
     , defaultDifficulty
-    , easy
     , fromString
-    , hard
-    , impossible
-    , normal
     )
 
-import ListUtil
+import ListUtil exposing (find)
 
 
 type alias Difficulty =
@@ -62,4 +58,4 @@ fromString str =
             Just defaultDifficulty
 
         other ->
-            ListUtil.find (\x -> x.name == other) allDifficulties
+            find (\x -> x.name == other) allDifficulties

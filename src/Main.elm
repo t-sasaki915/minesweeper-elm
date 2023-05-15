@@ -7,14 +7,14 @@ import Components exposing (..)
 import GameLogic exposing (..)
 import Html exposing (br, h1, p, text)
 import Html.Attributes exposing (..)
-import JSCommunication exposing (..)
+import JSCommunicator exposing (..)
 import Message exposing (Msg(..))
 import MineGenerate exposing (handleMineCoordGenerate)
 import Model exposing (Model, emptyModel)
 import Task
+import TaskUtil exposing (performMsg)
 import Time
 import UIConditions exposing (Screen(..), currentScreen)
-import URLUpdate exposing (..)
 import Url exposing (Url)
 import Util exposing (intoCmd)
 
@@ -48,19 +48,38 @@ init _ _ navKey =
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg =
+update msg model =
     case msg of
-        UrlChange url ->
-            handleURLChange url
+        UrlChange _ ->
+            ( emptyModel model.navKey
+            , performMsg RequestDataToJS
+            )
 
         UrlRequest req ->
-            handleURLRequest req
+            case req of
+                Browser.Internal url ->
+                    ( model
+                    , Nav.pushUrl model.navKey <| Url.toString url
+                    )
+
+                Browser.External url ->
+                    ( model
+                    , Nav.load url
+                    )
+
+        Tick newTime ->
+            ( { model | currentTime = newTime }
+            , Cmd.none
+            )
 
         RequestDataToJS ->
-            handleRequestDataToJS sendData
+            requestDataToJS model sendData
+
+        RequestAlertToJS content ->
+            requestAlertToJS content model sendData
 
         ReceiveDataFromJS data ->
-            handleReceiveDataFromJS data
+            processMessageFromJS data model
 
         CellClick coord ->
             handleCellClick coord
@@ -76,12 +95,6 @@ update msg =
 
         ToggleFlag coord ->
             handleToggleFlag coord
-
-        ShowAlert message ->
-            handleShowAlert sendData message
-
-        Tick newTime ->
-            handleTick newTime
 
 
 subscriptions : Model -> Sub Msg

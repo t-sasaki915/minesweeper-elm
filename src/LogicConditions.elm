@@ -7,11 +7,13 @@ module LogicConditions exposing
     , isMine
     , isOpenable
     , isOpened
+    , isStartCoord
     , notCause
     , notFlagged
     , notMine
     , notOpenable
     , notOpened
+    , notStartCoord
     )
 
 import Coordinate exposing (Coordinate)
@@ -72,6 +74,11 @@ isCause coord model =
     coord == model.causeCoord
 
 
+isStartCoord : Coordinate -> Model -> Bool
+isStartCoord coord model =
+    coord == model.startCoord
+
+
 isCleared : Model -> Bool
 isCleared model =
     let
@@ -107,6 +114,11 @@ notMine =
 notCause : Coordinate -> Model -> Bool
 notCause =
     merge isCause not
+
+
+notStartCoord : Coordinate -> Model -> Bool
+notStartCoord =
+    merge isStartCoord not
 
 
 notOpenable : Coordinate -> Model -> Bool

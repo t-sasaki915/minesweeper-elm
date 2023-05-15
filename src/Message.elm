@@ -10,11 +10,11 @@ type Msg
     = UrlRequest Browser.UrlRequest
     | UrlChange Url
     | RequestDataToJS
+    | RequestAlertToJS String
     | ReceiveDataFromJS String
     | CellClick Coordinate
     | ToggleFlagPlaceMode
     | RestartGame
     | MineCoordGenerate Coordinate
     | ToggleFlag Coordinate
-    | ShowAlert String
     | Tick Time.Posix

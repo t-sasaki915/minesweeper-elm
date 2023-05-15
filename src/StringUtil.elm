@@ -6,32 +6,33 @@ module StringUtil exposing
     , takeRight
     )
 
+import String exposing (dropLeft, dropRight, length, startsWith)
+
 
 takeLeft : Int -> String -> String
 takeLeft n str =
-    String.dropRight (String.length str - n) str
+    dropRight (length str - n) str
 
 
 takeRight : Int -> String -> String
 takeRight n str =
-    String.dropLeft (String.length str - n) str
-
-
-firstIndexOf_ : String -> String -> Int -> Maybe Int
-firstIndexOf_ search str index =
-    if String.length str <= index then
-        Nothing
-
-    else if String.startsWith search (String.dropLeft index str) then
-        Just index
-
-    else
-        firstIndexOf_ search str (index + 1)
+    dropLeft (length str - n) str
 
 
 firstIndexOf : String -> String -> Maybe Int
 firstIndexOf search str =
-    firstIndexOf_ search str 0
+    let
+        tailrec index =
+            if length str <= index then
+                Nothing
+
+            else if startsWith search (dropLeft index str) then
+                Just index
+
+            else
+                tailrec (index + 1)
+    in
+    tailrec 0
 
 
 takeBefore : String -> String -> String
@@ -48,7 +49,7 @@ takeAfter : String -> String -> String
 takeAfter search str =
     case firstIndexOf search str of
         Just firstIndex ->
-            String.dropLeft (firstIndex + String.length search) str
+            takeRight firstIndex str
 
         Nothing ->
             ""

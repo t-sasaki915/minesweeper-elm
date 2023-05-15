@@ -5,12 +5,17 @@ module ListUtil exposing
     , find
     , flatten
     , forAll
-    , listWith
-    , listWithout
     , mapN
     , nonEmpty
+    , notContains
     , numberOf
+    , without
     )
+
+
+merge : (a -> b -> c) -> (c -> d) -> a -> b -> d
+merge f1 f2 a b =
+    f2 (f1 a b)
 
 
 nonEmpty : List a -> Bool
@@ -28,13 +33,13 @@ contains a list =
     exists (\x -> x == a) list
 
 
-listWith : a -> List a -> List a
-listWith a list =
-    a :: list
+notContains : a -> List a -> Bool
+notContains =
+    merge contains not
 
 
-listWithout : a -> List a -> List a
-listWithout a list =
+without : a -> List a -> List a
+without a list =
     List.filter (\x -> not (x == a)) list
 
 

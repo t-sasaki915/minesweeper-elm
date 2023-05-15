@@ -1,15 +1,6 @@
-module Clock exposing (handleTick, posixDelta, posixToSeconds)
+module TimeUtil exposing (posixDelta, posixToSeconds)
 
-import Message exposing (Msg(..))
-import Model exposing (Model)
 import Time exposing (Posix, millisToPosix, posixToMillis)
-
-
-handleTick : Posix -> Model -> ( Model, Cmd Msg )
-handleTick newTime model =
-    ( { model | currentTime = newTime }
-    , Cmd.none
-    )
 
 
 posixToSeconds : Posix -> Int
