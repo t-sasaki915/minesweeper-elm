@@ -1,9 +1,7 @@
 module UIConditions exposing
     ( CellClass(..)
     , InnerIcon(..)
-    , Screen(..)
     , cellClassAt
-    , currentScreen
     , innerIconAt
     )
 
@@ -11,13 +9,6 @@ import Coordinate exposing (Coordinate)
 import ListUtil
 import LogicConditions exposing (..)
 import Model exposing (Model)
-
-
-type Screen
-    = GameScreen
-    | UnknownDifficultyScreen
-    | WaitingForJSScreen
-    | NoScreen
 
 
 type CellClass
@@ -34,21 +25,6 @@ type InnerIcon
     | WrongFlagIcon
     | MineIcon
     | NumberIcon
-
-
-currentScreen : Model -> Screen
-currentScreen model =
-    if shouldRenderGameScreen model then
-        GameScreen
-
-    else if shouldRenderUnknownDifficultyScreen model then
-        UnknownDifficultyScreen
-
-    else if shouldRenderWaitingForJSScreen model then
-        WaitingForJSScreen
-
-    else
-        NoScreen
 
 
 cellClassAt : Coordinate -> Model -> CellClass
@@ -90,29 +66,6 @@ innerIconAt coord model =
 fAll : List Bool -> Bool
 fAll boolList =
     ListUtil.forAll (\x -> x) boolList
-
-
-shouldRenderGameScreen : Model -> Bool
-shouldRenderGameScreen model =
-    fAll
-        [ model.difficultyReceived
-        , model.pathReceived
-        , not model.unknownDifficulty
-        ]
-
-
-shouldRenderUnknownDifficultyScreen : Model -> Bool
-shouldRenderUnknownDifficultyScreen model =
-    fAll
-        [ model.difficultyReceived
-        , model.pathReceived
-        , model.unknownDifficulty
-        ]
-
-
-shouldRenderWaitingForJSScreen : Model -> Bool
-shouldRenderWaitingForJSScreen model =
-    not model.difficultyReceived || not model.pathReceived
 
 
 shouldRenderFlagIcon : Coordinate -> Model -> Bool
