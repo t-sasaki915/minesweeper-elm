@@ -2,7 +2,7 @@ port module Main exposing (main)
 
 --import GameLogic exposing (..)
 
-import ActualScreen
+import ActualScreen exposing (actualizeScreen)
 import Browser
 import Browser.Navigation as Nav
 import FunctionUtil exposing (merge3)
@@ -98,6 +98,6 @@ view : Model -> Browser.Document Msg
 view model =
     let
         screen =
-            merge3 currentScreen ActualScreen.asActual model
+            merge3 currentScreen actualizeScreen model
     in
     Browser.Document "Minesweeper" screen

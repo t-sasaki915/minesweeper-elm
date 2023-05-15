@@ -1,9 +1,9 @@
 module ActualScreen exposing
     ( ActualScreen
-    , asActual
+    , actualizeScreen
     )
 
-import ActualComponent
+import ActualComponent exposing (actualizeComponent)
 import Component exposing (Component(..))
 import Html exposing (Html)
 import List exposing (map)
@@ -16,8 +16,8 @@ type alias ActualScreen =
     List (Html Msg)
 
 
-asActual : Screen -> Model -> ActualScreen
-asActual screen model =
+actualizeScreen : Screen -> Model -> ActualScreen
+actualizeScreen screen model =
     case screen of
         GameScreen ->
             gameScreen model
@@ -34,7 +34,7 @@ asActual screen model =
 
 actualize : List Component -> Model -> ActualScreen
 actualize components model =
-    map (\c -> ActualComponent.asActual c model) components
+    map (\c -> actualizeComponent c model) components
 
 
 gameScreen : Model -> ActualScreen
