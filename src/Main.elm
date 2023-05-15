@@ -3,16 +3,15 @@ port module Main exposing (main)
 --import GameLogic exposing (..)
 
 import ActualScreen exposing (actualizeScreen)
-import Browser
-import Browser.Navigation as Nav
+import Browser exposing (Document, application)
+import Browser.Navigation exposing (Key, load, pushUrl)
 import FunctionUtil exposing (merge3)
-import JSCommunicator exposing (..)
+import JSCommunicator exposing (processMessageFromJS, requestDataToJS)
 import Message exposing (Msg(..))
 import MineGenerator exposing (processNewMine)
 import Model exposing (Model, emptyModel)
 import Screen exposing (currentScreen)
-import Task
-import TaskUtil exposing (performMsg)
+import Task exposing (perform)
 import Time
 import Url exposing (Url)
 
@@ -25,7 +24,7 @@ port receiveData : (String -> msg) -> Sub msg
 
 main : Program () Model Msg
 main =
-    Browser.application
+    application
         { init = init
         , view = view
         , update = update
@@ -35,12 +34,12 @@ main =
         }
 
 
-init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init : () -> Url -> Key -> ( Model, Cmd Msg )
 init _ _ navKey =
     ( emptyModel navKey
     , Cmd.batch
         [ requestDataToJS sendData
-        , Task.perform Tick Time.now
+        , perform Tick Time.now
         ]
     )
 
@@ -57,12 +56,12 @@ update msg model =
             case req of
                 Browser.Internal url ->
                     ( model
-                    , Nav.pushUrl model.navKey <| Url.toString url
+                    , pushUrl model.navKey <| Url.toString url
                     )
 
                 Browser.External url ->
                     ( model
-                    , Nav.load url
+                    , load url
                     )
 
         Tick newTime ->
@@ -94,8 +93,8 @@ subscriptions _ =
         ]
 
 
-view : Model -> Browser.Document Msg
+view : Model -> Document Msg
 view model =
-    Browser.Document
+    Document
         "Minesweeper"
         (merge3 currentScreen actualizeScreen model)
