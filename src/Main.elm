@@ -1,4 +1,4 @@
-port module Main exposing (main)
+module Main exposing (main)
 
 --import GameLogic exposing (..)
 
@@ -6,7 +6,7 @@ import ActualScreen exposing (actualizeScreen)
 import Browser exposing (Document, application)
 import Browser.Navigation exposing (Key, load, pushUrl)
 import FunctionUtil exposing (merge3)
-import JSCommunicator exposing (processMessageFromJS, requestDataToJS)
+import JSCommunicator exposing (processMessageFromJS, requestDataToJS, subscribeJSMessage)
 import Message exposing (Msg(..))
 import MineGenerator exposing (processNewMine)
 import Model exposing (Model, emptyModel)
@@ -14,12 +14,6 @@ import Screen exposing (currentScreen)
 import Task exposing (perform)
 import Time
 import Url exposing (Url)
-
-
-port sendData : String -> Cmd msg
-
-
-port receiveData : (String -> msg) -> Sub msg
 
 
 main : Program () Model Msg
@@ -38,7 +32,7 @@ init : () -> Url -> Key -> ( Model, Cmd Msg )
 init _ _ navKey =
     ( emptyModel navKey
     , Cmd.batch
-        [ requestDataToJS sendData
+        [ requestDataToJS
         , perform Tick Time.now
         ]
     )
@@ -49,7 +43,7 @@ update msg model =
     case msg of
         UrlChange _ ->
             ( emptyModel model.navKey
-            , requestDataToJS sendData
+            , requestDataToJS
             )
 
         UrlRequest req ->
@@ -88,7 +82,7 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.batch
-        [ receiveData ReceiveDataFromJS
+        [ subscribeJSMessage
         , Time.every 1000 Tick
         ]
 

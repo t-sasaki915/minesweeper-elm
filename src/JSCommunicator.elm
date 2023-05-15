@@ -1,13 +1,21 @@
-module JSCommunicator exposing
+port module JSCommunicator exposing
     ( processMessageFromJS
     , requestAlertToJS
     , requestDataToJS
+    , subscribeJSMessage
     )
 
 import Difficulty
 import List exposing (map)
+import Message exposing (Msg(..))
 import Model exposing (Model)
 import StringUtil exposing (takeAfter, takeBefore)
+
+
+port sendData : String -> Cmd msg
+
+
+port receiveData : (String -> msg) -> Sub msg
 
 
 type alias JSMessage =
@@ -21,17 +29,22 @@ jsMsgToString jsmessage =
     jsmessage.key ++ "=" ++ jsmessage.value
 
 
-sendJSMessage : JSMessage -> (String -> Cmd msg) -> Cmd msg
-sendJSMessage jsMsg messenger =
-    messenger (jsMsgToString jsMsg)
+sendJSMessage : JSMessage -> Cmd msg
+sendJSMessage jsMsg =
+    sendData (jsMsgToString jsMsg)
 
 
-sendJSMessages : List JSMessage -> (String -> Cmd msg) -> Cmd msg
-sendJSMessages jsMsgs messenger =
-    Cmd.batch (map messenger (map jsMsgToString jsMsgs))
+sendJSMessages : List JSMessage -> Cmd msg
+sendJSMessages jsMsgs =
+    Cmd.batch (map sendJSMessage jsMsgs)
 
 
-requestDataToJS : (String -> Cmd msg) -> Cmd msg
+subscribeJSMessage : Sub Msg
+subscribeJSMessage =
+    receiveData ReceiveDataFromJS
+
+
+requestDataToJS : Cmd msg
 requestDataToJS =
     sendJSMessages
         [ JSMessage "RequestData" "Difficulty"
@@ -39,7 +52,7 @@ requestDataToJS =
         ]
 
 
-requestAlertToJS : String -> (String -> Cmd msg) -> Cmd msg
+requestAlertToJS : String -> Cmd msg
 requestAlertToJS content =
     sendJSMessage (JSMessage "ShowAlert" content)
 
