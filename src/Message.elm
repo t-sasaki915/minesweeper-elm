@@ -16,5 +16,4 @@ type Msg
     | ToggleFlagPlaceMode
     | RestartGame
     | MineCoordGenerate Coordinate
-    | ToggleFlag Coordinate
     | Tick Time.Posix

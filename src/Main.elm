@@ -91,9 +91,6 @@ update msg model =
         MineCoordGenerate coord ->
             processNewMine coord model
 
-        ToggleFlag coord ->
-            ( model, Cmd.none )
-
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
