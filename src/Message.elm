@@ -9,8 +9,6 @@ import Url exposing (Url)
 type Msg
     = UrlRequest Browser.UrlRequest
     | UrlChange Url
-    | RequestDataToJS
-    | RequestAlertToJS String
     | ReceiveDataFromJS String
     | CellClick Coordinate
     | ToggleFlagPlaceMode

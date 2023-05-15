@@ -21,21 +21,17 @@ jsMsgToString jsmessage =
     jsmessage.key ++ "=" ++ jsmessage.value
 
 
-sendJSMessage : JSMessage -> Model -> (String -> Cmd msg) -> ( Model, Cmd msg )
-sendJSMessage jsMsg model messenger =
-    ( model
-    , messenger (jsMsgToString jsMsg)
-    )
+sendJSMessage : JSMessage -> (String -> Cmd msg) -> Cmd msg
+sendJSMessage jsMsg messenger =
+    messenger (jsMsgToString jsMsg)
 
 
-sendJSMessages : List JSMessage -> Model -> (String -> Cmd msg) -> ( Model, Cmd msg )
-sendJSMessages jsMsgs model messenger =
-    ( model
-    , Cmd.batch (map messenger (map jsMsgToString jsMsgs))
-    )
+sendJSMessages : List JSMessage -> (String -> Cmd msg) -> Cmd msg
+sendJSMessages jsMsgs messenger =
+    Cmd.batch (map messenger (map jsMsgToString jsMsgs))
 
 
-requestDataToJS : Model -> (String -> Cmd msg) -> ( Model, Cmd msg )
+requestDataToJS : (String -> Cmd msg) -> Cmd msg
 requestDataToJS =
     sendJSMessages
         [ JSMessage "RequestData" "Difficulty"
@@ -43,7 +39,7 @@ requestDataToJS =
         ]
 
 
-requestAlertToJS : String -> Model -> (String -> Cmd msg) -> ( Model, Cmd msg )
+requestAlertToJS : String -> (String -> Cmd msg) -> Cmd msg
 requestAlertToJS content =
     sendJSMessage (JSMessage "ShowAlert" content)
 

@@ -39,7 +39,7 @@ init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ _ navKey =
     ( emptyModel navKey
     , Cmd.batch
-        [ performMsg RequestDataToJS
+        [ requestDataToJS sendData
         , Task.perform Tick Time.now
         ]
     )
@@ -50,7 +50,7 @@ update msg model =
     case msg of
         UrlChange _ ->
             ( emptyModel model.navKey
-            , performMsg RequestDataToJS
+            , requestDataToJS sendData
             )
 
         UrlRequest req ->
@@ -69,12 +69,6 @@ update msg model =
             ( { model | currentTime = newTime }
             , Cmd.none
             )
-
-        RequestDataToJS ->
-            requestDataToJS model sendData
-
-        RequestAlertToJS content ->
-            requestAlertToJS content model sendData
 
         ReceiveDataFromJS data ->
             processMessageFromJS data model
