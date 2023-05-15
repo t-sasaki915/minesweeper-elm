@@ -3,8 +3,10 @@ module ActualScreen exposing
     , asActual
     )
 
-import Components
-import Html exposing (Html, br, h1, p, text)
+import ActualComponent
+import Component exposing (Component(..))
+import Html exposing (Html)
+import List exposing (map)
 import Message exposing (Msg)
 import Model exposing (Model)
 import Screen exposing (Screen(..))
@@ -30,32 +32,41 @@ asActual screen model =
             errorScreen model
 
 
+actualize : List Component -> Model -> ActualScreen
+actualize components model =
+    map (\c -> ActualComponent.asActual c model) components
+
+
 gameScreen : Model -> ActualScreen
-gameScreen model =
-    [ Components.gameScreen model
-    , br [] []
-    , Components.difficultySelector model
-    , br [] []
-    , Components.aboutPage
-    ]
+gameScreen =
+    actualize
+        [ GameContainer
+        , NewLine
+        , DifficultySelector
+        , NewLine
+        , AboutPage
+        ]
 
 
 unknownDifficultyScreen : Model -> ActualScreen
-unknownDifficultyScreen model =
-    [ h1 [] [ text "Unknown Difficulty." ]
-    , Components.difficultySelector model
-    , br [] []
-    , Components.aboutPage
-    ]
+unknownDifficultyScreen =
+    actualize
+        [ UnknownDifficultyText
+        , DifficultySelector
+        , NewLine
+        , AboutPage
+        ]
 
 
 waitingForJSScreen : Model -> ActualScreen
-waitingForJSScreen _ =
-    [ p [] [ text "Waiting for JavaScript..." ]
-    ]
+waitingForJSScreen =
+    actualize
+        [ WaitingForJSText
+        ]
 
 
 errorScreen : Model -> ActualScreen
-errorScreen _ =
-    [ p [] [ text "Something went wrong." ]
-    ]
+errorScreen =
+    actualize
+        [ SomethingWentWrongText
+        ]
