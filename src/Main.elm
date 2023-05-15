@@ -1,11 +1,10 @@
 module Main exposing (main)
 
---import GameLogic exposing (..)
-
 import ActualScreen exposing (actualizeScreen)
 import Browser exposing (Document, application)
 import Browser.Navigation exposing (Key, load, pushUrl)
 import FunctionUtil exposing (merge3)
+import Game exposing (..)
 import JSCommunicator exposing (processMessageFromJS, requestDataToJS, subscribeJSMessage)
 import Message exposing (Msg(..))
 import MineGenerator exposing (processNewMine)
@@ -70,10 +69,10 @@ update msg model =
             ( model, Cmd.none )
 
         ToggleFlagPlaceMode ->
-            ( model, Cmd.none )
+            toggleFlagPlaceMode model
 
         RestartGame ->
-            ( model, Cmd.none )
+            restartGame model
 
         MineCoordGenerate coord ->
             processNewMine coord model
