@@ -1,11 +1,27 @@
 module Game exposing
-    ( restartGame
+    ( mineCountAt
+    , processCellClick
+    , restartGame
     , toggleFlagPlaceMode
     )
 
-import Coordinate exposing (Coordinate)
+import Coordinate exposing (Coordinate, around3x3)
+import List exposing (map)
+import ListUtil exposing (numberOf)
+import LogicConditions exposing (..)
 import Message exposing (Msg(..))
 import Model exposing (Model, emptyModel)
+
+
+mineCountAt : Coordinate -> Model -> Int
+mineCountAt coord model =
+    numberOf True
+        (map (\c -> isMine c model) (around3x3 coord model.difficulty))
+
+
+processCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
+processCellClick coord model =
+    ( model, Cmd.none )
 
 
 toggleFlagPlaceMode : Model -> ( Model, Cmd Msg )

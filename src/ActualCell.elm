@@ -6,6 +6,8 @@ module ActualCell exposing
     )
 
 import Cell exposing (CellClass(..), CellIcon(..))
+import Coordinate exposing (Coordinate)
+import Game exposing (mineCountAt)
 import Html exposing (Html)
 import Images exposing (..)
 import Message exposing (Msg)
@@ -36,8 +38,8 @@ actualizeCellClass cellClass _ =
             ""
 
 
-actualizeCellIcon : CellIcon -> Model -> ActualCellIcon
-actualizeCellIcon cellIcon model =
+actualizeCellIcon : CellIcon -> Coordinate -> Model -> ActualCellIcon
+actualizeCellIcon cellIcon coord model =
     case cellIcon of
         FlagIcon ->
             [ flagIcon ]
@@ -51,9 +53,8 @@ actualizeCellIcon cellIcon model =
         MineIcon ->
             [ mineIcon ]
 
-        -- TODO
         NumberIcon ->
-            [ numberIcon 1 ]
+            [ numberIcon (mineCountAt coord model) ]
 
         NoIcon ->
             []

@@ -8,7 +8,7 @@ import Cell exposing (cellClassAt, cellIconAt)
 import Component exposing (Component(..))
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (allDifficulties, defaultDifficulty)
-import FunctionUtil exposing (merge3)
+import FunctionUtil exposing (merge3, merge4)
 import Html exposing (Html, a, br, div, h1, p, span, text)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
@@ -66,7 +66,7 @@ cellArray model =
                 [ class (merge3 (cellClassAt coord) actualizeCellClass model)
                 , onClick (CellClick coord)
                 ]
-                (merge3 (cellIconAt coord) actualizeCellIcon model)
+                (merge4 cellIconAt actualizeCellIcon coord model)
 
         cellLine y =
             div [ class "cellLine" ]

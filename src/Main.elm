@@ -66,7 +66,7 @@ update msg model =
             processMessageFromJS data model
 
         CellClick coord ->
-            ( model, Cmd.none )
+            processCellClick coord model
 
         ToggleFlagPlaceMode ->
             toggleFlagPlaceMode model
