@@ -96,8 +96,6 @@ subscriptions _ =
 
 view : Model -> Browser.Document Msg
 view model =
-    let
-        screen =
-            merge3 currentScreen actualizeScreen model
-    in
-    Browser.Document "Minesweeper" screen
+    Browser.Document
+        "Minesweeper"
+        (merge3 currentScreen actualizeScreen model)
