@@ -49,7 +49,7 @@ takeAfter : String -> String -> String
 takeAfter search str =
     case firstIndexOf search str of
         Just firstIndex ->
-            takeRight firstIndex str
+            dropLeft (firstIndex + 1) str
 
         Nothing ->
             ""

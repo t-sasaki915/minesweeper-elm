@@ -60,7 +60,7 @@ cellArray model =
     let
         cell coord =
             div
-                [ class "cell"
+                [ class "cell cellNotOpened"
                 , onClick (CellClick coord)
                 ]
                 []
@@ -141,7 +141,7 @@ difficultySelector model =
                 model.path ++ "?d=" ++ diff.name
 
         diffAnchor diff =
-            a [ href (diffLink diff) ] [ text diff.displayName ]
+            a [ href (diffLink diff) ] [ text diff.displayName, br [] [] ]
     in
     div []
         ([ span [] [ text "Difficulties:" ]

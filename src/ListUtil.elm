@@ -5,12 +5,12 @@ module ListUtil exposing
     , find
     , flatten
     , forAll
+    , identityForAll
     , mapN
     , nonEmpty
     , notContains
     , numberOf
     , without
-    , identityForAll
     )
 
 import FunctionUtil exposing (merge1)

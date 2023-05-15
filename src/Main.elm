@@ -1,10 +1,11 @@
 port module Main exposing (main)
 
+--import GameLogic exposing (..)
+
 import ActualScreen
 import Browser
 import Browser.Navigation as Nav
 import FunctionUtil exposing (merge3)
-import GameLogic exposing (..)
 import JSCommunicator exposing (..)
 import Message exposing (Msg(..))
 import MineGenerator exposing (processNewMine)
@@ -79,19 +80,19 @@ update msg model =
             processMessageFromJS data model
 
         CellClick coord ->
-            handleCellClick coord
+            ( model, Cmd.none )
 
         ToggleFlagPlaceMode ->
-            handleToggleFlagPlaceMode
+            ( model, Cmd.none )
 
         RestartGame ->
-            handleRestartGame
+            ( model, Cmd.none )
 
         MineCoordGenerate coord ->
-            processNewMine coord
+            processNewMine coord model
 
         ToggleFlag coord ->
-            handleToggleFlag coord
+            ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
