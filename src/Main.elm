@@ -71,6 +71,9 @@ update msg model =
         ToggleFlagPlaceMode ->
             toggleFlagPlaceMode model
 
+        ToggleChordMode ->
+            toggleChordMode model
+
         RestartGame ->
             restartGame model
 

@@ -2,6 +2,7 @@ module Game exposing
     ( mineCountAt
     , processCellClick
     , restartGame
+    , toggleChordMode
     , toggleFlagPlaceMode
     )
 
@@ -77,6 +78,28 @@ toggleFlagPlaceMode model =
 
         _ ->
             ( model, Cmd.none )
+
+
+toggleChordMode : Model -> ( Model, Cmd Msg )
+toggleChordMode model =
+    case currentGameStatus model of
+        GameOver ->
+            ( model, Cmd.none )
+
+        NotStarted ->
+            ( model, Cmd.none )
+
+        _ ->
+            case currentChordModeStatus model of
+                InChordMode ->
+                    ( { model | inChordMode = False }
+                    , Cmd.none
+                    )
+
+                NotInChordMode ->
+                    ( { model | inChordMode = True }
+                    , Cmd.none
+                    )
 
 
 restartGame : Model -> ( Model, Cmd Msg )

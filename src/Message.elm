@@ -12,6 +12,7 @@ type Msg
     | ReceiveDataFromJS String
     | CellClick Coordinate
     | ToggleFlagPlaceMode
+    | ToggleChordMode
     | RestartGame
     | MineCoordGenerate Coordinate
     | Tick Time.Posix

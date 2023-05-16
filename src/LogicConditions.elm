@@ -1,8 +1,10 @@
 module LogicConditions exposing
     ( CellOpenTryResult(..)
     , CellStatus(..)
+    , ChordModeStatus(..)
     , GameStatus(..)
     , cellStatusAt
+    , currentChordModeStatus
     , currentGameStatus
     , isCause
     , isFlagged
@@ -33,6 +35,11 @@ type GameStatus
     | InFlagPlaceMode
 
 
+type ChordModeStatus
+    = InChordMode
+    | NotInChordMode
+
+
 type CellStatus
     = Opened
     | Flagged
@@ -59,6 +66,15 @@ currentGameStatus model =
 
     else
         NotStarted
+
+
+currentChordModeStatus : Model -> ChordModeStatus
+currentChordModeStatus model =
+    if model.inChordMode then
+        InChordMode
+
+    else
+        NotInChordMode
 
 
 cellStatusAt : Coordinate -> Model -> CellStatus

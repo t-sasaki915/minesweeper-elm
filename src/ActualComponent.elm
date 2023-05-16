@@ -132,7 +132,7 @@ toggleChordModeButton model =
                 "Enter Chord Mode"
     in
     div [ class "btn" ]
-        [ span [ class "btnText" ] [ text buttonText ]
+        [ span [ class "btnText", onClick ToggleChordMode ] [ text buttonText ]
         ]
 
 
