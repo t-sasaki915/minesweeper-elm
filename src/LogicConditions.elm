@@ -1,5 +1,6 @@
 module LogicConditions exposing
-    ( CellStatus(..)
+    ( CellOpenTryResult(..)
+    , CellStatus(..)
     , GameStatus(..)
     , cellStatusAt
     , currentGameStatus
@@ -16,10 +17,12 @@ module LogicConditions exposing
     , notOpenable
     , notOpened
     , notStartCoord
+    , tryToOpen
     )
 
 import Coordinate exposing (Coordinate)
 import FunctionUtil exposing (merge1, merge2)
+import List exposing (length)
 import ListUtil
 import Model exposing (Model)
 
@@ -35,6 +38,12 @@ type CellStatus
     = Opened
     | Flagged
     | NotFlagged
+
+
+type CellOpenTryResult
+    = CellOpenSuccess
+    | CellOpenFailure
+    | GameClear
 
 
 currentGameStatus : Model -> GameStatus
@@ -63,6 +72,28 @@ cellStatusAt coord model =
 
     else
         NotFlagged
+
+
+tryToOpen : Coordinate -> Model -> CellOpenTryResult
+tryToOpen coord model =
+    let
+        diff =
+            model.difficulty
+
+        cellArraySize =
+            diff.width * diff.height
+
+        neutralCellCount =
+            cellArraySize - diff.mineCount
+    in
+    if isMine coord model then
+        CellOpenFailure
+
+    else if (neutralCellCount - length model.openedCoords) <= 1 then
+        GameClear
+
+    else
+        CellOpenSuccess
 
 
 isOpened : Coordinate -> Model -> Bool

@@ -6,6 +6,7 @@ module Game exposing
     )
 
 import Coordinate exposing (Coordinate, around3x3)
+import JSCommunicator exposing (requestAlertToJS)
 import List exposing (filter, map)
 import ListUtil exposing (numberOf, without)
 import LogicConditions exposing (..)
@@ -33,7 +34,15 @@ processCellClick coord model =
                     ( model, Cmd.none )
 
                 NotFlagged ->
-                    tryToOpen coord model
+                    case tryToOpen coord model of
+                        CellOpenSuccess ->
+                            open coord model
+
+                        CellOpenFailure ->
+                            gameOver coord model
+
+                        GameClear ->
+                            clearGame coord model
 
         InFlagPlaceMode ->
             case cellStatusAt coord model of
@@ -88,21 +97,6 @@ restartGame model =
     )
 
 
-tryToOpen : Coordinate -> Model -> ( Model, Cmd Msg )
-tryToOpen coord model =
-    if isMine coord model then
-        ( { model
-            | isGameOver = True
-            , causeCoord = coord
-            , gameOverTime = model.currentTime
-          }
-        , Cmd.none
-        )
-
-    else
-        open coord model
-
-
 open : Coordinate -> Model -> ( Model, Cmd Msg )
 open coord model =
     let
@@ -144,4 +138,26 @@ startGame startCoord model =
         , startTime = model.currentTime
       }
     , generateMine model
+    )
+
+
+clearGame : Coordinate -> Model -> ( Model, Cmd Msg )
+clearGame coord model =
+    ( { model
+        | isGameOver = True
+        , openedCoords = coord :: model.openedCoords
+        , gameOverTime = model.currentTime
+      }
+    , requestAlertToJS "Cleared"
+    )
+
+
+gameOver : Coordinate -> Model -> ( Model, Cmd Msg )
+gameOver coord model =
+    ( { model
+        | isGameOver = True
+        , causeCoord = coord
+        , gameOverTime = model.currentTime
+      }
+    , Cmd.none
     )
