@@ -1,5 +1,8 @@
 module LogicConditions exposing
-    ( GameStatus(..)
+    ( CellOpenTryResult(..)
+    , CellStatus(..)
+    , GameStatus(..)
+    , cellStatusAt
     , currentGameStatus
     , isCause
     , isCleared
@@ -7,14 +10,19 @@ module LogicConditions exposing
     , isMine
     , isOpenable
     , isOpened
+    , isStartCoord
     , notCause
     , notFlagged
     , notMine
     , notOpenable
     , notOpened
+    , notStartCoord
+    , tryToOpen
     )
 
 import Coordinate exposing (Coordinate)
+import FunctionUtil exposing (merge1, merge2)
+import List exposing (length)
 import ListUtil
 import Model exposing (Model)
 
@@ -24,6 +32,18 @@ type GameStatus
     | GameOver
     | NotStarted
     | InFlagPlaceMode
+
+
+type CellStatus
+    = Opened
+    | Flagged
+    | NotFlagged
+
+
+type CellOpenTryResult
+    = CellOpenSuccess
+    | CellOpenFailure
+    | GameClear
 
 
 currentGameStatus : Model -> GameStatus
@@ -42,14 +62,38 @@ currentGameStatus model =
         NotStarted
 
 
-merge : (a -> b -> c) -> (c -> d) -> a -> b -> d
-merge f1 f2 a b =
-    f2 (f1 a b)
+cellStatusAt : Coordinate -> Model -> CellStatus
+cellStatusAt coord model =
+    if isOpened coord model then
+        Opened
+
+    else if isFlagged coord model then
+        Flagged
+
+    else
+        NotFlagged
 
 
-merge2 : (a -> b -> c) -> (a -> b -> d) -> (c -> d -> e) -> a -> b -> e
-merge2 f1 f2 f3 a b =
-    f3 (f1 a b) (f2 a b)
+tryToOpen : Coordinate -> Model -> CellOpenTryResult
+tryToOpen coord model =
+    let
+        diff =
+            model.difficulty
+
+        cellArraySize =
+            diff.width * diff.height
+
+        neutralCellCount =
+            cellArraySize - diff.mineCount
+    in
+    if isMine coord model then
+        CellOpenFailure
+
+    else if (neutralCellCount - length model.openedCoords) <= 1 then
+        GameClear
+
+    else
+        CellOpenSuccess
 
 
 isOpened : Coordinate -> Model -> Bool
@@ -72,6 +116,11 @@ isCause coord model =
     coord == model.causeCoord
 
 
+isStartCoord : Coordinate -> Model -> Bool
+isStartCoord coord model =
+    coord == model.startCoord
+
+
 isCleared : Model -> Bool
 isCleared model =
     let
@@ -91,24 +140,29 @@ isOpenable =
 
 notOpened : Coordinate -> Model -> Bool
 notOpened =
-    merge isOpened not
+    merge1 isOpened not
 
 
 notFlagged : Coordinate -> Model -> Bool
 notFlagged =
-    merge isFlagged not
+    merge1 isFlagged not
 
 
 notMine : Coordinate -> Model -> Bool
 notMine =
-    merge isMine not
+    merge1 isMine not
 
 
 notCause : Coordinate -> Model -> Bool
 notCause =
-    merge isCause not
+    merge1 isCause not
+
+
+notStartCoord : Coordinate -> Model -> Bool
+notStartCoord =
+    merge1 isStartCoord not
 
 
 notOpenable : Coordinate -> Model -> Bool
 notOpenable =
-    merge isOpenable not
+    merge1 isOpenable not

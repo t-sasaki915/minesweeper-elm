@@ -1,20 +1,17 @@
 module Message exposing (Msg(..))
 
-import Browser
+import Browser exposing (UrlRequest)
 import Coordinate exposing (Coordinate)
 import Time
 import Url exposing (Url)
 
 
 type Msg
-    = UrlRequest Browser.UrlRequest
+    = UrlRequest UrlRequest
     | UrlChange Url
-    | RequestDataToJS
     | ReceiveDataFromJS String
     | CellClick Coordinate
     | ToggleFlagPlaceMode
     | RestartGame
     | MineCoordGenerate Coordinate
-    | ToggleFlag Coordinate
-    | ShowAlert String
     | Tick Time.Posix

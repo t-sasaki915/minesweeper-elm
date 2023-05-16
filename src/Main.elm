@@ -1,33 +1,23 @@
-port module Main exposing (main)
+module Main exposing (main)
 
-import Browser
-import Browser.Navigation as Nav
-import Clock exposing (handleTick)
-import Components exposing (..)
-import GameLogic exposing (..)
-import Html exposing (br, h1, p, text)
-import Html.Attributes exposing (..)
-import JSCommunication exposing (..)
+import ActualScreen exposing (actualizeScreen)
+import Browser exposing (Document, application)
+import Browser.Navigation exposing (Key, load, pushUrl)
+import FunctionUtil exposing (merge3)
+import Game exposing (..)
+import JSCommunicator exposing (processMessageFromJS, requestDataToJS, subscribeJSMessage)
 import Message exposing (Msg(..))
-import MineGenerate exposing (handleMineCoordGenerate)
+import MineGenerator exposing (processNewMine)
 import Model exposing (Model, emptyModel)
-import Task
+import Screen exposing (currentScreen)
+import Task exposing (perform)
 import Time
-import UIConditions exposing (Screen(..), currentScreen)
-import URLUpdate exposing (..)
 import Url exposing (Url)
-import Util exposing (intoCmd)
-
-
-port sendData : String -> Cmd msg
-
-
-port receiveData : (String -> msg) -> Sub msg
 
 
 main : Program () Model Msg
 main =
-    Browser.application
+    application
         { init = init
         , view = view
         , update = update
@@ -37,86 +27,67 @@ main =
         }
 
 
-init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init : () -> Url -> Key -> ( Model, Cmd Msg )
 init _ _ navKey =
     ( emptyModel navKey
     , Cmd.batch
-        [ intoCmd RequestDataToJS
-        , Task.perform Tick Time.now
+        [ requestDataToJS
+        , perform Tick Time.now
         ]
     )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg =
+update msg model =
     case msg of
-        UrlChange url ->
-            handleURLChange url
+        UrlChange _ ->
+            ( emptyModel model.navKey
+            , requestDataToJS
+            )
 
         UrlRequest req ->
-            handleURLRequest req
+            case req of
+                Browser.Internal url ->
+                    ( model
+                    , pushUrl model.navKey <| Url.toString url
+                    )
 
-        RequestDataToJS ->
-            handleRequestDataToJS sendData
-
-        ReceiveDataFromJS data ->
-            handleReceiveDataFromJS data
-
-        CellClick coord ->
-            handleCellClick coord
-
-        ToggleFlagPlaceMode ->
-            handleToggleFlagPlaceMode
-
-        RestartGame ->
-            handleRestartGame
-
-        MineCoordGenerate coord ->
-            handleMineCoordGenerate coord
-
-        ToggleFlag coord ->
-            handleToggleFlag coord
-
-        ShowAlert message ->
-            handleShowAlert sendData message
+                Browser.External url ->
+                    ( model
+                    , load url
+                    )
 
         Tick newTime ->
-            handleTick newTime
+            ( { model | currentTime = newTime }
+            , Cmd.none
+            )
+
+        ReceiveDataFromJS data ->
+            processMessageFromJS data model
+
+        CellClick coord ->
+            processCellClick coord model
+
+        ToggleFlagPlaceMode ->
+            toggleFlagPlaceMode model
+
+        RestartGame ->
+            restartGame model
+
+        MineCoordGenerate coord ->
+            processNewMine coord model
 
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.batch
-        [ receiveData ReceiveDataFromJS
+        [ subscribeJSMessage
         , Time.every 1000 Tick
         ]
 
 
-view : Model -> Browser.Document Msg
+view : Model -> Document Msg
 view model =
-    let
-        content =
-            case currentScreen model of
-                GameScreen ->
-                    [ gameScreen model
-                    , br [] []
-                    , difficultySelector model
-                    , br [] []
-                    , aboutPage
-                    ]
-
-                UnknownDifficultyScreen ->
-                    [ h1 [] [ text "Unknown Difficulty." ]
-                    , difficultySelector model
-                    , br [] []
-                    , aboutPage
-                    ]
-
-                WaitingForJSScreen ->
-                    [ p [] [ text "Waiting for JavaScript..." ]
-                    ]
-
-                NoScreen ->
-                    []
-    in
-    Browser.Document "Minesweeper" content
+    Document
+        "Minesweeper"
+        (merge3 currentScreen actualizeScreen model)

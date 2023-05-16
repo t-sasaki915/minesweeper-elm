@@ -5,12 +5,15 @@ module ListUtil exposing
     , find
     , flatten
     , forAll
-    , listWith
-    , listWithout
+    , identityForAll
     , mapN
     , nonEmpty
+    , notContains
     , numberOf
+    , without
     )
+
+import FunctionUtil exposing (merge1)
 
 
 nonEmpty : List a -> Bool
@@ -28,13 +31,13 @@ contains a list =
     exists (\x -> x == a) list
 
 
-listWith : a -> List a -> List a
-listWith a list =
-    a :: list
+notContains : a -> List a -> Bool
+notContains =
+    merge1 contains not
 
 
-listWithout : a -> List a -> List a
-listWithout a list =
+without : a -> List a -> List a
+without a list =
     List.filter (\x -> not (x == a)) list
 
 
@@ -56,6 +59,11 @@ find func list =
 forAll : (a -> Bool) -> List a -> Bool
 forAll func list =
     numberOf False (List.map func list) == 0
+
+
+identityForAll : List Bool -> Bool
+identityForAll =
+    forAll identity
 
 
 flatten : List (List a) -> List a

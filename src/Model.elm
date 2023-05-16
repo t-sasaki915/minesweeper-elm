@@ -3,7 +3,7 @@ module Model exposing
     , emptyModel
     )
 
-import Browser.Navigation as Nav
+import Browser.Navigation exposing (Key)
 import Coordinate exposing (Coordinate)
 import Difficulty exposing (Difficulty, defaultDifficulty)
 import Time exposing (Posix, millisToPosix)
@@ -21,7 +21,7 @@ type alias Model =
     , noMineCoords : List Coordinate
     , startCoord : Coordinate
     , causeCoord : Coordinate
-    , navKey : Nav.Key
+    , navKey : Key
     , difficultyReceived : Bool
     , pathReceived : Bool
     , unknownDifficulty : Bool
@@ -31,7 +31,7 @@ type alias Model =
     }
 
 
-emptyModel : Nav.Key -> Model
+emptyModel : Key -> Model
 emptyModel navKey =
     { difficulty = defaultDifficulty
     , path = ""

@@ -1,23 +1,14 @@
-module UIConditions exposing
+module Cell exposing
     ( CellClass(..)
-    , InnerIcon(..)
-    , Screen(..)
+    , CellIcon(..)
     , cellClassAt
-    , currentScreen
-    , innerIconAt
+    , cellIconAt
     )
 
 import Coordinate exposing (Coordinate)
-import ListUtil
+import ListUtil exposing (contains, identityForAll)
 import LogicConditions exposing (..)
 import Model exposing (Model)
-
-
-type Screen
-    = GameScreen
-    | UnknownDifficultyScreen
-    | WaitingForJSScreen
-    | NoScreen
 
 
 type CellClass
@@ -27,28 +18,13 @@ type CellClass
     | NoClass
 
 
-type InnerIcon
-    = NoIcon
-    | FlagIcon
+type CellIcon
+    = FlagIcon
     | FakeFlagIcon
     | WrongFlagIcon
     | MineIcon
     | NumberIcon
-
-
-currentScreen : Model -> Screen
-currentScreen model =
-    if shouldRenderGameScreen model then
-        GameScreen
-
-    else if shouldRenderUnknownDifficultyScreen model then
-        UnknownDifficultyScreen
-
-    else if shouldRenderWaitingForJSScreen model then
-        WaitingForJSScreen
-
-    else
-        NoScreen
+    | NoIcon
 
 
 cellClassAt : Coordinate -> Model -> CellClass
@@ -66,8 +42,8 @@ cellClassAt coord model =
         NoClass
 
 
-innerIconAt : Coordinate -> Model -> InnerIcon
-innerIconAt coord model =
+cellIconAt : Coordinate -> Model -> CellIcon
+cellIconAt coord model =
     if shouldRenderFlagIcon coord model then
         FlagIcon
 
@@ -87,44 +63,16 @@ innerIconAt coord model =
         NoIcon
 
 
-fAll : List Bool -> Bool
-fAll boolList =
-    ListUtil.forAll (\x -> x) boolList
-
-
-shouldRenderGameScreen : Model -> Bool
-shouldRenderGameScreen model =
-    fAll
-        [ model.difficultyReceived
-        , model.pathReceived
-        , not model.unknownDifficulty
-        ]
-
-
-shouldRenderUnknownDifficultyScreen : Model -> Bool
-shouldRenderUnknownDifficultyScreen model =
-    fAll
-        [ model.difficultyReceived
-        , model.pathReceived
-        , model.unknownDifficulty
-        ]
-
-
-shouldRenderWaitingForJSScreen : Model -> Bool
-shouldRenderWaitingForJSScreen model =
-    not model.difficultyReceived || not model.pathReceived
-
-
 shouldRenderFlagIcon : Coordinate -> Model -> Bool
 shouldRenderFlagIcon coord model =
     if model.isGameOver then
-        fAll
+        identityForAll
             [ isFlagged coord model
             , isMine coord model
             ]
 
     else
-        fAll
+        identityForAll
             [ notOpened coord model
             , isFlagged coord model
             ]
@@ -136,7 +84,7 @@ shouldRenderFakeFlagIcon coord model =
         False
 
     else
-        fAll
+        identityForAll
             [ model.inFlagPlaceMode
             , notOpened coord model
             , notFlagged coord model
@@ -146,7 +94,7 @@ shouldRenderFakeFlagIcon coord model =
 shouldRenderWrongFlagIcon : Coordinate -> Model -> Bool
 shouldRenderWrongFlagIcon coord model =
     if model.isGameOver then
-        fAll
+        identityForAll
             [ isFlagged coord model
             , notMine coord model
             ]
@@ -158,7 +106,7 @@ shouldRenderWrongFlagIcon coord model =
 shouldRenderNumberIcon : Coordinate -> Model -> Bool
 shouldRenderNumberIcon coord model =
     if model.isGameOver then
-        fAll
+        identityForAll
             [ notFlagged coord model
             , notMine coord model
             , isOpened coord model
@@ -171,7 +119,7 @@ shouldRenderNumberIcon coord model =
 shouldRenderMineIcon : Coordinate -> Model -> Bool
 shouldRenderMineIcon coord model =
     if model.isGameOver then
-        fAll
+        identityForAll
             [ notFlagged coord model
             , isMine coord model
             ]
@@ -183,12 +131,12 @@ shouldRenderMineIcon coord model =
 shouldClassNameBeCellOpened : Coordinate -> Model -> Bool
 shouldClassNameBeCellOpened coord model =
     if model.isGameOver then
-        ListUtil.contains True
-            [ fAll
+        contains True
+            [ identityForAll
                 [ isOpened coord model
                 , notCause coord model
                 ]
-            , fAll
+            , identityForAll
                 [ notOpened coord model
                 , notCause coord model
                 , notFlagged coord model
@@ -203,13 +151,13 @@ shouldClassNameBeCellOpened coord model =
 shouldClassNameBeCellNotOpened : Coordinate -> Model -> Bool
 shouldClassNameBeCellNotOpened coord model =
     if model.isGameOver then
-        ListUtil.contains True
-            [ fAll
+        contains True
+            [ identityForAll
                 [ notOpened coord model
                 , notCause coord model
                 , notMine coord model
                 ]
-            , fAll
+            , identityForAll
                 [ notOpened coord model
                 , notCause coord model
                 , isFlagged coord model
