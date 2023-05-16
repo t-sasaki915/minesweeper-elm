@@ -13,7 +13,6 @@ import Html exposing (Html, a, br, div, h1, p, span, text)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 import List exposing (length, map, range)
-import LogicConditions exposing (isClickable)
 import Message exposing (Msg(..))
 import Model exposing (Model)
 import TimeUtil exposing (posixDelta, posixToSeconds)
@@ -64,14 +63,9 @@ cellArray model =
     let
         cell coord =
             div
-                (class (merge3 (cellClassAt coord) actualizeCellClass model)
-                    :: (if isClickable coord model then
-                            [ onClick (CellClick coord) ]
-
-                        else
-                            []
-                       )
-                )
+                [ class (merge3 (cellClassAt coord) actualizeCellClass model)
+                , onClick (CellClick coord)
+                ]
                 (merge4 cellIconAt actualizeCellIcon coord model)
 
         cellLine y =

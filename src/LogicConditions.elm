@@ -5,15 +5,12 @@ module LogicConditions exposing
     , cellStatusAt
     , currentGameStatus
     , isCause
-    , isCleared
-    , isClickable
     , isFlagged
     , isMine
     , isOpenable
     , isOpened
     , isStartCoord
     , notCause
-    , notClickable
     , notFlagged
     , notMine
     , notOpenable
@@ -123,37 +120,9 @@ isStartCoord coord model =
     coord == model.startCoord
 
 
-isCleared : Model -> Bool
-isCleared model =
-    let
-        diff =
-            model.difficulty
-
-        cellArraySize =
-            diff.width * diff.height
-    in
-    List.length model.openedCoords >= (cellArraySize - diff.mineCount)
-
-
 isOpenable : Coordinate -> Model -> Bool
 isOpenable =
     merge2 notOpened notFlagged (&&)
-
-
-isClickable : Coordinate -> Model -> Bool
-isClickable coord model =
-    case currentGameStatus model of
-        NotInFlagPlaceMode ->
-            isOpenable coord model
-
-        InFlagPlaceMode ->
-            notOpened coord model
-
-        NotStarted ->
-            True
-
-        GameOver ->
-            False
 
 
 notOpened : Coordinate -> Model -> Bool
@@ -184,8 +153,3 @@ notStartCoord =
 notOpenable : Coordinate -> Model -> Bool
 notOpenable =
     merge1 isOpenable not
-
-
-notClickable : Coordinate -> Model -> Bool
-notClickable =
-    merge1 isClickable not
