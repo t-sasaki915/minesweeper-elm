@@ -53,7 +53,7 @@ gameContainer model =
         [ cellArray model
         , statusIndicator model
         , toggleFlagPlaceModeButton model
-        , br [] []
+        , toggleChordModeButton model
         , restartButton model
         ]
 
@@ -118,6 +118,21 @@ toggleFlagPlaceModeButton model =
     in
     div [ class "btn" ]
         [ span [ class "btnText", onClick ToggleFlagPlaceMode ] [ text buttonText ]
+        ]
+
+
+toggleChordModeButton : Model -> ActualComponent
+toggleChordModeButton model =
+    let
+        buttonText =
+            if model.inChordMode then
+                "Exit Chord Mode"
+
+            else
+                "Enter Chord Mode"
+    in
+    div [ class "btn" ]
+        [ span [ class "btnText" ] [ text buttonText ]
         ]
 
 

@@ -15,6 +15,7 @@ type alias Model =
     , isGameStarted : Bool
     , isGameOver : Bool
     , inFlagPlaceMode : Bool
+    , inChordMode : Bool
     , openedCoords : List Coordinate
     , flaggedCoords : List Coordinate
     , mineCoords : List Coordinate
@@ -38,6 +39,7 @@ emptyModel navKey =
     , isGameStarted = False
     , isGameOver = False
     , inFlagPlaceMode = False
+    , inChordMode = False
     , openedCoords = []
     , flaggedCoords = []
     , mineCoords = []
