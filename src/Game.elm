@@ -23,8 +23,8 @@ mineCountAt coord model =
         (map (\c -> isMine c model) (around3x3 coord model.difficulty))
 
 
-processCellClick : Coordinate -> Model -> ( Model, Cmd Msg )
-processCellClick coord model =
+processCellClick : Coordinate -> Bool -> Model -> ( Model, Cmd Msg )
+processCellClick coord byUser model =
     case currentGameStatus model of
         NotInFlagPlaceMode ->
             case cellStatusAt coord model of
@@ -131,7 +131,7 @@ open coord model =
 
         cmd =
             if mineCountAt coord newModel == 0 then
-                performMsgs (map CellClick aroundOpenable)
+                performMsgs (map (\c -> CellClick c False) aroundOpenable)
 
             else
                 Cmd.none

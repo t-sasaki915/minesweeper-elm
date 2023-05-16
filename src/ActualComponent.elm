@@ -64,7 +64,7 @@ cellArray model =
         cell coord =
             div
                 [ class (merge3 (cellClassAt coord) actualizeCellClass model)
-                , onClick (CellClick coord)
+                , onClick (CellClick coord True)
                 ]
                 (merge4 cellIconAt actualizeCellIcon coord model)
 

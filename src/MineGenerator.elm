@@ -50,7 +50,7 @@ processNewMine coord model =
     case mineStatusAt coord model of
         GeneratedEnough ->
             ( { model | isGameStarted = True }
-            , performMsg (CellClick model.startCoord)
+            , performMsg (CellClick model.startCoord True)
             )
 
         CanPlace ->

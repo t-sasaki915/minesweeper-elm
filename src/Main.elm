@@ -65,8 +65,8 @@ update msg model =
         ReceiveDataFromJS data ->
             processMessageFromJS data model
 
-        CellClick coord ->
-            processCellClick coord model
+        CellClick coord byUser ->
+            processCellClick coord byUser model
 
         ToggleFlagPlaceMode ->
             toggleFlagPlaceMode model

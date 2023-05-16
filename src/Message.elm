@@ -10,7 +10,7 @@ type Msg
     = UrlRequest UrlRequest
     | UrlChange Url
     | ReceiveDataFromJS String
-    | CellClick Coordinate
+    | CellClick Coordinate Bool
     | ToggleFlagPlaceMode
     | ToggleChordMode
     | RestartGame
