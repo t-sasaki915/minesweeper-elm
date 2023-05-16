@@ -1,5 +1,7 @@
 module LogicConditions exposing
-    ( GameStatus(..)
+    ( CellStatus(..)
+    , GameStatus(..)
+    , cellStatusAt
     , currentGameStatus
     , isCause
     , isCleared
@@ -29,6 +31,12 @@ type GameStatus
     | InFlagPlaceMode
 
 
+type CellStatus
+    = Opened
+    | Flagged
+    | NotFlagged
+
+
 currentGameStatus : Model -> GameStatus
 currentGameStatus model =
     if model.isGameOver then
@@ -43,6 +51,18 @@ currentGameStatus model =
 
     else
         NotStarted
+
+
+cellStatusAt : Coordinate -> Model -> CellStatus
+cellStatusAt coord model =
+    if isOpened coord model then
+        Opened
+
+    else if isFlagged coord model then
+        Flagged
+
+    else
+        NotFlagged
 
 
 isOpened : Coordinate -> Model -> Bool
