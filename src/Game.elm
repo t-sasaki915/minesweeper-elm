@@ -33,7 +33,7 @@ processCellClick coord model =
                     ( model, Cmd.none )
 
                 NotFlagged ->
-                    open coord model
+                    tryToOpen coord model
 
         InFlagPlaceMode ->
             case cellStatusAt coord model of
@@ -86,6 +86,21 @@ restartGame model =
       }
     , Cmd.none
     )
+
+
+tryToOpen : Coordinate -> Model -> ( Model, Cmd Msg )
+tryToOpen coord model =
+    if isMine coord model then
+        ( { model
+            | isGameOver = True
+            , causeCoord = coord
+            , gameOverTime = model.currentTime
+          }
+        , Cmd.none
+        )
+
+    else
+        open coord model
 
 
 open : Coordinate -> Model -> ( Model, Cmd Msg )
