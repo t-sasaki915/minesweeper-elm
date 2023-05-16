@@ -6,12 +6,14 @@ module LogicConditions exposing
     , currentGameStatus
     , isCause
     , isCleared
+    , isClickable
     , isFlagged
     , isMine
     , isOpenable
     , isOpened
     , isStartCoord
     , notCause
+    , notClickable
     , notFlagged
     , notMine
     , notOpenable
@@ -138,6 +140,22 @@ isOpenable =
     merge2 notOpened notFlagged (&&)
 
 
+isClickable : Coordinate -> Model -> Bool
+isClickable coord model =
+    case currentGameStatus model of
+        NotInFlagPlaceMode ->
+            isOpenable coord model
+
+        InFlagPlaceMode ->
+            notOpened coord model
+
+        NotStarted ->
+            True
+
+        GameOver ->
+            False
+
+
 notOpened : Coordinate -> Model -> Bool
 notOpened =
     merge1 isOpened not
@@ -166,3 +184,8 @@ notStartCoord =
 notOpenable : Coordinate -> Model -> Bool
 notOpenable =
     merge1 isOpenable not
+
+
+notClickable : Coordinate -> Model -> Bool
+notClickable =
+    merge1 isClickable not
