@@ -139,19 +139,16 @@ chordOpen coord model =
     case cellStatusAt coord model of
         Opened ->
             let
-                diff =
-                    model.difficulty
-
-                aroundFlagged =
-                    filter (\c -> isFlagged c model) (around3x3 coord diff)
+                aroundFlaggedCount =
+                    length (filter (\c -> isFlagged c model) (around3x3 coord model.difficulty))
 
                 aroundOpenable =
-                    filter (\c -> isOpenable c model) (around3x3 coord diff)
+                    filter (\c -> isOpenable c model) (around3x3 coord model.difficulty)
 
                 mineCount =
                     mineCountAt coord model
             in
-            if length aroundFlagged == mineCount then
+            if aroundFlaggedCount == mineCount then
                 case find (\c -> isMine c model) aroundOpenable of
                     Just causeCoord ->
                         gameOver causeCoord model
