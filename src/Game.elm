@@ -8,9 +8,10 @@ module Game exposing
 
 import Coordinate exposing (Coordinate, around3x3)
 import JSCommunicator exposing (requestAlertToJS)
-import List exposing (filter, map)
-import ListUtil exposing (numberOf, without)
+import List exposing (filter, length, map)
+import ListUtil exposing (exists, find, numberOf, without)
 import LogicConditions exposing (..)
+import MaybeUtil exposing (getOrElse)
 import Message exposing (Msg(..))
 import MineGenerator exposing (generateMine)
 import Model exposing (Model, emptyModel)
@@ -27,23 +28,16 @@ processCellClick : Coordinate -> Bool -> Model -> ( Model, Cmd Msg )
 processCellClick coord byUser model =
     case currentGameStatus model of
         NotInFlagPlaceMode ->
-            case cellStatusAt coord model of
-                Opened ->
-                    ( model, Cmd.none )
+            case currentChordModeStatus model of
+                InChordMode ->
+                    if byUser then
+                        chordOpen coord model
 
-                Flagged ->
-                    ( model, Cmd.none )
+                    else
+                        normalOpen coord model
 
-                NotFlagged ->
-                    case tryToOpen coord model of
-                        CellOpenSuccess ->
-                            open coord model
-
-                        CellOpenFailure ->
-                            gameOver coord model
-
-                        GameClear ->
-                            clearGame coord model
+                NotInChordMode ->
+                    normalOpen coord model
 
         InFlagPlaceMode ->
             case cellStatusAt coord model of
@@ -118,6 +112,69 @@ restartGame model =
       }
     , Cmd.none
     )
+
+
+normalOpen : Coordinate -> Model -> ( Model, Cmd Msg )
+normalOpen coord model =
+    case cellStatusAt coord model of
+        Opened ->
+            ( model, Cmd.none )
+
+        Flagged ->
+            ( model, Cmd.none )
+
+        NotFlagged ->
+            case tryToOpen coord model of
+                CellOpenSuccess ->
+                    open coord model
+
+                CellOpenFailure ->
+                    gameOver coord model
+
+                GameClear ->
+                    clearGame coord model
+
+
+chordOpen : Coordinate -> Model -> ( Model, Cmd Msg )
+chordOpen coord model =
+    case cellStatusAt coord model of
+        Opened ->
+            let
+                diff =
+                    model.difficulty
+
+                aroundFlagged =
+                    filter (\c -> isFlagged c model) (around3x3 coord diff)
+
+                aroundOpenable =
+                    filter (\c -> isOpenable c model) (around3x3 coord diff)
+
+                containsMine =
+                    exists (\c -> isMine c model) aroundOpenable
+
+                causeCoord =
+                    getOrElse (Coordinate -1 -1) (find (\c -> isMine c model) aroundOpenable)
+
+                mineCount =
+                    mineCountAt coord model
+            in
+            if length aroundFlagged == mineCount then
+                if containsMine then
+                    gameOver causeCoord model
+
+                else
+                    ( model
+                    , performMsgs (map (\c -> CellClick c False) aroundOpenable)
+                    )
+
+            else
+                ( model, Cmd.none )
+
+        Flagged ->
+            ( model, Cmd.none )
+
+        NotFlagged ->
+            ( model, Cmd.none )
 
 
 open : Coordinate -> Model -> ( Model, Cmd Msg )
