@@ -149,23 +149,18 @@ chordOpen coord model =
                 aroundOpenable =
                     filter (\c -> isOpenable c model) (around3x3 coord diff)
 
-                containsMine =
-                    exists (\c -> isMine c model) aroundOpenable
-
-                causeCoord =
-                    getOrElse (Coordinate -1 -1) (find (\c -> isMine c model) aroundOpenable)
-
                 mineCount =
                     mineCountAt coord model
             in
             if length aroundFlagged == mineCount then
-                if containsMine then
-                    gameOver causeCoord model
+                case find (\c -> isMine c model) aroundOpenable of
+                    Just causeCoord ->
+                        gameOver causeCoord model
 
-                else
-                    ( model
-                    , performMsgs (map (\c -> CellClick c False) aroundOpenable)
-                    )
+                    Nothing ->
+                        ( model
+                        , performMsgs (map (\c -> CellClick c False) aroundOpenable)
+                        )
 
             else
                 ( model, Cmd.none )
