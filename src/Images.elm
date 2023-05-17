@@ -56,68 +56,61 @@ numberIcon n =
     svg [ width "30", height "30" ]
         (case n of
             1 ->
-                [ rect [ x "13", y "0", width "5", height "25", fill "#0200f9" ] []
+                [ rect [ x "13", y "2", width "5", height "21", fill "#0200f9" ] []
                 , rect [ x "5", y "23", width "20", height "5", fill "#0200f9" ] []
-                , rect [ x "6", y "5", width "7", height "5", fill "#0200f9" ] []
+                , rect [ x "6", y "7", width "7", height "5", fill "#0200f9" ] []
                 ]
 
             2 ->
-                [ rect [ x "5", y "0", width "20", height "5", fill "#008001" ] []
-                , rect [ x "20", y "0", width "5", height "15", fill "#008001" ] []
-                , rect [ x "5", y "11", width "20", height "5", fill "#008001" ] []
-                , rect [ x "5", y "11", width "5", height "15", fill "#008001" ] []
+                [ rect [ x "5", y "2", width "20", height "5", fill "#008001" ] []
+                , rect [ x "20", y "7", width "5", height "6", fill "#008001" ] []
+                , rect [ x "5", y "13", width "20", height "5", fill "#008001" ] []
+                , rect [ x "5", y "18", width "5", height "5", fill "#008001" ] []
                 , rect [ x "5", y "23", width "20", height "5", fill "#008001" ] []
                 ]
 
             3 ->
-                [ rect [ x "5", y "0", width "20", height "5", fill "#fd0100" ] []
-                , rect [ x "20", y "0", width "5", height "15", fill "#fd0100" ] []
-                , rect [ x "5", y "11", width "20", height "5", fill "#fd0100" ] []
-                , rect [ x "20", y "11", width "5", height "15", fill "#fd0100" ] []
+                [ rect [ x "5", y "2", width "20", height "5", fill "#fd0100" ] []
+                , rect [ x "20", y "7", width "5", height "6", fill "#fd0100" ] []
+                , rect [ x "5", y "13", width "20", height "5", fill "#fd0100" ] []
+                , rect [ x "20", y "18", width "5", height "5", fill "#fd0100" ] []
                 , rect [ x "5", y "23", width "20", height "5", fill "#fd0100" ] []
                 ]
 
             4 ->
-                [ rect [ x "5", y "0", width "5", height "11", fill "#010080" ] []
-                , rect [ x "20", y "0", width "5", height "15", fill "#010080" ] []
-                , rect [ x "5", y "11", width "20", height "5", fill "#010080" ] []
-                , rect [ x "20", y "11", width "5", height "15", fill "#010080" ] []
-                , rect [ x "20", y "23", width "5", height "5", fill "#010080" ] []
+                [ rect [ x "5", y "2", width "5", height "11", fill "#010080" ] []
+                , rect [ x "20", y "2", width "5", height "26", fill "#010080" ] []
+                , rect [ x "5", y "13", width "15", height "5", fill "#010080" ] []
                 ]
 
             5 ->
-                [ rect [ x "5", y "0", width "20", height "5", fill "#800002" ] []
-                , rect [ x "5", y "0", width "5", height "15", fill "#800002" ] []
-                , rect [ x "5", y "11", width "20", height "5", fill "#800002" ] []
-                , rect [ x "20", y "11", width "5", height "15", fill "#800002" ] []
+                [ rect [ x "5", y "2", width "20", height "5", fill "#800002" ] []
+                , rect [ x "5", y "7", width "5", height "6", fill "#800002" ] []
+                , rect [ x "5", y "13", width "20", height "5", fill "#800002" ] []
+                , rect [ x "20", y "18", width "5", height "5", fill "#800002" ] []
                 , rect [ x "5", y "23", width "20", height "5", fill "#800002" ] []
                 ]
 
             6 ->
-                [ rect [ x "5", y "0", width "20", height "5", fill "#00817c" ] []
-                , rect [ x "5", y "0", width "5", height "15", fill "#00817c" ] []
-                , rect [ x "5", y "11", width "20", height "5", fill "#00817c" ] []
-                , rect [ x "20", y "11", width "5", height "15", fill "#00817c" ] []
-                , rect [ x "5", y "11", width "5", height "15", fill "#00817c" ] []
+                [ rect [ x "5", y "2", width "20", height "5", fill "#00817c" ] []
+                , rect [ x "5", y "7", width "5", height "16", fill "#00817c" ] []
+                , rect [ x "10", y "13", width "15", height "5", fill "#00817c" ] []
+                , rect [ x "20", y "18", width "5", height "5", fill "#00817c" ] []
                 , rect [ x "5", y "23", width "20", height "5", fill "#00817c" ] []
                 ]
 
             7 ->
-                [ rect [ x "5", y "0", width "20", height "5", fill "#000000" ] []
-                , rect [ x "5", y "0", width "5", height "13", fill "#000000" ] []
-                , rect [ x "20", y "0", width "5", height "15", fill "#000000" ] []
-                , rect [ x "20", y "11", width "5", height "15", fill "#000000" ] []
-                , rect [ x "20", y "23", width "5", height "5", fill "#000000" ] []
+                [ rect [ x "5", y "2", width "20", height "5", fill "#000000" ] []
+                , rect [ x "5", y "7", width "5", height "6", fill "#000000" ] []
+                , rect [ x "20", y "7", width "5", height "21", fill "#000000" ] []
                 ]
 
             8 ->
-                [ rect [ x "5", y "0", width "20", height "5", fill "#808080" ] []
-                , rect [ x "5", y "0", width "5", height "15", fill "#808080" ] []
-                , rect [ x "20", y "0", width "5", height "15", fill "#808080" ] []
-                , rect [ x "5", y "11", width "20", height "5", fill "#808080" ] []
-                , rect [ x "5", y "11", width "5", height "15", fill "#808080" ] []
-                , rect [ x "20", y "11", width "5", height "15", fill "#808080" ] []
-                , rect [ x "5", y "23", width "20", height "5", fill "#808080" ] []
+                [ rect [ x "10", y "2", width "10", height "5", fill "#808080" ] []
+                , rect [ x "10", y "13", width "10", height "5", fill "#808080" ] []
+                , rect [ x "5", y "2", width "5", height "26", fill "#808080" ] []
+                , rect [ x "20", y "2", width "5", height "26", fill "#808080" ] []
+                , rect [ x "10", y "23", width "10", height "5", fill "#808080" ] []
                 ]
 
             _ ->
